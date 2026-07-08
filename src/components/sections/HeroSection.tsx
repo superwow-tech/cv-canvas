@@ -25,7 +25,7 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-[clamp(3rem,11vw,7.5rem)] font-bold leading-[0.95] tracking-tighter uppercase text-foreground font-['Rubik']">
+        <h1 className="text-display-name font-serif text-foreground">
           {firstName}
           <br />
           {lastName}
@@ -37,7 +37,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mt-6 text-lg md:text-2xl tracking-wide uppercase text-orange font-['Rubik'] font-medium"
+        className="mt-6 text-eyebrow text-orange font-sans"
       >
         {personalInfo.title}
       </motion.h2>
@@ -58,11 +58,11 @@ export default function HeroSection() {
         className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
       >
         {/* Contact info */}
-        <div className="flex flex-col gap-2 text-sm md:text-base text-foreground/80 font-['Rubik']">
+        <div className="flex flex-col gap-2 text-sm md:text-[15px] text-foreground/80 font-sans">
           <a href={`mailto:${personalInfo.email}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
             <Mail size={16} /> {personalInfo.email}
           </a>
-          <a href={`tel:${phone}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+          <a href={`tel:${phone}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors tabular-nums">
             <Phone size={16} /> {phone}
           </a>
           <div className="inline-flex items-center gap-2">
@@ -95,7 +95,7 @@ export default function HeroSection() {
                 }
               );
             }}
-            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
+            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-sans"
           >
             <Download size={16} /> Download CV
           </button>
