@@ -66,7 +66,7 @@ export function generateCVBlob(): Blob {
     const align = options?.align ?? "left";
     const maxWidth = options?.maxWidth ?? contentWidth;
 
-    doc.setFont(fonts.normal, bold ? "bold" : "normal");
+    doc.setFont(fontName, bold ? "bold" : "normal");
     doc.setFontSize(size);
     doc.setTextColor(color);
 
