@@ -17,7 +17,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
         </span>
         <span className="h-px flex-1 bg-foreground/10" aria-hidden />
       </div>
-      <h2 className="text-headline font-sans font-semibold text-foreground text-center">
+      <h2 className="text-headline font-serif text-foreground text-center">
         {children}
       </h2>
     </div>
@@ -158,8 +158,8 @@ export default function ContentSection() {
         <SectionHeading>Languages</SectionHeading>
         <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
           {languages.map((lang) => (
-            <div key={lang.language} className="text-center font-sans">
-              <div className="text-xl md:text-[26px] text-foreground font-semibold leading-tight">{lang.language}</div>
+            <div key={lang.language} className="text-center">
+              <div className="text-xl md:text-[26px] text-foreground font-serif leading-tight">{lang.language}</div>
               <div className="text-[11px] md:text-xs text-foreground/60 mt-2 uppercase tracking-[0.22em] font-sans">
                 {lang.proficiency}
               </div>

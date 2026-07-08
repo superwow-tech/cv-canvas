@@ -82,10 +82,10 @@
 @layer utilities {
   /* Fluid typography helpers */
   .text-display-name {
-    font-size: clamp(3rem, 11vw, 7.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.05em;
-    font-weight: 700;
+    font-size: clamp(3.5rem, 13vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    font-weight: 400;
   }
 
   .text-eyebrow {
