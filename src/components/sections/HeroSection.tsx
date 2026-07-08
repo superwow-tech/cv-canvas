@@ -25,7 +25,7 @@ export default function HeroSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-display-name font-serif text-foreground">
+        <h1 className="text-display-name font-sans font-bold uppercase text-foreground">
           {firstName}
           <br />
           {lastName}
