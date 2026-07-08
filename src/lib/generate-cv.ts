@@ -205,7 +205,10 @@ export async function generateCVBlob(): Promise<Blob> {
     const end = formatDate(job.endDate);
     const dateRange = `${start} – ${end}`;
 
-    checkPageBreak(22);
+    // Estimate entry height to avoid splitting an entry across pages.
+    const bulletCount = job.bullets?.length ?? 0;
+    const estimatedEntryHeight = 5 + 5.5 + bulletCount * 12 + 6;
+    checkPageBreak(estimatedEntryHeight);
 
     addText(job.role, marginX, cursorY, { size: 11, bold: true, color: colors.text });
     addText(dateRange, pageWidth - marginX, cursorY, {
@@ -223,7 +226,6 @@ export async function generateCVBlob(): Promise<Blob> {
 
     if (job.bullets && job.bullets.length > 0) {
       job.bullets.forEach((bullet) => {
-        checkPageBreak(12);
         const bulletText = `• ${bullet}`;
         const bulletHeight = addText(bulletText, marginX + 3, cursorY, {
           size: 10,
