@@ -1,6 +1,7 @@
 import { personalInfo } from "@/data/portfolio-data";
 import { motion } from "framer-motion";
 import { Download, Linkedin, Github, Mail, Phone, MapPin } from "lucide-react";
+import { toast } from "sonner";
 
 /**
  * HeroSection Component
@@ -83,17 +84,21 @@ export default function HeroSection() {
               <Icon size={18} />
             </a>
           ))}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              // Mocked download
-              alert("CV download coming soon.");
+          <button
+            onClick={() => {
+              toast.promise(
+                import("@/lib/generate-cv").then((mod) => mod.downloadCV()),
+                {
+                  loading: "Generating CV…",
+                  success: "CV downloaded",
+                  error: "Could not generate CV",
+                }
+              );
             }}
             className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
           >
             <Download size={16} /> Download CV
-          </a>
+          </button>
         </div>
       </motion.div>
     </div>
