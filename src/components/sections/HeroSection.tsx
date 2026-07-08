@@ -1,5 +1,4 @@
 import { personalInfo } from "@/data/portfolio-data";
-import { downloadCV } from "@/lib/generate-cv";
 import { motion } from "framer-motion";
 import { Download, Linkedin, Github, Mail, Phone, MapPin } from "lucide-react";
 import { toast } from "sonner";
