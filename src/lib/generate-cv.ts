@@ -46,7 +46,7 @@ export async function generateCVBlob(): Promise<Blob> {
   };
 
   const fontName = "DejaVuSans";
-  const fontResponse = await fetch(dejaVuSansUrl);
+  const fontResponse = await fetch(dejaVuSansAsset.url);
   const fontBuffer = await fontResponse.arrayBuffer();
   const fontBase64 = arrayBufferToBase64(fontBuffer);
   doc.addFileToVFS(`${fontName}.ttf`, fontBase64);
