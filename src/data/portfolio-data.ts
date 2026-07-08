@@ -15,7 +15,7 @@ import type {
 
 export const personalInfo: PersonalInfo = {
   name: "Šarūnas Jaraminas",
-  title: "SENIOR FRONT-END ENGINEER",
+  title: "SENIOR FRONT-END ENGINEER / FULL-STACK WEB DEVELOPER",
   location: { city: "Vilnius", country: "Lithuania" },
   website: "github.com/superwow-tech",
   email: "sarunas.jaraminas@gmail.com",
