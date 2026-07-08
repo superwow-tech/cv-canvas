@@ -1,138 +1,101 @@
 import { personalInfo } from "@/data/portfolio-data";
 import { motion } from "framer-motion";
+import { Download, Linkedin, Github, Mail, Phone, MapPin } from "lucide-react";
 
 /**
  * HeroSection Component
- * Resume-style header with 3 rows:
- * Row 1: Photo (left) | First name (right)
- * Row 2: Last name (left) | Contact info (right)
- * Row 3: Job title (left, orange) | Website/Social (right)
+ * Resume-style header: large name, title, contact + socials, Download CV action.
  */
 export default function HeroSection() {
-  // Split name into first and last
   const [firstName, lastName] = personalInfo.name.split(" ");
   const phone = personalInfo.phone;
 
+  const socials = [
+    { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/sjaraminas" },
+    { icon: Github, label: "GitHub", href: `https://${personalInfo.website}` },
+    { icon: Mail, label: "Email", href: `mailto:${personalInfo.email}` },
+  ];
+
   return (
-    <div className="w-full max-w-7xl mx-auto px-8 md:px-12 py-16">
-      {/* Row 1: First Name | Photo */}
-      <div className="flex flex-row justify-between items-center gap-4 md:gap-8 mb-6 md:mb-8">
-        {/* Left: First Name */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-        >
-          <h1 className="text-[clamp(3rem,12vw,8rem)] font-bold leading-none tracking-tighter uppercase text-foreground font-['Rubik']">
-            {firstName}
-          </h1>
-        </motion.div>
+    <div className="w-full max-w-6xl mx-auto px-6 md:px-12 py-20 md:py-28">
+      {/* Name */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <h1 className="text-[clamp(3rem,11vw,7.5rem)] font-bold leading-[0.95] tracking-tighter uppercase text-foreground font-['Rubik']">
+          {firstName}
+          <br />
+          {lastName}
+        </h1>
+      </motion.div>
 
-        {/* Right: Photo */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <img
-            src={personalInfo.avatar}
-            alt={personalInfo.name}
-            className="w-24 h-16 md:w-48 md:h-32 object-cover border-2 md:border-8 border-orange rounded-full"
-          />
-        </motion.div>
-      </div>
+      {/* Title */}
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.15 }}
+        className="mt-6 text-lg md:text-2xl tracking-wide uppercase text-orange font-['Rubik'] font-medium"
+      >
+        {personalInfo.title}
+      </motion.h2>
 
-      {/* Divider Line 1 */}
+      {/* Divider */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="h-px bg-black origin-left mb-8"
+        className="h-px bg-foreground/20 origin-left my-10"
       />
 
-      {/* Row 2: Contact Info | Last Name */}
-      <div className="flex flex-row justify-between items-center gap-4 md:gap-8 mb-6 md:mb-8">
-        {/* Left: Contact Info */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col space-y-0.5 md:space-y-1 text-xs md:text-base text-orange text-left font-['Rubik']"
-        >
-          <a
-            href={`tel:${phone}`}
-            className="hover:opacity-80 transition-opacity"
-          >
-            {phone}
-          </a>
-          <div>{personalInfo.location.city}</div>
-          <a
-            href={`mailto:${personalInfo.email}`}
-            className="hover:opacity-80 transition-opacity"
-          >
-            {personalInfo.email}
-          </a>
-        </motion.div>
-
-        {/* Right: Last Name */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          <h1 className="text-[clamp(3rem,12vw,8rem)] font-bold leading-none tracking-tighter uppercase text-foreground font-['Rubik']">
-            {lastName}
-          </h1>
-        </motion.div>
-      </div>
-
-      {/* Divider Line 2 */}
+      {/* Contact + Actions */}
       <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.6 }}
-        className="h-px bg-black origin-left mb-8"
-      />
-
-      {/* Row 3: Job Title | Website/Social */}
-      <div className="flex flex-row justify-between items-center gap-4 md:gap-8 mb-6 md:mb-8">
-        {/* Left: Job Title */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-        >
-          <h2 className="text-[clamp(3rem,12vw,8rem)] font-bold leading-none tracking-tighter uppercase text-orange font-['Rubik']">
-            {personalInfo.title}
-          </h2>
-        </motion.div>
-
-        {/* Right: Website & Social */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="flex flex-col space-y-0.5 md:space-y-1 text-xs md:text-base text-orange text-right font-['Rubik']"
-        >
-          <a
-            href={`https://${personalInfo.website}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:opacity-80 transition-opacity"
-          >
-            {personalInfo.website}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.35 }}
+        className="flex flex-col md:flex-row md:items-end md:justify-between gap-8"
+      >
+        {/* Contact info */}
+        <div className="flex flex-col gap-2 text-sm md:text-base text-foreground/80 font-['Rubik']">
+          <a href={`mailto:${personalInfo.email}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+            <Mail size={16} /> {personalInfo.email}
           </a>
-          <div>@{personalInfo.website.split(".")[0]}</div>
-        </motion.div>
-      </div>
+          <a href={`tel:${phone}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+            <Phone size={16} /> {phone}
+          </a>
+          <div className="inline-flex items-center gap-2">
+            <MapPin size={16} /> {personalInfo.location.city}, {personalInfo.location.country}
+          </div>
+        </div>
 
-      {/* Divider Line 3 (Bottom) */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.8, delay: 0.9 }}
-        className="h-px bg-black origin-left"
-      />
+        {/* Actions: socials + Download CV */}
+        <div className="flex items-center gap-3">
+          {socials.map(({ icon: Icon, label, href }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/60 transition-colors"
+            >
+              <Icon size={18} />
+            </a>
+          ))}
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              // Mocked download
+              alert("CV download coming soon.");
+            }}
+            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
+          >
+            <Download size={16} /> Download CV
+          </a>
+        </div>
+      </motion.div>
     </div>
   );
 }
