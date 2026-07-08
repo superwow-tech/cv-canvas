@@ -1,28 +1,25 @@
-## Goal
-Refresh the hero bio/subtext to match the "Senior Software Engineer / AI Curious" title, and add a concise set of AI-related skills.
+Implement a real PDF download for the existing "Download CV" button in the hero section.
 
-## Recommended approach
-- **Bio format**: stacked few-liners (2–3 short sentences). This reads faster as a hero subtext and feels more creative than a single dense paragraph.
-- **AI skills**: add a small, relevant set so you can trim later. Suggested additions:
-  - New skill category: **AI & LLMs**
-  - Skills: RAG, LLMs, Prompt Engineering, Embeddings, Vector DBs, AI SDK, LangChain, OpenAI API
-  - Also add **AI SDK** and **LangChain** under Languages & Frameworks if they fit better there.
+## What will be built
 
-## Changes
+1. **PDF generation utility** (`src/lib/generate-cv.ts`)
+   - Uses `jspdf` + `jspdf-autotable` to build a clean, ATS-friendly CV from the existing portfolio data.
+   - Includes: name/title/contact, professional summary, skills grouped by category, work experience with bullets, education, and languages.
+   - Default filename: `Sarunas-Jaraminas-CV.pdf`.
 
-1. **Update `src/data/portfolio-data.ts`**
-   - Rewrite `personalInfo.bio` as 2–3 stacked lines, e.g.:
-     ```
-     Senior Software Engineer who builds and configures AI agents and related tools.
-     Experienced in scalable web apps, micro-frontends, and design-system driven interfaces.
-     Currently exploring the intersection of full-stack engineering and practical AI.
-     ```
-   - Add AI skills to `skillCategories`.
+2. **Updated HeroSection** (`src/components/sections/HeroSection.tsx`)
+   - Replaces the mocked `alert("CV download coming soon.")` with an async handler that calls the generator.
+   - Uses the Sonner toast stack (already in the app) to show "Generating CV…" and "CV downloaded" feedback.
+   - Keeps the existing button styling and icon.
 
-2. **Verify**
-   - Run `bun run build` to confirm no TypeScript or build errors.
+3. **PDF visual direction**
+   - Clean, single-column A4 layout.
+   - Dark slate text (`#1f2937`), gray secondary text (`#6b7280`), mint accent (`#6BCABA`) for section underlines.
+   - Standard Helvetica/Helvetica-Bold fonts for reliability across PDF readers.
 
-## Notes
-- No component or styling changes needed; the existing `BioSection` already renders the bio as large text.
-- Wording for AI agents will use your preference: **"build and configure AI agents"**.
-- Let me know if you want the skill list shorter or grouped differently before I implement.
+## Technical details
+
+- Add dependencies: `jspdf`, `jspdf-autotable`.
+- No backend required; generation runs entirely in the browser.
+- Build will be verified with `bun run build`.
+- Download flow will be verified in the preview with a Playwright script that clicks the button and checks the generated PDF renders without errors.
