@@ -23,6 +23,8 @@ export interface Experience {
   startDate: string;
   endDate: string | null;
   description: string;
+  bullets?: string[];
+  tech?: string[];
   media?: string;
   current: boolean;
 }
