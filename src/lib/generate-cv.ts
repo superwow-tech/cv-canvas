@@ -41,10 +41,11 @@ export function generateCVBlob(): Blob {
     light: "#f3f4f6",
   };
 
-  const fonts = {
-    normal: "helvetica",
-    bold: "helvetica",
-  };
+  const fontName = "DejaVuSans";
+  doc.addFileToVFS(`${fontName}.ttf`, extractBase64(dejaVuSansUrl));
+  doc.addFont(`${fontName}.ttf`, fontName, "normal");
+  doc.addFont(`${fontName}.ttf`, fontName, "bold");
+  doc.setFont(fontName);
 
   // Helpers
   const addText = (
