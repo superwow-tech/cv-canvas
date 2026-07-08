@@ -6,7 +6,7 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
-import dejaVuSansUrl from "@/assets/fonts/DejaVuSans.ttf?url";
+import dejaVuSansAsset from "@/assets/fonts/DejaVuSans.ttf.asset.json";
 
 /**
  * Convert an ArrayBuffer to a base64 string.
