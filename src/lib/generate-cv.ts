@@ -124,11 +124,15 @@ export async function generateCVBlob(): Promise<Blob> {
     return `${monthName} ${year}`;
   };
 
-  const checkPageBreak = (neededHeight: number) => {
+  const checkPageBreak = (neededHeight: number, reserveSpace = true) => {
     if (cursorY + neededHeight > pageHeight - 15) {
-      doc.addPage();
-      cursorY = 18;
+      if (reserveSpace && cursorY > 18) {
+        doc.addPage();
+        cursorY = 18;
+      }
+      return true;
     }
+    return false;
   };
 
   // === HEADER ===
