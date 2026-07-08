@@ -43,24 +43,20 @@
 
 @layer base {
   :root {
-    /* Animated CSS variables (updated by useAnimatedBackground hook) */
-    --fontColor: oklch(21% 0 0);
-    --artForeground: oklch(100% 0 0);
-    --highlightColor: #FF6B35;
+    /* Static text + accent color for readability */
+    --fontColor: #1f2937;      /* slate-800 */
+    --artForeground: #ffffff;
+    --highlightColor: #6b7280; /* slate-500 gray accent */
   }
 
   body {
-    background-color: oklch(100% 0 0);
-    background-image: linear-gradient(20deg, hsl(120deg, 40%, 96%), hsl(240deg, 40%, 96%), hsl(360deg, 40%, 96%));
-    background-attachment: fixed;
-    background-size: cover;
+    background-color: #fafaf9;
     color: var(--fontColor);
     font-family: 'Rubik', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 17px;
     line-height: 22px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-image 0.3s ease-in-out;
   }
 
   html {
