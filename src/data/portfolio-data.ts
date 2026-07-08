@@ -34,6 +34,12 @@ export const experience: Experience[] = [
     startDate: "2024-01",
     endDate: null,
     description: "Develop and maintain payment-related web applications in the banking domain. Build new features, improve application flows, and support production releases. Contribute to micro-frontend architecture, maintainability, and frontend quality. Stack: Angular, Next.js, Git, Figma.",
+    bullets: [
+      "Develop and maintain payment-related web applications in the banking domain.",
+      "Build new features, improve application flows, and support production releases.",
+      "Contribute to micro-frontend architecture, maintainability, and frontend quality.",
+    ],
+    tech: ["Angular", "NextJs", "Git", "Figma"],
     current: true,
   },
   {
@@ -44,6 +50,12 @@ export const experience: Experience[] = [
     startDate: "2021-01",
     endDate: "2024-01",
     description: "Developed a business platform used by Microsoft Dynamics partners. Built reusable UI components and contributed to frontend architecture. Supported CI/CD pipelines, environment configuration, and delivery planning. Stack: Angular, Next.js, Azure, Git.",
+    bullets: [
+      "Developed a business platform used by Microsoft Dynamics partners.",
+      "Built reusable UI components and contributed to frontend architecture.",
+      "Supported CI/CD pipelines, environment configuration, and delivery planning.",
+    ],
+    tech: ["Angular", "NextJs", "Azure", "Git"],
     current: false,
   },
   {
@@ -54,6 +66,12 @@ export const experience: Experience[] = [
     startDate: "2019-01",
     endDate: "2021-01",
     description: "Delivered features for healthcare and logistics applications. Worked on forms, UI implementation, and data-driven workflows. Participated in migration from AngularJS to Angular. Stack: Angular, React, Git, Firebase.",
+    bullets: [
+      "Delivered features for healthcare and logistics applications.",
+      "Worked on forms, UI implementation, and data-driven workflows.",
+      "Participated in migration from AngularJS to Angular.",
+    ],
+    tech: ["Angular", "React", "Git", "Firebase"],
     current: false,
   },
   {
@@ -64,6 +82,12 @@ export const experience: Experience[] = [
     startDate: "2015-01",
     endDate: "2018-12",
     description: "Worked across QA automation, CI/CD, and release delivery on an insurance platform. Improved test automation, pipeline stability, and software delivery processes. Stack: Java, Selenium, Jenkins, Git.",
+    bullets: [
+      "Worked across QA automation, CI/CD, and release delivery on an insurance platform.",
+      "Improved test automation and pipeline stability.",
+      "Contributed to software delivery process improvements.",
+    ],
+    tech: ["Java", "Selenium", "Jenkins", "Git"],
     current: false,
   },
 ];
