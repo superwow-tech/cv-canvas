@@ -46,6 +46,11 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
 
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-6">
         <div className="min-w-0">
+          {meta && (
+            <div className="sm:hidden mb-1.5 text-[11px] text-foreground/50 font-['Rubik'] tracking-[0.15em] uppercase">
+              {meta}
+            </div>
+          )}
           <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground font-['Rubik'] leading-snug">
             {title}
           </h3>
@@ -63,7 +68,7 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
           )}
         </div>
         {meta && (
-          <div className="shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-2 whitespace-nowrap">
+          <div className="hidden sm:block shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-2 whitespace-nowrap">
             {meta}
           </div>
         )}
