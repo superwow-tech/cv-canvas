@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/instrument-serif": "^5.2.8",
     "@fontsource/rubik": "^5.2.8",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^3.10.0",
