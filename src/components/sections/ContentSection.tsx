@@ -38,20 +38,20 @@ interface TimelineItemProps {
 
 function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: TimelineItemProps) {
   return (
-    <div className="relative pl-7 sm:pl-10 pb-10 md:pb-12 last:pb-0">
+    <div className="relative pl-6 sm:pl-10 pb-10 md:pb-12 last:pb-0">
       {!isLast && (
-        <span className="absolute left-[5px] top-3 bottom-0 w-px bg-foreground/10" aria-hidden />
+        <span className="absolute left-[5px] top-[13px] bottom-0 w-px bg-foreground/10" aria-hidden />
       )}
       <span className="absolute left-0 top-2 w-[11px] h-[11px] rounded-full border border-foreground/30 bg-background" aria-hidden />
 
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-6">
         <div className="min-w-0">
           {meta && (
-            <div className="sm:hidden mb-1.5 text-[11px] text-foreground/50 font-['Rubik'] tracking-[0.15em] uppercase">
+            <div className="sm:hidden mb-1 text-[11px] text-foreground/50 font-['Rubik'] tracking-[0.15em] uppercase">
               {meta}
             </div>
           )}
-          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground font-['Rubik'] leading-snug">
+          <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-foreground font-['Rubik'] leading-snug">
             {title}
           </h3>
           {subtitle && (
@@ -68,7 +68,7 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
           )}
         </div>
         {meta && (
-          <div className="hidden sm:block shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-2 whitespace-nowrap">
+          <div className="hidden sm:block shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-1.5 whitespace-nowrap">
             {meta}
           </div>
         )}
@@ -78,7 +78,7 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
         <ul className="mt-4 md:mt-5 space-y-2 text-foreground/75 font-['Rubik'] text-sm md:text-base leading-relaxed">
           {bullets.map((b, i) => (
             <li key={i} className="flex gap-3">
-              <span className="mt-[9px] w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden />
+              <span className="mt-1.5 w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden />
               <span>{b}</span>
             </li>
           ))}
@@ -99,7 +99,7 @@ export default function ContentSection() {
   return (
     <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12">
       <motion.section {...sectionMotion} className="py-16 md:py-24">
-        <SectionHeading>Professional Experience</SectionHeading>
+        <SectionHeading>Experience</SectionHeading>
         <div>
           {experience.map((job, idx) => (
             <TimelineItem
