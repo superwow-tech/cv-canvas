@@ -6,6 +6,15 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
+import dejaVuSansUrl from "@/assets/fonts/DejaVuSans.ttf?inline";
+
+/**
+ * Extract the base64 payload from a Vite ?inline data URL.
+ */
+function extractBase64(dataUrl: string): string {
+  const commaIndex = dataUrl.indexOf(",");
+  return commaIndex >= 0 ? dataUrl.slice(commaIndex + 1) : dataUrl;
+}
 
 /**
  * Generate a professional PDF CV from portfolio data.
