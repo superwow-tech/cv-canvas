@@ -21,7 +21,7 @@ export const personalInfo: PersonalInfo = {
   email: "sarunas.jaraminas@gmail.com",
   phone: "+370 640 06633",
   avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800",
-  bio: "Senior Front-End Engineer with strong expertise in JavaScript, TypeScript, Angular, and modern web application architecture. Experienced in building scalable, production-ready web applications, micro-frontends, reusable UI components, and design-system driven interfaces. Full-stack web engineering experience across Next.js, backend integration, CI/CD, cloud delivery, and cross-functional product development.",
+  bio: "Senior Software Engineer who builds and configures AI agents and related tools.\nExperienced in scalable web apps, micro-frontends, and design-system driven interfaces.\nCurrently exploring the intersection of full-stack engineering and practical AI.",
   skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, AWS, Docker, Figma, Storybook",
 };
 
@@ -127,6 +127,10 @@ export const skillCategories: SkillCategory[] = [
   {
     category: "Languages & Frameworks",
     skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx",
+  },
+  {
+    category: "AI & LLMs",
+    skills: "RAG, AI SDK, LLMs, Prompt Engineering, LangChain, OpenAI API",
   },
   {
     category: "Design & Dev Tools",
