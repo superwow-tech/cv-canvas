@@ -294,8 +294,8 @@ export async function generateCVBlob(): Promise<Blob> {
 /**
  * Trigger a browser download of the generated CV PDF.
  */
-export function downloadCV(): void {
-  const blob = generateCVBlob();
+export async function downloadCV(): Promise<void> {
+  const blob = await generateCVBlob();
   const url = URL.createObjectURL(blob);
   const filename = "Sarunas-Jaraminas-CV.pdf";
 
