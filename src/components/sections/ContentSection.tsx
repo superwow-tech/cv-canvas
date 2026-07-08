@@ -9,24 +9,19 @@ function formatDateRange(start: string, end: string | null): string {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-10 md:mb-14">
-      <div className="flex items-center gap-4 md:gap-6 mb-3">
-        <span className="h-px flex-1 bg-foreground/10" aria-hidden />
-        <span className="text-eyebrow text-foreground/50 font-sans whitespace-nowrap">
-          {children}
-        </span>
-        <span className="h-px flex-1 bg-foreground/10" aria-hidden />
-      </div>
-      <h2 className="text-headline font-serif text-foreground text-center">
+    <div className="mb-10 md:mb-14 flex items-center gap-4 md:gap-6">
+      <span className="h-px flex-1 bg-foreground/10" aria-hidden />
+      <h2 className="uppercase tracking-[0.25em] text-xs md:text-sm font-medium text-foreground/70 font-['Rubik'] whitespace-nowrap">
         {children}
       </h2>
+      <span className="h-px flex-1 bg-foreground/10" aria-hidden />
     </div>
   );
 }
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block rounded-full bg-foreground/[0.04] text-foreground/60 text-[11px] md:text-xs px-3 py-1 font-sans tracking-wide">
+    <span className="inline-block rounded-full bg-foreground/[0.04] text-foreground/60 text-[11px] md:text-xs px-2.5 py-1 font-['Rubik']">
       {children}
     </span>
   );
@@ -52,15 +47,15 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-6">
         <div className="min-w-0">
           {meta && (
-            <div className="sm:hidden mb-1 text-[11px] text-foreground/50 font-sans tracking-[0.18em] uppercase tabular-nums">
+            <div className="sm:hidden mb-1 text-[11px] text-foreground/50 font-['Rubik'] tracking-[0.15em] uppercase">
               {meta}
             </div>
           )}
-          <h3 className="text-[clamp(1.05rem,1.6vw,1.35rem)] font-semibold text-foreground font-sans leading-snug tracking-[-0.01em]">
+          <h3 className="text-base sm:text-xl md:text-2xl font-semibold text-foreground font-['Rubik'] leading-snug">
             {title}
           </h3>
           {subtitle && (
-            <div className="mt-1 text-sm md:text-[15px] text-foreground/60 font-sans">
+            <div className="mt-1 text-sm md:text-base text-foreground/60 font-['Rubik']">
               {subtitle}
             </div>
           )}
@@ -73,14 +68,14 @@ function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: Timeline
           )}
         </div>
         {meta && (
-          <div className="hidden sm:block shrink-0 text-xs sm:text-[13px] text-foreground/50 font-sans tracking-[0.18em] uppercase sm:pt-2 whitespace-nowrap tabular-nums">
+          <div className="hidden sm:block shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-1.5 whitespace-nowrap">
             {meta}
           </div>
         )}
       </div>
 
       {bullets && bullets.length > 0 && (
-        <ul className="mt-4 md:mt-5 space-y-2 text-foreground/75 font-sans text-[15px] md:text-base leading-[1.65]">
+        <ul className="mt-4 md:mt-5 space-y-2 text-foreground/75 font-['Rubik'] text-sm md:text-base leading-relaxed">
           {bullets.map((b, i) => (
             <li key={i} className="flex gap-3">
               <span className="mt-1.5 w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden />
@@ -141,7 +136,7 @@ export default function ContentSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {skillCategories.map((category) => (
             <div key={category.category}>
-              <h3 className="text-base md:text-lg font-semibold text-foreground mb-3 font-sans tracking-[-0.01em]">
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-3 font-['Rubik']">
                 {category.category}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -158,9 +153,9 @@ export default function ContentSection() {
         <SectionHeading>Languages</SectionHeading>
         <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
           {languages.map((lang) => (
-            <div key={lang.language} className="text-center">
-              <div className="text-xl md:text-[26px] text-foreground font-serif leading-tight">{lang.language}</div>
-              <div className="text-[11px] md:text-xs text-foreground/60 mt-2 uppercase tracking-[0.22em] font-sans">
+            <div key={lang.language} className="text-center font-['Rubik']">
+              <div className="text-base md:text-lg font-semibold text-foreground">{lang.language}</div>
+              <div className="text-xs md:text-sm text-foreground/60 mt-1 uppercase tracking-wider">
                 {lang.proficiency}
               </div>
             </div>
