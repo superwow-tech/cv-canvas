@@ -67,7 +67,8 @@ export default {
         sm: "var(--radius-sm)",
       },
       fontFamily: {
-        sans: ["'Gothic A1'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
+        sans: ["Rubik", "'Gothic A1'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "sans-serif"],
+        serif: ["'Instrument Serif'", "ui-serif", "Georgia", "Cambria", "serif"],
       },
       fontSize: {
         // Hero title: 48-60px
