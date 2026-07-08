@@ -6,21 +6,25 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
-import dejaVuSansUrl from "@/assets/fonts/DejaVuSans.ttf?inline";
+import dejaVuSansUrl from "@/assets/fonts/DejaVuSans.ttf?url";
 
 /**
- * Extract the base64 payload from a Vite ?inline data URL.
+ * Convert an ArrayBuffer to a base64 string.
  */
-function extractBase64(dataUrl: string): string {
-  const commaIndex = dataUrl.indexOf(",");
-  return commaIndex >= 0 ? dataUrl.slice(commaIndex + 1) : dataUrl;
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
 }
 
 /**
  * Generate a professional PDF CV from portfolio data.
  * Returns a Blob that can be downloaded or opened.
  */
-export function generateCVBlob(): Blob {
+export async function generateCVBlob(): Promise<Blob> {
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
