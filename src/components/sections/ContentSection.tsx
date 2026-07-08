@@ -132,6 +132,20 @@ export default function ContentSection() {
       </motion.section>
 
       <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
+        <SectionHeading>Languages</SectionHeading>
+        <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
+          {languages.map((lang) => (
+            <div key={lang.language} className="text-center font-['Rubik']">
+              <div className="text-base md:text-lg font-semibold text-foreground">{lang.language}</div>
+              <div className="text-xs md:text-sm text-foreground/60 mt-1 uppercase tracking-wider">
+                {lang.proficiency}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.section>
+
+      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
         <SectionHeading>Skills</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {skillCategories.map((category) => (
@@ -143,20 +157,6 @@ export default function ContentSection() {
                 {category.skills.split(",").map((s) => (
                   <Pill key={s}>{s.trim()}</Pill>
                 ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.section>
-
-      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
-        <SectionHeading>Languages</SectionHeading>
-        <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
-          {languages.map((lang) => (
-            <div key={lang.language} className="text-center font-['Rubik']">
-              <div className="text-base md:text-lg font-semibold text-foreground">{lang.language}</div>
-              <div className="text-xs md:text-sm text-foreground/60 mt-1 uppercase tracking-wider">
-                {lang.proficiency}
               </div>
             </div>
           ))}
