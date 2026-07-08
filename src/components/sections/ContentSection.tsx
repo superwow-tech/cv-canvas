@@ -2,58 +2,55 @@ import { experience, education, languages, skillCategories } from "@/data/portfo
 import { motion } from "framer-motion";
 
 function formatDateRange(start: string, end: string | null): string {
-  const startYear = start.split('-')[0];
-  const endDisplay = end ? end.split('-')[0] : 'Present';
-  return `${startYear} - ${endDisplay}`;
+  const startYear = start.split("-")[0];
+  const endDisplay = end ? end.split("-")[0] : "Present";
+  return `${startYear} — ${endDisplay}`;
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-center uppercase tracking-[0.15em] text-2xl md:text-3xl font-light text-foreground font-['Rubik'] mb-14">
-      {children}
-    </h2>
+    <div className="mb-10 md:mb-14 flex items-center gap-4 md:gap-6">
+      <span className="h-px flex-1 bg-foreground/10" aria-hidden />
+      <h2 className="uppercase tracking-[0.25em] text-xs md:text-sm font-medium text-foreground/70 font-['Rubik'] whitespace-nowrap">
+        {children}
+      </h2>
+      <span className="h-px flex-1 bg-foreground/10" aria-hidden />
+    </div>
   );
 }
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block rounded-full bg-foreground/5 text-foreground/70 text-xs px-3 py-1 font-['Rubik']">
+    <span className="inline-block rounded-full bg-foreground/[0.04] text-foreground/60 text-[11px] md:text-xs px-2.5 py-1 font-['Rubik']">
       {children}
     </span>
   );
 }
 
-function TimelineItem({
-  title,
-  subtitle,
-  meta,
-  tech,
-  bullets,
-  isLast,
-}: {
+interface TimelineItemProps {
   title: string;
   subtitle?: string;
   meta?: string;
   tech?: string[];
   bullets?: string[];
   isLast?: boolean;
-}) {
-  return (
-    <div className="relative pl-10 pb-12 last:pb-0">
-      {/* Vertical line */}
-      {!isLast && (
-        <span className="absolute left-[5px] top-3 bottom-0 w-px bg-foreground/15" aria-hidden />
-      )}
-      {/* Dot */}
-      <span className="absolute left-0 top-2 w-[11px] h-[11px] rounded-full border border-foreground/40 bg-background" aria-hidden />
+}
 
-      <div className="flex items-start justify-between gap-6">
+function TimelineItem({ title, subtitle, meta, tech, bullets, isLast }: TimelineItemProps) {
+  return (
+    <div className="relative pl-7 sm:pl-10 pb-10 md:pb-12 last:pb-0">
+      {!isLast && (
+        <span className="absolute left-[5px] top-3 bottom-0 w-px bg-foreground/10" aria-hidden />
+      )}
+      <span className="absolute left-0 top-2 w-[11px] h-[11px] rounded-full border border-foreground/30 bg-background" aria-hidden />
+
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 sm:gap-6">
         <div className="min-w-0">
-          <h3 className="text-xl md:text-2xl font-semibold text-foreground font-['Rubik']">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground font-['Rubik'] leading-snug">
             {title}
           </h3>
           {subtitle && (
-            <div className="mt-1 text-sm md:text-base text-foreground/70 font-['Rubik']">
+            <div className="mt-1 text-sm md:text-base text-foreground/60 font-['Rubik']">
               {subtitle}
             </div>
           )}
@@ -66,17 +63,17 @@ function TimelineItem({
           )}
         </div>
         {meta && (
-          <div className="shrink-0 text-sm text-foreground/60 font-['Rubik'] pt-1 whitespace-nowrap">
+          <div className="shrink-0 text-xs sm:text-sm text-foreground/50 font-['Rubik'] tracking-wide uppercase sm:pt-2 whitespace-nowrap">
             {meta}
           </div>
         )}
       </div>
 
       {bullets && bullets.length > 0 && (
-        <ul className="mt-5 space-y-2 text-foreground/80 font-['Rubik'] text-base leading-relaxed">
+        <ul className="mt-4 md:mt-5 space-y-2 text-foreground/75 font-['Rubik'] text-sm md:text-base leading-relaxed">
           {bullets.map((b, i) => (
             <li key={i} className="flex gap-3">
-              <span className="text-foreground/40 mt-2 w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden />
+              <span className="mt-[9px] w-1 h-1 rounded-full bg-foreground/40 shrink-0" aria-hidden />
               <span>{b}</span>
             </li>
           ))}
@@ -86,17 +83,17 @@ function TimelineItem({
   );
 }
 
+const sectionMotion = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.6 },
+};
+
 export default function ContentSection() {
   return (
-    <div className="w-full max-w-4xl mx-auto px-6 md:px-10">
-      {/* Professional Experience */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="py-20"
-      >
+    <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12">
+      <motion.section {...sectionMotion} className="py-16 md:py-24">
         <SectionHeading>Professional Experience</SectionHeading>
         <div>
           {experience.map((job, idx) => (
@@ -113,14 +110,7 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      {/* Education */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="py-20 border-t border-foreground/10"
-      >
+      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
         <SectionHeading>Education</SectionHeading>
         <div>
           {education.map((edu, idx) => (
@@ -128,7 +118,7 @@ export default function ContentSection() {
               key={edu.id}
               title={`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`}
               subtitle={`${edu.institution}${edu.location ? ` — ${edu.location}` : ""}`}
-              meta={`${edu.startYear} - ${edu.endYear}`}
+              meta={`${edu.startYear} — ${edu.endYear}`}
               bullets={edu.details ? [edu.details] : undefined}
               isLast={idx === education.length - 1}
             />
@@ -136,19 +126,12 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      {/* Skills */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="py-20 border-t border-foreground/10"
-      >
+      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
         <SectionHeading>Skills</SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {skillCategories.map((category) => (
             <div key={category.category}>
-              <h3 className="text-lg font-semibold text-foreground mb-3 font-['Rubik']">
+              <h3 className="text-base md:text-lg font-semibold text-foreground mb-3 font-['Rubik']">
                 {category.category}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -161,20 +144,15 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      {/* Languages */}
-      <motion.section
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="py-20 border-t border-foreground/10"
-      >
+      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
         <SectionHeading>Languages</SectionHeading>
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
+        <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
           {languages.map((lang) => (
             <div key={lang.language} className="text-center font-['Rubik']">
-              <div className="text-lg font-semibold text-foreground">{lang.language}</div>
-              <div className="text-sm text-foreground/60 mt-1">{lang.proficiency}</div>
+              <div className="text-base md:text-lg font-semibold text-foreground">{lang.language}</div>
+              <div className="text-xs md:text-sm text-foreground/60 mt-1 uppercase tracking-wider">
+                {lang.proficiency}
+              </div>
             </div>
           ))}
         </div>
