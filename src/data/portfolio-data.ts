@@ -23,7 +23,7 @@ export const personalInfo: PersonalInfo = {
   avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800",
   bio: "Senior Front-End Engineer experienced in building scalable, production-ready web applications, reusable UI components, micro-frontends, and design-system driven interfaces. Strong background in modern JavaScript and TypeScript development, with experience across frontend architecture, backend integration, CI/CD, and AI-powered application development.
 ",
-  skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, AWS, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
+  skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
 };
 
 export const experience: Experience[] = [
@@ -56,7 +56,7 @@ export const experience: Experience[] = [
       "Built reusable UI components and contributed to frontend architecture.",
       "Supported CI/CD pipelines, environment configuration, and delivery planning.",
     ],
-    tech: ["Angular", "NextJs", "Azure", "Git"],
+    tech: ["Angular", "NestJS", "Azure", "Git"],
     current: false,
   },
   {
@@ -98,7 +98,7 @@ export const education: Education[] = [
     id: "edu-1",
     institution: "Turing College",
     degree: "AI Engineering",
-    field: "AI Software Development",
+    field: "",
     startYear: "2025",
     endYear: "2025",
     location: "Online",
