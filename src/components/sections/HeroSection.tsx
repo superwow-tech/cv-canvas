@@ -85,17 +85,24 @@ export default function HeroSection() {
               <Icon size={18} />
             </a>
           ))}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              // Mocked download
-              alert("CV download coming soon.");
+          <button
+            onClick={() => {
+              toast.promise(
+                new Promise<void>((resolve) => {
+                  downloadCV();
+                  resolve();
+                }),
+                {
+                  loading: "Generating CV…",
+                  success: "CV downloaded",
+                  error: "Could not generate CV",
+                }
+              );
             }}
             className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
           >
             <Download size={16} /> Download CV
-          </a>
+          </button>
         </div>
       </motion.div>
     </div>
