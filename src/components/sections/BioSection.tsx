@@ -13,7 +13,7 @@ export default function BioSection() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
       >
-        <p className="text-lg sm:text-xl md:text-2xl leading-relaxed font-['Rubik'] text-foreground/80 whitespace-pre-line">
+        <p className="text-lg sm:text-xl md:text-2xl leading-relaxed font-['Rubik'] text-foreground/80 whitespace-pre-line text-balance">
           {personalInfo.bio}
         </p>
       </motion.div>
