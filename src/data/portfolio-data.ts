@@ -127,7 +127,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     category: "Languages & Frameworks",
-    skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx",
+    skills: "JavaScript, TypeScript, Angular, React, React Native, Next.js, NestJS, Node.js, Expo",
   },
   {
     category: "AI & LLMs",
@@ -135,10 +135,10 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     category: "Design & Dev Tools",
-    skills: "HTML, CSS/SCSS, Bootstrap, Material UI, Storybook, Figma",
+    skills: "HTML, CSS/SCSS, Tailwind CSS, Bootstrap, Storybook, Figma, Adobe XD",
   },
   {
     category: "Deployment & Cloud",
-    skills: "Azure, AWS, Docker, Git, Firebase",
+    skills: "Azure, Docker, Kubernetes, Git, Jenkins, Vercel",
   },
 ];
