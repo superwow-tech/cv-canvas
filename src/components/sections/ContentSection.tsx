@@ -98,7 +98,7 @@ const sectionMotion = {
 export default function ContentSection() {
   return (
     <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12">
-      <motion.section {...sectionMotion} className="py-16 md:py-24">
+      <motion.section {...sectionMotion} className="py-12 md:py-16">
         <SectionHeading>Experience</SectionHeading>
         <div>
           {experience.map((job, idx) => (
@@ -115,7 +115,7 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
+      <motion.section {...sectionMotion} className="py-12 md:py-16">
         <SectionHeading>Education</SectionHeading>
         <div>
           {education.map((edu, idx) => (
@@ -131,7 +131,7 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
+      <motion.section {...sectionMotion} className="py-12 md:py-16">
         <SectionHeading>Languages</SectionHeading>
         <div className="flex flex-wrap justify-center gap-x-10 md:gap-x-16 gap-y-6">
           {languages.map((lang) => (
@@ -145,7 +145,7 @@ export default function ContentSection() {
         </div>
       </motion.section>
 
-      <motion.section {...sectionMotion} className="py-16 md:py-24 border-t border-foreground/10">
+      <motion.section {...sectionMotion} className="py-12 md:py-16">
         <SectionHeading>Skills</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
           {skillCategories.map((category) => (
