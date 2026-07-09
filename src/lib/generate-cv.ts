@@ -338,7 +338,7 @@ export async function generateCVBlob(): Promise<Blob> {
       doc.setFontSize(8);
       doc.setTextColor(colors.muted);
       doc.text(
-        `${personalInfo.name} — Page ${p} of ${totalPages}`,
+        toAscii(`${personalInfo.name} — Page ${p} of ${totalPages}`),
         pageWidth / 2,
         pageHeight - 8,
         { align: "center" }
