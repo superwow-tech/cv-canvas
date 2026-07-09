@@ -6,7 +6,8 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
-import dejaVuSansAsset from "@/assets/fonts/DejaVuSans.ttf.asset.json";
+import robotoRegularAsset from "@/assets/fonts/Roboto-Regular.ttf.asset.json";
+import robotoBoldAsset from "@/assets/fonts/Roboto-Bold.ttf.asset.json";
 
 /**
  * Convert an ArrayBuffer to a base64 string.
@@ -45,13 +46,15 @@ export async function generateCVBlob(): Promise<Blob> {
     light: "#f3f4f6",
   };
 
-  const fontName = "DejaVuSans";
-  const fontResponse = await fetch(dejaVuSansAsset.url);
-  const fontBuffer = await fontResponse.arrayBuffer();
-  const fontBase64 = arrayBufferToBase64(fontBuffer);
-  doc.addFileToVFS(`${fontName}.ttf`, fontBase64);
-  doc.addFont(`${fontName}.ttf`, fontName, "normal");
-  doc.addFont(`${fontName}.ttf`, fontName, "bold");
+  const fontName = "Roboto";
+  const [regularBuf, boldBuf] = await Promise.all([
+    fetch(robotoRegularAsset.url).then((r) => r.arrayBuffer()),
+    fetch(robotoBoldAsset.url).then((r) => r.arrayBuffer()),
+  ]);
+  doc.addFileToVFS("Roboto-Regular.ttf", arrayBufferToBase64(regularBuf));
+  doc.addFileToVFS("Roboto-Bold.ttf", arrayBufferToBase64(boldBuf));
+  doc.addFont("Roboto-Regular.ttf", fontName, "normal");
+  doc.addFont("Roboto-Bold.ttf", fontName, "bold");
   doc.setFont(fontName);
 
   // Helpers
@@ -136,33 +139,66 @@ export async function generateCVBlob(): Promise<Blob> {
   };
 
   // === HEADER ===
+  // Larger name with more breathing room
   addText(personalInfo.name, marginX, cursorY, {
-    size: 26,
+    size: 30,
     bold: true,
     color: colors.text,
   });
-  cursorY += 10;
+  cursorY += 11;
 
   addText(personalInfo.title, marginX, cursorY, {
     size: 12,
     color: colors.muted,
   });
-  cursorY += 6;
+  cursorY += 8;
 
-  const contactParts = [
-    personalInfo.email,
-    personalInfo.phone,
-    `${personalInfo.location.city}, ${personalInfo.location.country}`,
-    `linkedin.com/in/sjaraminas`,
-    personalInfo.website,
-  ];
-  const contactLine = contactParts.join("  •  ");
-  const contactHeight = addText(contactLine, marginX, cursorY, {
-    size: 9,
-    color: colors.muted,
-    maxWidth: contentWidth,
-  });
-  cursorY += contactHeight + 10;
+  // Helper: draw a clickable segment on the current contact line.
+  const drawContactSegments = (
+    segments: Array<{ label: string; url?: string }>,
+    y: number
+  ) => {
+    doc.setFont(fontName, "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(colors.muted);
+    const separator = "  •  ";
+    const sepWidth = doc.getTextWidth(separator);
+    let x = marginX;
+    segments.forEach((seg, i) => {
+      const w = doc.getTextWidth(seg.label);
+      if (seg.url) {
+        doc.textWithLink(seg.label, x, y, { url: seg.url });
+      } else {
+        doc.text(seg.label, x, y);
+      }
+      x += w;
+      if (i < segments.length - 1) {
+        doc.text(separator, x, y);
+        x += sepWidth;
+      }
+    });
+  };
+
+  // Line 1: email · phone · location
+  drawContactSegments(
+    [
+      { label: personalInfo.email, url: `mailto:${personalInfo.email}` },
+      { label: personalInfo.phone, url: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
+      { label: `${personalInfo.location.city}, ${personalInfo.location.country}` },
+    ],
+    cursorY
+  );
+  cursorY += 5;
+
+  // Line 2: linkedin · github
+  drawContactSegments(
+    [
+      { label: "linkedin.com/in/sjaraminas", url: "https://linkedin.com/in/sjaraminas" },
+      { label: personalInfo.website, url: `https://${personalInfo.website}` },
+    ],
+    cursorY
+  );
+  cursorY += 12;
 
   // === SUMMARY ===
   checkPageBreak(20);
@@ -293,6 +329,24 @@ export async function generateCVBlob(): Promise<Blob> {
     maxWidth: contentWidth,
   });
   cursorY += langHeight + 6;
+
+  // === PAGE FOOTERS ===
+  // Add "Name — Page X of N" on every page (skip if single-page CV).
+  const totalPages = doc.getNumberOfPages();
+  if (totalPages > 1) {
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFont(fontName, "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(colors.muted);
+      doc.text(
+        `${personalInfo.name} — Page ${p} of ${totalPages}`,
+        pageWidth / 2,
+        pageHeight - 8,
+        { align: "center" }
+      );
+    }
+  }
 
   return doc.output("blob");
 }
