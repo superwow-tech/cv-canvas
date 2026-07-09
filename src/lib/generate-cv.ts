@@ -174,28 +174,6 @@ export async function generateCVBlob(): Promise<Blob> {
   });
   cursorY += summaryHeight + 8;
 
-  // === SKILLS ===
-  checkPageBreak(30);
-  cursorY += addSectionHeader("Skills", cursorY);
-
-  skillCategories.forEach((category) => {
-    checkPageBreak(12);
-    addText(`${category.category}:`, marginX, cursorY, {
-      size: 10,
-      bold: true,
-      color: colors.text,
-    });
-    cursorY += 4.5;
-
-    const skillsHeight = addText(category.skills, marginX, cursorY, {
-      size: 10,
-      color: colors.text,
-      maxWidth: contentWidth,
-    });
-    cursorY += skillsHeight + 5;
-  });
-  cursorY += 3;
-
   // === EXPERIENCE ===
   checkPageBreak(30);
   cursorY += addSectionHeader("Experience", cursorY);
@@ -238,6 +216,28 @@ export async function generateCVBlob(): Promise<Blob> {
 
     cursorY += 6;
   });
+
+  // === SKILLS ===
+  checkPageBreak(30);
+  cursorY += addSectionHeader("Skills", cursorY);
+
+  skillCategories.forEach((category) => {
+    checkPageBreak(12);
+    addText(`${category.category}:`, marginX, cursorY, {
+      size: 10,
+      bold: true,
+      color: colors.text,
+    });
+    cursorY += 4.5;
+
+    const skillsHeight = addText(category.skills, marginX, cursorY, {
+      size: 10,
+      color: colors.text,
+      maxWidth: contentWidth,
+    });
+    cursorY += skillsHeight + 5;
+  });
+  cursorY += 3;
 
   // === EDUCATION ===
   checkPageBreak(25);
