@@ -77,7 +77,7 @@ export async function generateCVBlob(): Promise<Blob> {
     doc.setFontSize(size);
     doc.setTextColor(color);
 
-    const lines = doc.splitTextToSize(text, maxWidth);
+    const lines = doc.splitTextToSize(toAscii(text), maxWidth);
     const lineHeight = size * 0.352778; // pt to mm
 
     if (align === "center") {
