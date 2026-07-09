@@ -1,7 +1,8 @@
 import { personalInfo } from "@/data/portfolio-data";
 import { motion } from "framer-motion";
-import { Download, Linkedin, Github, Mail, Phone, MapPin } from "lucide-react";
+import { Download, Linkedin, Github, Mail, Phone, MapPin, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useState } from "react";
 
 /**
  * HeroSection Component
@@ -10,6 +11,29 @@ import { toast } from "sonner";
 export default function HeroSection() {
   const [firstName, lastName] = personalInfo.name.split(" ");
   const phone = personalInfo.phone;
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    const toastId = toast.loading("Generating your CV…");
+    try {
+      const { downloadCV } = await import("@/lib/generate-cv");
+      await downloadCV();
+      toast.success("CV downloaded", {
+        id: toastId,
+        description: "Check your downloads folder.",
+      });
+    } catch (error) {
+      console.error("CV generation failed:", error);
+      toast.error("Could not generate CV", {
+        id: toastId,
+        description: "Please try again in a moment.",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const socials = [
     { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/sjaraminas" },
@@ -85,19 +109,21 @@ export default function HeroSection() {
             </a>
           ))}
           <button
-            onClick={() => {
-              toast.promise(
-                import("@/lib/generate-cv").then((mod) => mod.downloadCV()),
-                {
-                  loading: "Generating CV…",
-                  success: "CV downloaded",
-                  error: "Could not generate CV",
-                }
-              );
-            }}
-            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
+            onClick={handleDownload}
+            disabled={isDownloading}
+            aria-busy={isDownloading}
+            aria-label={isDownloading ? "Generating CV" : "Download CV"}
+            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-5 py-2.5 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik'] disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            <Download size={16} /> Download CV
+            {isDownloading ? (
+              <>
+                <Loader2 size={16} className="animate-spin" /> Generating…
+              </>
+            ) : (
+              <>
+                <Download size={16} /> Download CV
+              </>
+            )}
           </button>
         </div>
       </motion.div>
