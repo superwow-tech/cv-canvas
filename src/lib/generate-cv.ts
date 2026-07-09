@@ -6,18 +6,22 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
-import dejaVuSansAsset from "@/assets/fonts/DejaVuSans.ttf.asset.json";
 
 /**
- * Convert an ArrayBuffer to a base64 string.
+ * Transliterate Lithuanian (and general Latin-extended) diacritics to
+ * plain ASCII so the built-in Helvetica encoding can render them.
+ * ATS systems typically strip diacritics too, so this is a common CV pattern.
  */
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
+const DIACRITIC_MAP: Record<string, string> = {
+  Š: "S", š: "s", Ž: "Z", ž: "z", Č: "C", č: "c",
+  Ą: "A", ą: "a", Ę: "E", ę: "e", Ė: "E", ė: "e",
+  Į: "I", į: "i", Ų: "U", ų: "u", Ū: "U", ū: "u",
+  Ó: "O", ó: "o", Ö: "O", ö: "o", Ä: "A", ä: "a",
+  Ü: "U", ü: "u", ß: "ss", Ñ: "N", ñ: "n",
+  "–": "-", "—": "-", "‑": "-",
+};
+function toAscii(text: string): string {
+  return text.replace(/[^\x00-\x7F]/g, (ch) => DIACRITIC_MAP[ch] ?? ch);
 }
 
 /**
@@ -45,13 +49,9 @@ export async function generateCVBlob(): Promise<Blob> {
     light: "#f3f4f6",
   };
 
-  const fontName = "DejaVuSans";
-  const fontResponse = await fetch(dejaVuSansAsset.url);
-  const fontBuffer = await fontResponse.arrayBuffer();
-  const fontBase64 = arrayBufferToBase64(fontBuffer);
-  doc.addFileToVFS(`${fontName}.ttf`, fontBase64);
-  doc.addFont(`${fontName}.ttf`, fontName, "normal");
-  doc.addFont(`${fontName}.ttf`, fontName, "bold");
+  // Use jsPDF's built-in Helvetica (reliable, universal). Non-ASCII characters
+  // are transliterated at the call site via toAscii().
+  const fontName = "helvetica";
   doc.setFont(fontName);
 
   // Helpers
@@ -77,7 +77,7 @@ export async function generateCVBlob(): Promise<Blob> {
     doc.setFontSize(size);
     doc.setTextColor(color);
 
-    const lines = doc.splitTextToSize(text, maxWidth);
+    const lines = doc.splitTextToSize(toAscii(text), maxWidth);
     const lineHeight = size * 0.352778; // pt to mm
 
     if (align === "center") {
@@ -136,33 +136,67 @@ export async function generateCVBlob(): Promise<Blob> {
   };
 
   // === HEADER ===
+  // Larger name with more breathing room
   addText(personalInfo.name, marginX, cursorY, {
-    size: 26,
+    size: 30,
     bold: true,
     color: colors.text,
   });
-  cursorY += 10;
+  cursorY += 11;
 
   addText(personalInfo.title, marginX, cursorY, {
     size: 12,
     color: colors.muted,
   });
-  cursorY += 6;
+  cursorY += 8;
 
-  const contactParts = [
-    personalInfo.email,
-    personalInfo.phone,
-    `${personalInfo.location.city}, ${personalInfo.location.country}`,
-    `linkedin.com/in/sjaraminas`,
-    personalInfo.website,
-  ];
-  const contactLine = contactParts.join("  •  ");
-  const contactHeight = addText(contactLine, marginX, cursorY, {
-    size: 9,
-    color: colors.muted,
-    maxWidth: contentWidth,
-  });
-  cursorY += contactHeight + 10;
+  // Helper: draw a clickable segment on the current contact line.
+  const drawContactSegments = (
+    segments: Array<{ label: string; url?: string }>,
+    y: number
+  ) => {
+    doc.setFont(fontName, "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(colors.muted);
+    const separator = "  |  ";
+    const sepWidth = doc.getTextWidth(separator);
+    let x = marginX;
+    segments.forEach((seg, i) => {
+      const label = toAscii(seg.label);
+      const w = doc.getTextWidth(label);
+      if (seg.url) {
+        doc.textWithLink(label, x, y, { url: seg.url });
+      } else {
+        doc.text(label, x, y);
+      }
+      x += w;
+      if (i < segments.length - 1) {
+        doc.text(separator, x, y);
+        x += sepWidth;
+      }
+    });
+  };
+
+  // Line 1: email · phone · location
+  drawContactSegments(
+    [
+      { label: personalInfo.email, url: `mailto:${personalInfo.email}` },
+      { label: personalInfo.phone, url: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
+      { label: `${personalInfo.location.city}, ${personalInfo.location.country}` },
+    ],
+    cursorY
+  );
+  cursorY += 5;
+
+  // Line 2: linkedin · github
+  drawContactSegments(
+    [
+      { label: "linkedin.com/in/sjaraminas", url: "https://linkedin.com/in/sjaraminas" },
+      { label: personalInfo.website, url: `https://${personalInfo.website}` },
+    ],
+    cursorY
+  );
+  cursorY += 12;
 
   // === SUMMARY ===
   checkPageBreak(20);
@@ -293,6 +327,24 @@ export async function generateCVBlob(): Promise<Blob> {
     maxWidth: contentWidth,
   });
   cursorY += langHeight + 6;
+
+  // === PAGE FOOTERS ===
+  // Add "Name — Page X of N" on every page (skip if single-page CV).
+  const totalPages = doc.getNumberOfPages();
+  if (totalPages > 1) {
+    for (let p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFont(fontName, "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(colors.muted);
+      doc.text(
+        toAscii(`${personalInfo.name} — Page ${p} of ${totalPages}`),
+        pageWidth / 2,
+        pageHeight - 8,
+        { align: "center" }
+      );
+    }
+  }
 
   return doc.output("blob");
 }
