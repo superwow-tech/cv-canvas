@@ -158,15 +158,16 @@ export async function generateCVBlob(): Promise<Blob> {
     doc.setFont(fontName, "normal");
     doc.setFontSize(9);
     doc.setTextColor(colors.muted);
-    const separator = "  •  ";
+    const separator = "  |  ";
     const sepWidth = doc.getTextWidth(separator);
     let x = marginX;
     segments.forEach((seg, i) => {
-      const w = doc.getTextWidth(seg.label);
+      const label = toAscii(seg.label);
+      const w = doc.getTextWidth(label);
       if (seg.url) {
-        doc.textWithLink(seg.label, x, y, { url: seg.url });
+        doc.textWithLink(label, x, y, { url: seg.url });
       } else {
-        doc.text(seg.label, x, y);
+        doc.text(label, x, y);
       }
       x += w;
       if (i < segments.length - 1) {
