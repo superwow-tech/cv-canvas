@@ -6,19 +6,22 @@ import {
   languages,
   skillCategories,
 } from "@/data/portfolio-data";
-import robotoRegularAsset from "@/assets/fonts/Roboto-Regular.ttf.asset.json";
-import robotoBoldAsset from "@/assets/fonts/Roboto-Bold.ttf.asset.json";
 
 /**
- * Convert an ArrayBuffer to a base64 string.
+ * Transliterate Lithuanian (and general Latin-extended) diacritics to
+ * plain ASCII so the built-in Helvetica encoding can render them.
+ * ATS systems typically strip diacritics too, so this is a common CV pattern.
  */
-function arrayBufferToBase64(buffer: ArrayBuffer): string {
-  const bytes = new Uint8Array(buffer);
-  let binary = "";
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
+const DIACRITIC_MAP: Record<string, string> = {
+  Š: "S", š: "s", Ž: "Z", ž: "z", Č: "C", č: "c",
+  Ą: "A", ą: "a", Ę: "E", ę: "e", Ė: "E", ė: "e",
+  Į: "I", į: "i", Ų: "U", ų: "u", Ū: "U", ū: "u",
+  Ó: "O", ó: "o", Ö: "O", ö: "o", Ä: "A", ä: "a",
+  Ü: "U", ü: "u", ß: "ss", Ñ: "N", ñ: "n",
+  "–": "-", "—": "-", "‑": "-",
+};
+function toAscii(text: string): string {
+  return text.replace(/[^\x00-\x7F]/g, (ch) => DIACRITIC_MAP[ch] ?? ch);
 }
 
 /**
@@ -46,15 +49,9 @@ export async function generateCVBlob(): Promise<Blob> {
     light: "#f3f4f6",
   };
 
-  const fontName = "Roboto";
-  const [regularBuf, boldBuf] = await Promise.all([
-    fetch(robotoRegularAsset.url).then((r) => r.arrayBuffer()),
-    fetch(robotoBoldAsset.url).then((r) => r.arrayBuffer()),
-  ]);
-  doc.addFileToVFS("Roboto-Regular.ttf", arrayBufferToBase64(regularBuf));
-  doc.addFileToVFS("Roboto-Bold.ttf", arrayBufferToBase64(boldBuf));
-  doc.addFont("Roboto-Regular.ttf", fontName, "normal");
-  doc.addFont("Roboto-Bold.ttf", fontName, "bold");
+  // Use jsPDF's built-in Helvetica (reliable, universal). Non-ASCII characters
+  // are transliterated at the call site via toAscii().
+  const fontName = "helvetica";
   doc.setFont(fontName);
 
   // Helpers
