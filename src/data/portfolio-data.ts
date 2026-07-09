@@ -3,26 +3,21 @@
  * Single source of truth for all portfolio content
  */
 
-import type {
-  PersonalInfo,
-  Experience,
-  Education,
-  Language,
-  SkillCategory,
-} from "@/types/portfolio";
+import type { PersonalInfo, Experience, Education, Language, SkillCategory } from "@/types/portfolio";
 
 // ===== Portfolio Data =====
 
 export const personalInfo: PersonalInfo = {
   name: "Šarūnas Jaraminas",
-  title: "Senior Software Engineer / AI Curious",
+  title: "a Senior Software Engineer / AI Curious",
   location: { city: "Vilnius", country: "Lithuania" },
   website: "github.com/superwow-tech",
   email: "sarunas.jaraminas@gmail.com",
   phone: "+370 640 06633",
   avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800",
   bio: "Senior Front-End Engineer experienced in building scalable, production-ready web applications, reusable UI components, micro-frontends, and design-system driven interfaces. Strong background in modern JavaScript and TypeScript development, with experience across frontend architecture, backend integration, CI/CD, and AI-powered application development.",
-  skills: "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
+  skills:
+    "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
 };
 
 export const experience: Experience[] = [
@@ -33,7 +28,8 @@ export const experience: Experience[] = [
     location: "Vilnius, Lithuania",
     startDate: "2024-01",
     endDate: null,
-    description: "Develop and maintain payment-related web applications in the banking domain. Build new features, improve application flows, and support production releases. Contribute to micro-frontend architecture, maintainability, and frontend quality. Stack: Angular, Next.js, Git, Figma.",
+    description:
+      "Develop and maintain payment-related web applications in the banking domain. Build new features, improve application flows, and support production releases. Contribute to micro-frontend architecture, maintainability, and frontend quality. Stack: Angular, Next.js, Git, Figma.",
     bullets: [
       "Develop and maintain payment-related web applications in the banking domain.",
       "Build new features, improve application flows, and support production releases.",
@@ -49,7 +45,8 @@ export const experience: Experience[] = [
     location: "Vilnius, Lithuania",
     startDate: "2021-01",
     endDate: "2024-01",
-    description: "Developed a business platform used by Microsoft Dynamics partners. Built reusable UI components and contributed to frontend architecture. Supported CI/CD pipelines, environment configuration, and delivery planning. Stack: Angular, Next.js, Azure, Git.",
+    description:
+      "Developed a business platform used by Microsoft Dynamics partners. Built reusable UI components and contributed to frontend architecture. Supported CI/CD pipelines, environment configuration, and delivery planning. Stack: Angular, Next.js, Azure, Git.",
     bullets: [
       "Developed a business platform used by Microsoft Dynamics partners.",
       "Built reusable UI components and contributed to frontend architecture.",
@@ -65,7 +62,8 @@ export const experience: Experience[] = [
     location: "Vilnius, Lithuania",
     startDate: "2019-01",
     endDate: "2021-01",
-    description: "Delivered features for healthcare and logistics applications. Worked on forms, UI implementation, and data-driven workflows. Participated in migration from AngularJS to Angular. Stack: Angular, React, Git, Firebase.",
+    description:
+      "Delivered features for healthcare and logistics applications. Worked on forms, UI implementation, and data-driven workflows. Participated in migration from AngularJS to Angular. Stack: Angular, React, Git, Firebase.",
     bullets: [
       "Delivered features for healthcare and logistics applications.",
       "Worked on forms, UI implementation, and data-driven workflows.",
@@ -81,7 +79,8 @@ export const experience: Experience[] = [
     location: "Vilnius, Lithuania",
     startDate: "2015-01",
     endDate: "2018-12",
-    description: "Worked across QA automation, CI/CD, and release delivery on an insurance platform. Improved test automation, pipeline stability, and software delivery processes. Stack: Java, Selenium, Jenkins, Git.",
+    description:
+      "Worked across QA automation, CI/CD, and release delivery on an insurance platform. Improved test automation, pipeline stability, and software delivery processes. Stack: Java, Selenium, Jenkins, Git.",
     bullets: [
       "Worked across QA automation, CI/CD, and release delivery on an insurance platform.",
       "Improved test automation and pipeline stability.",
@@ -122,7 +121,8 @@ export const languages: Language[] = [
 export const skillCategories: SkillCategory[] = [
   {
     category: "Core Expertise",
-    skills: "Frontend Architecture, Micro-frontends, Full-Stack Web Development, UI/UX & Design Systems, DevOps & CI/CD, Testing & QA, Agile Delivery",
+    skills:
+      "Frontend Architecture, Micro-frontends, Full-Stack Web Development, UI/UX & Design Systems, DevOps & CI/CD, Testing & QA, Agile Delivery",
   },
   {
     category: "Languages & Frameworks",
