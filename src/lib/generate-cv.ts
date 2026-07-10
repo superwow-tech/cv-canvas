@@ -45,7 +45,7 @@ export async function generateCVBlob(): Promise<Blob> {
   const colors = {
     text: "#1f2937",
     muted: "#6b7280",
-    accent: "#6BCABA",
+    accent: "#d1d5db",
     light: "#f3f4f6",
   };
 
