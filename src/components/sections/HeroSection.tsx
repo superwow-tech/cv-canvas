@@ -61,7 +61,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mt-6 text-lg md:text-2xl tracking-wide uppercase text-orange font-['Rubik'] font-medium"
+        className="mt-6 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
       >
         {personalInfo.title}
       </motion.h2>
