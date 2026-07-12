@@ -122,7 +122,7 @@ export default function ContentSection() {
             <TimelineItem
               key={edu.id}
               title={`${edu.degree}${edu.field ? ` in ${edu.field}` : ""}`}
-              subtitle={`${edu.institution}${edu.location ? ` — ${edu.location}` : ""}`}
+              subtitle={`${edu.institution}${edu.location ? ` - ${edu.location}` : ""}`}
               meta={`${edu.startYear} — ${edu.endYear}`}
               bullets={edu.details ? [edu.details] : undefined}
               isLast={idx === education.length - 1}
