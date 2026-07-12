@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 function formatDateRange(start: string, end: string | null): string {
   const startYear = start.split("-")[0];
   const endDisplay = end ? end.split("-")[0] : "Present";
-  return `${startYear} — ${endDisplay}`;
+  return `${startYear} - ${endDisplay}`;
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
