@@ -9,13 +9,13 @@ import type { PersonalInfo, Experience, Education, Language, SkillCategory } fro
 
 export const personalInfo: PersonalInfo = {
   name: "Šarūnas Jaraminas",
-  title: "a Senior Front-End Engineer | AI-Curious",
+  title: "a Senior Software Engineer | AI-Curious",
   location: { city: "Vilnius", country: "Lithuania" },
   website: "github.com/superwow-tech",
   email: "sarunas.jaraminas@gmail.com",
   phone: "+370 640 06633",
   avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=800",
-  bio: "Senior Front-End Engineer experienced in building scalable, production-ready web applications, reusable UI components, micro-frontends, and design-system driven interfaces. Strong background in modern JavaScript and TypeScript development, with experience across frontend architecture, backend integration, CI/CD pipelines, and AI-powered application development.",
+  bio: "Front-End Engineer experienced in building scalable, production-ready web applications, reusable UI components, micro-frontends, and design-system driven interfaces. Strong background in modern JavaScript and TypeScript development, with experience across frontend architecture, backend integration, CI/CD pipelines, and AI-powered application development.",
   skills:
     "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
 };
