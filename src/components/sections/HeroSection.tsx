@@ -61,7 +61,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mt-10 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
+        className="mt-8 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
       >
         {personalInfo.title}
       </motion.h2>
@@ -71,7 +71,7 @@ export default function HeroSection() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="h-px bg-foreground/20 origin-left my-10"
+        className="h-px bg-foreground/20 origin-left mt-8 mb-10"
       />
 
       {/* Contact + Actions */}
