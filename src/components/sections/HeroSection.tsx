@@ -67,7 +67,7 @@ export default function HeroSection() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="h-px bg-foreground/20 origin-left mt-8 mb-10"
+        className="h-px bg-foreground/20 origin-left mt-6 mb-10"
       />
 
       {/* Contact + Actions */}
