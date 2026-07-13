@@ -44,11 +44,7 @@ export default function HeroSection() {
   return (
     <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12 py-20 md:py-28">
       {/* Name */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <h1 className="text-[clamp(3rem,11vw,7.5rem)] font-bold leading-[0.95] tracking-tighter uppercase text-foreground font-['Rubik']">
           {firstName}
           <br />
@@ -61,7 +57,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mt-8 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
+        className="mt-6 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
       >
         {personalInfo.title}
       </motion.h2>
@@ -83,7 +79,10 @@ export default function HeroSection() {
       >
         {/* Contact info */}
         <div className="flex flex-col gap-2 text-sm md:text-base text-foreground/80 font-['Rubik']">
-          <a href={`mailto:${personalInfo.email}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
+          <a
+            href={`mailto:${personalInfo.email}`}
+            className="inline-flex items-center gap-2 hover:text-foreground transition-colors"
+          >
             <Mail size={16} /> {personalInfo.email}
           </a>
           <a href={`tel:${phone}`} className="inline-flex items-center gap-2 hover:text-foreground transition-colors">
