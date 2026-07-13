@@ -9,7 +9,7 @@ import type { PersonalInfo, Experience, Education, Language, SkillCategory } fro
 
 export const personalInfo: PersonalInfo = {
   name: "Šarūnas Jaraminas",
-  title: "a Senior Software Engineer | AI-Curious",
+  title: "a Senior Front-End Engineer | AI-Curious",
   location: { city: "Vilnius", country: "Lithuania" },
   website: "github.com/superwow-tech",
   email: "sarunas.jaraminas@gmail.com",
