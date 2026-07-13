@@ -96,7 +96,8 @@ Runs ESLint across the project.
 
 ## Deploying
 
-This project is developed in [Lovable](https://lovable.dev). You can publish it directly from the Lovable editor, or connect the project to GitHub and deploy the built `dist/` folder on any static hosting platform (Vercel, Netlify, GitHub Pages, etc.).
+Build the project for production and deploy the contents of the `dist/` folder on any static hosting platform (Vercel, Netlify, GitHub Pages, AWS S3, etc.).
+
 
 ## Notes
 
