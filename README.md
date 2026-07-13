@@ -1,77 +1,104 @@
-# Welcome to your Lovable project
+# Šarūnas Jaraminas — Portfolio
 
-## Project info
+A personal portfolio and downloadable CV built with **Vite**, **React**, **TypeScript**, and **Tailwind CSS**.
 
-**URL**: https://lovable.dev/projects/6fd12b81-631e-49d3-83b3-86e8b3fab3ae
+## Tech stack
 
-## How can I edit this code?
+- **Vite** — fast dev server and production builds
+- **React 18** — UI library
+- **TypeScript** — type-safe code
+- **Tailwind CSS v4** — utility-first styling
+- **shadcn/ui** — accessible UI components
+- **Framer Motion + GSAP** — animations
+- **jspdf + jspdf-autotable** — client-side PDF CV generation
 
-There are several ways of editing your application.
+## Prerequisites
 
-**Use Lovable**
+- [Node.js](https://nodejs.org/) 18+ (LTS recommended)
+- A package manager such as **npm**, **yarn**, **pnpm**, or **bun** (the lockfile is `bun.lock`)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6fd12b81-631e-49d3-83b3-86e8b3fab3ae) and start prompting.
+## Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Clone the repository:
 
-**Use your preferred IDE**
+   ```bash
+   git clone <YOUR_REPOSITORY_URL>
+   cd <YOUR_REPOSITORY_NAME>
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+2. Install dependencies:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
 
-Follow these steps:
+## Development
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Start the local development server:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The Vite dev server will start and print a local URL (usually `http://localhost:5173`). Open it in your browser to view the portfolio. The page reloads automatically when you edit files.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Build for production
 
-**Use GitHub Codespaces**
+```bash
+npm run build
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+This creates an optimized production bundle in the `dist/` folder.
 
-## What technologies are used for this project?
+## Preview the production build
 
-This project is built with:
+```bash
+npm run preview
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Serves the contents of `dist/` locally so you can verify the production build before deploying.
 
-## How can I deploy this project?
+## Linting
 
-Simply open [Lovable](https://lovable.dev/projects/6fd12b81-631e-49d3-83b3-86e8b3fab3ae) and click on Share -> Publish.
+```bash
+npm run lint
+```
 
-## Can I connect a custom domain to my Lovable project?
+Runs ESLint across the project.
 
-Yes, you can!
+## Project structure
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+```
+.
+├── public/               # Static assets (favicon, images, etc.)
+├── src/
+│   ├── components/       # Reusable UI components and section components
+│   ├── data/             # Portfolio content and CV data
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utilities, helpers, and PDF generation
+│   ├── pages/            # Top-level page components
+│   ├── types/            # TypeScript type definitions
+│   ├── App.tsx           # Main app component with routing
+│   ├── index.css         # Global styles and Tailwind imports
+│   └── main.tsx          # App entry point
+├── index.html            # HTML template
+├── package.json          # Scripts and dependencies
+├── tailwind.config.ts    # Tailwind configuration
+├── tsconfig.json         # TypeScript configuration
+└── vite.config.ts        # Vite configuration
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Deploying
 
-# ./tailwind-plus folder:
+This project is developed in [Lovable](https://lovable.dev). You can publish it directly from the Lovable editor, or connect the project to GitHub and deploy the built `dist/` folder on any static hosting platform (Vercel, Netlify, GitHub Pages, etc.).
 
-The tailwind-plus folder contains tailwind components and themes to be used as inspiration for the project. DO NOT REMOVE THE FOLDER UNLESS SPECIFICALLY TOLD TO DO SO
+## Notes
+
+- The CV PDF is generated entirely in the browser using `jspdf` and `jspdf-autotable` — no backend is required.
+- Source data for the portfolio and CV lives in `src/data/portfolio-data.ts`.
