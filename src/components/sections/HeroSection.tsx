@@ -42,7 +42,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12 py-20 md:py-28">
+    <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16">
       {/* Name */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <h1 className="text-[clamp(3rem,11vw,7.5rem)] font-bold leading-[0.95] tracking-tighter uppercase text-foreground font-['Rubik']">
