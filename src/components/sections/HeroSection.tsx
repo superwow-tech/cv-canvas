@@ -42,7 +42,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12 py-20 md:py-28">
+    <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16">
       {/* Name */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         <h1 className="text-[clamp(3rem,11vw,7.5rem)] font-bold leading-[0.95] tracking-tighter uppercase text-foreground font-['Rubik']">
@@ -57,7 +57,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.15 }}
-        className="mt-6 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
+        className="mt-8 text-lg md:text-2xl tracking-wide text-orange font-['Rubik'] font-medium"
       >
         {personalInfo.title}
       </motion.h2>
@@ -67,7 +67,7 @@ export default function HeroSection() {
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="h-px bg-foreground/20 origin-left mt-6 mb-10"
+        className="h-px bg-foreground/20 origin-left mt-8 mb-8"
       />
 
       {/* Contact + Actions */}
