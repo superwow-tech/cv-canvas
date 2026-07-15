@@ -130,7 +130,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     category: "AI & LLMs",
-    skills: "RAG, AI SDK, LLMs, Prompt Engineering, LangChain, OpenAI API",
+    skills: "Generative AI, LLMs, RAG, AI Agents, Agent Solutions, AI SDK, Prompt Engineering, LangChain, OpenAI API, Business Automation",
   },
   {
     category: "Design & Dev Tools",
