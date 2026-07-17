@@ -98,6 +98,22 @@ Runs ESLint across the project.
 
 Build the project for production and deploy the contents of the `dist/` folder on any static hosting platform (Vercel, Netlify, GitHub Pages, AWS S3, etc.).
 
+## Deploying to GitHub Pages
+
+This repository includes a GitHub Actions workflow that builds and deploys the site to GitHub Pages automatically.
+
+1. Create a GitHub repository named `sarunas` and push this code to the `main` branch.
+2. In the repository settings, go to **Pages → Build and deployment** and set **Source** to **GitHub Actions**.
+3. Push any commit to `main`. The workflow in `.github/workflows/deploy.yml` will build the site and deploy it.
+4. Once the deployment finishes, the site will be live at:
+
+   ```
+   https://<your-github-username>.github.io/sarunas/
+   ```
+
+> **Note:** GitHub Pages is free for public repositories. Private repositories require a GitHub Pro plan to use Pages.
+> If you rename the repository, update the `build:gh-pages` script in `package.json` and the redirect path in `public/404.html` to match the new repo name.
+
 
 ## Notes
 
