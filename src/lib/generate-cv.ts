@@ -106,7 +106,7 @@ export async function generateCVBlob(
       size: 11,
       bold: true,
       color: colors.text,
-      align: style.headerAlign === "center" && style.sectionHeader === "underline-accent" ? "left" : "left",
+      align: "left",
     });
     if (style.sectionHeader === "rule") {
       doc.setDrawColor(colors.accent);
