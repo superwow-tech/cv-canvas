@@ -29,27 +29,51 @@ function toAscii(text: string): string {
   return text.replace(/[^\x00-\x7F]/g, (ch) => DIACRITIC_MAP[ch] ?? ch);
 }
 
+export type PageFormat = "a4" | "letter";
+
+export interface ExportOptions {
+  /** Paper size for the exported PDF. */
+  format?: PageFormat;
+  /** Horizontal page margin in mm. Falls back to the template's margin. */
+  marginX?: number;
+  /** Vertical (top/bottom) page margin in mm. */
+  marginY?: number;
+}
+
+export const pageFormats: Array<{ id: PageFormat; label: string; hint: string }> = [
+  { id: "a4", label: "A4", hint: "210 × 297 mm" },
+  { id: "letter", label: "Letter", hint: "8.5 × 11 in" },
+];
+
+export const marginLimits = { min: 10, max: 30, step: 1 };
+
 /**
  * Generate a professional PDF CV from portfolio data.
  * Returns a Blob that can be downloaded or opened.
  */
 export async function generateCVBlob(
-  templateId: CvTemplateId = defaultTemplateId
+  templateId: CvTemplateId = defaultTemplateId,
+  options: ExportOptions = {}
 ): Promise<Blob> {
   const template = getTemplate(templateId);
   const style = template.style;
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
-    format: "a4",
+    format: options.format ?? "a4",
     compress: true,
   });
 
+  const clamp = (v: number) =>
+    Math.min(marginLimits.max, Math.max(marginLimits.min, v));
+
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  const marginX = style.margin;
+  const marginX = clamp(options.marginX ?? style.margin);
+  const marginY = clamp(options.marginY ?? 18);
   const contentWidth = pageWidth - marginX * 2;
-  let cursorY = 18;
+  let cursorY = marginY;
+
 
   const colors = {
     text: "#1f2937",
