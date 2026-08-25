@@ -74,13 +74,18 @@ export default function TemplatesSection() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
   const [busy, setBusy] = useState<"preview" | "download" | null>(null);
+  const [format, setFormat] = useState<PageFormat>("a4");
+  const [marginX, setMarginX] = useState(18);
+  const [marginY, setMarginY] = useState(18);
+
+  const exportOptions = { format, marginX, marginY };
 
   const openPreview = async (id: CvTemplateId) => {
     if (busy) return;
     setBusy("preview");
     try {
       const { generateCVBlob } = await import("@/lib/generate-cv");
-      const blob = await generateCVBlob(id);
+      const blob = await generateCVBlob(id, exportOptions);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(URL.createObjectURL(blob));
       setPreviewFor(id);
@@ -105,8 +110,11 @@ export default function TemplatesSection() {
     const toastId = toast.loading("Generating your CV…");
     try {
       const { downloadCV } = await import("@/lib/generate-cv");
-      await downloadCV(id);
-      toast.success("CV downloaded", { id: toastId, description: "Check your downloads folder." });
+      await downloadCV(id, exportOptions);
+      toast.success("CV downloaded", {
+        id: toastId,
+        description: `${format === "a4" ? "A4" : "Letter"} · ${marginX} mm side / ${marginY} mm top margins.`,
+      });
     } catch (error) {
       console.error("CV generation failed:", error);
       toast.error("Could not generate CV", { id: toastId, description: "Please try again in a moment." });
@@ -114,6 +122,12 @@ export default function TemplatesSection() {
       setBusy(null);
     }
   };
+
+  const resetMargins = () => {
+    setMarginX(18);
+    setMarginY(18);
+  };
+
 
   return (
     <div className="w-full max-w-4xl mx-auto px-5 sm:px-8 md:px-12">
