@@ -279,7 +279,7 @@ export default function TemplatesSection() {
               </>
             ) : (
               <>
-                <Download size={16} /> Export {cvTemplates.find((t) => t.id === selected)?.name} PDF
+                <Download size={16} /> Export {cvTemplates.find((t) => t.id === selected)?.name} PDF ({format === "a4" ? "A4" : "Letter"})
               </>
             )}
           </button>
