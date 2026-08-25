@@ -1,5 +1,10 @@
 import { jsPDF } from "jspdf";
 import {
+  CvTemplateId,
+  defaultTemplateId,
+  getTemplate,
+} from "@/lib/cv-templates";
+import {
   personalInfo,
   experience,
   education,
@@ -28,7 +33,11 @@ function toAscii(text: string): string {
  * Generate a professional PDF CV from portfolio data.
  * Returns a Blob that can be downloaded or opened.
  */
-export async function generateCVBlob(): Promise<Blob> {
+export async function generateCVBlob(
+  templateId: CvTemplateId = defaultTemplateId
+): Promise<Blob> {
+  const template = getTemplate(templateId);
+  const style = template.style;
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -38,14 +47,14 @@ export async function generateCVBlob(): Promise<Blob> {
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  const marginX = 20;
+  const marginX = style.margin;
   const contentWidth = pageWidth - marginX * 2;
   let cursorY = 18;
 
   const colors = {
     text: "#1f2937",
     muted: "#6b7280",
-    accent: "#d1d5db",
+    accent: style.accent,
     light: "#f3f4f6",
   };
 
@@ -92,15 +101,24 @@ export async function generateCVBlob(): Promise<Blob> {
   };
 
   const addSectionHeader = (title: string, y: number) => {
-    addText(title.toUpperCase(), marginX, y, {
+    const label = style.sectionUppercase ? title.toUpperCase() : title;
+    addText(label, marginX, y, {
       size: 11,
       bold: true,
       color: colors.text,
+      align: style.headerAlign === "center" && style.sectionHeader === "underline-accent" ? "left" : "left",
     });
-    doc.setDrawColor(colors.accent);
-    doc.setLineWidth(0.6);
-    doc.line(marginX, y + 2.5, pageWidth - marginX, y + 2.5);
-    return 7;
+    if (style.sectionHeader === "rule") {
+      doc.setDrawColor(colors.accent);
+      doc.setLineWidth(0.6);
+      doc.line(marginX, y + 2.5, pageWidth - marginX, y + 2.5);
+    } else if (style.sectionHeader === "underline-accent") {
+      doc.setDrawColor(colors.accent);
+      doc.setLineWidth(0.4);
+      const w = doc.getTextWidth(toAscii(label));
+      doc.line(marginX, y + 2, marginX + w, y + 2);
+    }
+    return 7 * style.spacing;
   };
 
   const formatDate = (date: string | null) => {
@@ -138,15 +156,17 @@ export async function generateCVBlob(): Promise<Blob> {
   // === HEADER ===
   // Larger name with more breathing room
   addText(personalInfo.name, marginX, cursorY, {
-    size: 30,
+    size: style.nameSize,
     bold: true,
     color: colors.text,
+    align: style.headerAlign,
   });
-  cursorY += 11;
+  cursorY += style.nameSize * 0.37 + 1;
 
   addText(personalInfo.title, marginX, cursorY, {
     size: 12,
     color: colors.muted,
+    align: style.headerAlign,
   });
   cursorY += 8;
 
@@ -160,7 +180,11 @@ export async function generateCVBlob(): Promise<Blob> {
     doc.setTextColor(colors.muted);
     const separator = "  |  ";
     const sepWidth = doc.getTextWidth(separator);
-    let x = marginX;
+    const totalWidth =
+      segments.reduce((acc, s2) => acc + doc.getTextWidth(toAscii(s2.label)), 0) +
+      sepWidth * (segments.length - 1);
+    let x =
+      style.headerAlign === "center" ? (pageWidth - totalWidth) / 2 : marginX;
     segments.forEach((seg, i) => {
       const label = toAscii(seg.label);
       const w = doc.getTextWidth(label);
@@ -196,13 +220,13 @@ export async function generateCVBlob(): Promise<Blob> {
     ],
     cursorY
   );
-  cursorY += 12;
+  cursorY += 12 * style.spacing;
 
   // === SUMMARY ===
   checkPageBreak(20);
   cursorY += addSectionHeader("Profile", cursorY);
   const summaryHeight = addText(personalInfo.bio, marginX, cursorY, {
-    size: 10,
+    size: style.bodySize,
     color: colors.text,
     maxWidth: contentWidth,
   });
@@ -240,7 +264,7 @@ export async function generateCVBlob(): Promise<Blob> {
       job.bullets.forEach((bullet) => {
         const bulletText = `• ${bullet}`;
         const bulletHeight = addText(bulletText, marginX + 3, cursorY, {
-          size: 10,
+          size: style.bodySize,
           color: colors.text,
           maxWidth: contentWidth - 6,
         });
@@ -248,7 +272,7 @@ export async function generateCVBlob(): Promise<Blob> {
       });
     }
 
-    cursorY += 6;
+    cursorY += 6 * style.spacing;
   });
 
   // === SKILLS ===
@@ -265,7 +289,7 @@ export async function generateCVBlob(): Promise<Blob> {
     cursorY += 4.5;
 
     const skillsHeight = addText(category.skills, marginX, cursorY, {
-      size: 10,
+      size: style.bodySize,
       color: colors.text,
       maxWidth: contentWidth,
     });
@@ -322,7 +346,7 @@ export async function generateCVBlob(): Promise<Blob> {
     .map((lang) => `${lang.language} — ${lang.proficiency}`)
     .join("    ");
   const langHeight = addText(languageText, marginX, cursorY, {
-    size: 10,
+    size: style.bodySize,
     color: colors.text,
     maxWidth: contentWidth,
   });
@@ -352,10 +376,12 @@ export async function generateCVBlob(): Promise<Blob> {
 /**
  * Trigger a browser download of the generated CV PDF.
  */
-export async function downloadCV(): Promise<void> {
-  const blob = await generateCVBlob();
+export async function downloadCV(
+  templateId: CvTemplateId = defaultTemplateId
+): Promise<void> {
+  const blob = await generateCVBlob(templateId);
   const url = URL.createObjectURL(blob);
-  const filename = "Sarunas-Jaraminas-CV.pdf";
+  const filename = `Sarunas-Jaraminas-CV-${templateId}.pdf`;
 
   const link = document.createElement("a");
   link.href = url;
