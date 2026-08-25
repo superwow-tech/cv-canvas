@@ -167,11 +167,12 @@ export async function generateCVBlob(
   };
 
   const checkPageBreak = (neededHeight: number, reserveSpace = true) => {
-    if (cursorY + neededHeight > pageHeight - 15) {
-      if (reserveSpace && cursorY > 18) {
+    if (cursorY + neededHeight > pageHeight - marginY) {
+      if (reserveSpace && cursorY > marginY) {
         doc.addPage();
-        cursorY = 18;
+        cursorY = marginY;
       }
+
       return true;
     }
     return false;
