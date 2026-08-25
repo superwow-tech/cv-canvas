@@ -402,11 +402,13 @@ export async function generateCVBlob(
  * Trigger a browser download of the generated CV PDF.
  */
 export async function downloadCV(
-  templateId: CvTemplateId = defaultTemplateId
+  templateId: CvTemplateId = defaultTemplateId,
+  options: ExportOptions = {}
 ): Promise<void> {
-  const blob = await generateCVBlob(templateId);
+  const blob = await generateCVBlob(templateId, options);
   const url = URL.createObjectURL(blob);
-  const filename = `Sarunas-Jaraminas-CV-${templateId}.pdf`;
+  const filename = `Sarunas-Jaraminas-CV-${templateId}-${options.format ?? "a4"}.pdf`;
+
 
   const link = document.createElement("a");
   link.href = url;
