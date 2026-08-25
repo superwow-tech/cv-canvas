@@ -5,6 +5,17 @@ import { toast } from "sonner";
 import { cvTemplates, defaultTemplateId, type CvTemplateId } from "@/lib/cv-templates";
 import { personalInfo } from "@/data/portfolio-data";
 
+type PageFormat = "a4" | "letter";
+
+const PAGE_FORMATS: Array<{ id: PageFormat; label: string; hint: string }> = [
+  { id: "a4", label: "A4", hint: "210 x 297 mm" },
+  { id: "letter", label: "Letter", hint: "8.5 x 11 in" },
+];
+
+const MARGIN_MIN = 10;
+const MARGIN_MAX = 30;
+
+
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-10 md:mb-14 flex items-center gap-4 md:gap-6">
