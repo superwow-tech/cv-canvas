@@ -195,6 +195,77 @@ export default function TemplatesSection() {
           })}
         </div>
 
+        <div className="mt-10 md:mt-12 rounded-lg border border-foreground/10 p-5 md:p-6">
+          <h3 className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-foreground/50 font-['Rubik']">
+            Export options
+          </h3>
+
+          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div>
+              <span className="block text-sm font-medium text-foreground/80 font-['Rubik']">
+                Paper size
+              </span>
+              <div className="mt-3 flex gap-2" role="group" aria-label="Paper size">
+                {PAGE_FORMATS.map((f) => {
+                  const active = format === f.id;
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      onClick={() => setFormat(f.id)}
+                      aria-pressed={active}
+                      className={`flex-1 rounded-md px-3 py-2 text-sm font-['Rubik'] transition-colors ${
+                        active
+                          ? "bg-foreground text-background"
+                          : "border border-foreground/15 text-foreground/70 hover:border-foreground/40"
+                      }`}
+                    >
+                      {f.label}
+                      <span className={`block text-[10px] mt-0.5 ${active ? "text-background/70" : "text-foreground/45"}`}>
+                        {f.hint}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {[
+                { id: "side", label: "Side margins", value: marginX, set: setMarginX },
+                { id: "top", label: "Top / bottom margins", value: marginY, set: setMarginY },
+              ].map((m) => (
+                <div key={m.id}>
+                  <label
+                    htmlFor={`margin-${m.id}`}
+                    className="flex items-center justify-between text-sm font-medium text-foreground/80 font-['Rubik']"
+                  >
+                    {m.label}
+                    <span className="tabular-nums text-foreground/55">{m.value} mm</span>
+                  </label>
+                  <input
+                    id={`margin-${m.id}`}
+                    type="range"
+                    min={MARGIN_MIN}
+                    max={MARGIN_MAX}
+                    step={1}
+                    value={m.value}
+                    onChange={(e) => m.set(Number(e.target.value))}
+                    className="mt-2 w-full accent-foreground"
+                  />
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={resetMargins}
+                className="text-xs text-foreground/50 hover:text-foreground transition-colors font-['Rubik'] underline underline-offset-4"
+              >
+                Reset to 18 mm
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={() => download(selected)}
