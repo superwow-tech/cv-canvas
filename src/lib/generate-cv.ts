@@ -389,7 +389,7 @@ export async function generateCVBlob(
       doc.text(
         toAscii(`${personalInfo.name} — Page ${p} of ${totalPages}`),
         pageWidth / 2,
-        pageHeight - 8,
+        pageHeight - Math.max(6, marginY - 8),
         { align: "center" }
       );
     }
