@@ -36,7 +36,7 @@ export default function Auth() {
     setBusy(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -45,6 +45,11 @@ export default function Auth() {
           },
         });
         if (error) throw error;
+        if (!data.session) {
+          // Email confirmation is required before a session is issued.
+          setAwaitingConfirmation(true);
+          return;
+        }
         toast.success("Account created", { description: "You're signed in and ready to build." });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -58,6 +63,7 @@ export default function Auth() {
       setBusy(false);
     }
   };
+
 
   const handleGoogle = async () => {
     try {
