@@ -25,6 +25,8 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState(false);
+
 
   useEffect(() => {
     if (!loading && user) navigate(next, { replace: true });
