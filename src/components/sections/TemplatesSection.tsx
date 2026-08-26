@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { Check, Download, Eye, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { cvTemplates, defaultTemplateId, type CvTemplateId } from "@/lib/cv-templates";
-import { personalInfo } from "@/data/portfolio-data";
+import { sampleResume } from "@/data/sample-resume";
+import type { ResumeDocument } from "@/lib/resume-schema";
 
 type PageFormat = "a4" | "letter";
 
@@ -69,7 +70,7 @@ function Thumbnail({ id }: { id: CvTemplateId }) {
   );
 }
 
-export default function TemplatesSection() {
+export default function TemplatesSection({ resume = sampleResume }: { resume?: ResumeDocument }) {
   const [selected, setSelected] = useState<CvTemplateId>(defaultTemplateId);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
@@ -85,7 +86,7 @@ export default function TemplatesSection() {
     setBusy("preview");
     try {
       const { generateCVBlob } = await import("@/lib/generate-cv");
-      const blob = await generateCVBlob(id, exportOptions);
+      const blob = await generateCVBlob(resume, id, exportOptions);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(URL.createObjectURL(blob));
       setPreviewFor(id);
@@ -110,7 +111,7 @@ export default function TemplatesSection() {
     const toastId = toast.loading("Generating your CV…");
     try {
       const { downloadCV } = await import("@/lib/generate-cv");
-      await downloadCV(id, exportOptions);
+      await downloadCV(resume, id, exportOptions);
       toast.success("CV downloaded", {
         id: toastId,
         description: `${format === "a4" ? "A4" : "Letter"} · ${marginX} mm side / ${marginY} mm top margins.`,
@@ -300,7 +301,7 @@ export default function TemplatesSection() {
           >
             <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-foreground/10">
               <div className="font-['Rubik'] text-sm md:text-base font-medium text-foreground">
-                {cvTemplates.find((t) => t.id === previewFor)?.name} - {personalInfo.name}
+                {cvTemplates.find((t) => t.id === previewFor)?.name} - {resume.personal.name}
               </div>
               <div className="flex items-center gap-2">
                 <button

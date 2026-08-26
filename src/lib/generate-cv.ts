@@ -4,13 +4,7 @@ import {
   defaultTemplateId,
   getTemplate,
 } from "@/lib/cv-templates";
-import {
-  personalInfo,
-  experience,
-  education,
-  languages,
-  skillCategories,
-} from "@/data/portfolio-data";
+import type { ResumeDocument } from "@/lib/resume-schema";
 
 /**
  * Transliterate Lithuanian (and general Latin-extended) diacritics to
@@ -48,10 +42,11 @@ export const pageFormats: Array<{ id: PageFormat; label: string; hint: string }>
 export const marginLimits = { min: 10, max: 30, step: 1 };
 
 /**
- * Generate a professional PDF CV from portfolio data.
+ * Generate a professional PDF CV from a resume document.
  * Returns a Blob that can be downloaded or opened.
  */
 export async function generateCVBlob(
+  resume: ResumeDocument,
   templateId: CvTemplateId = defaultTemplateId,
   options: ExportOptions = {}
 ): Promise<Blob> {
@@ -74,6 +69,7 @@ export async function generateCVBlob(
   const contentWidth = pageWidth - marginX * 2;
   let cursorY = marginY;
 
+  const personal = resume.personal;
 
   const colors = {
     text: "#1f2937",
@@ -145,22 +141,13 @@ export async function generateCVBlob(
     return 7 * style.spacing;
   };
 
-  const formatDate = (date: string | null) => {
+  const formatDate = (date: string) => {
     if (!date) return "Present";
     const [year, month] = date.split("-");
+    if (!month) return year;
     const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     ];
     const monthName = monthNames[parseInt(month, 10) - 1] ?? month;
     return `${monthName} ${year}`;
@@ -172,15 +159,13 @@ export async function generateCVBlob(
         doc.addPage();
         cursorY = marginY;
       }
-
       return true;
     }
     return false;
   };
 
   // === HEADER ===
-  // Larger name with more breathing room
-  addText(personalInfo.name, marginX, cursorY, {
+  addText(personal.name || "Your Name", marginX, cursorY, {
     size: style.nameSize,
     bold: true,
     color: colors.text,
@@ -188,18 +173,23 @@ export async function generateCVBlob(
   });
   cursorY += style.nameSize * 0.37 + 1;
 
-  addText(personalInfo.title, marginX, cursorY, {
-    size: 12,
-    color: colors.muted,
-    align: style.headerAlign,
-  });
-  cursorY += 8;
+  if (personal.title) {
+    addText(personal.title, marginX, cursorY, {
+      size: 12,
+      color: colors.muted,
+      align: style.headerAlign,
+    });
+    cursorY += 8;
+  } else {
+    cursorY += 4;
+  }
 
   // Helper: draw a clickable segment on the current contact line.
   const drawContactSegments = (
     segments: Array<{ label: string; url?: string }>,
     y: number
   ) => {
+    if (segments.length === 0) return false;
     doc.setFont(fontName, "normal");
     doc.setFontSize(9);
     doc.setTextColor(colors.muted);
@@ -224,161 +214,167 @@ export async function generateCVBlob(
         x += sepWidth;
       }
     });
+    return true;
   };
 
   // Line 1: email · phone · location
-  drawContactSegments(
-    [
-      { label: personalInfo.email, url: `mailto:${personalInfo.email}` },
-      { label: personalInfo.phone, url: `tel:${personalInfo.phone.replace(/\s+/g, "")}` },
-      { label: `${personalInfo.location.city}, ${personalInfo.location.country}` },
-    ],
-    cursorY
-  );
-  cursorY += 5;
+  const location = [personal.city, personal.country].filter(Boolean).join(", ");
+  const line1: Array<{ label: string; url?: string }> = [];
+  if (personal.email) line1.push({ label: personal.email, url: `mailto:${personal.email}` });
+  if (personal.phone)
+    line1.push({ label: personal.phone, url: `tel:${personal.phone.replace(/\s+/g, "")}` });
+  if (location) line1.push({ label: location });
+  if (drawContactSegments(line1, cursorY)) cursorY += 5;
 
-  // Line 2: linkedin · github
-  drawContactSegments(
-    [
-      { label: "linkedin.com/in/sjaraminas", url: "https://linkedin.com/in/sjaraminas" },
-      { label: personalInfo.website, url: `https://${personalInfo.website}` },
-    ],
-    cursorY
-  );
-  cursorY += 12 * style.spacing;
+  // Line 2: linkedin · website
+  const line2: Array<{ label: string; url?: string }> = [];
+  if (personal.linkedin)
+    line2.push({ label: personal.linkedin, url: `https://${personal.linkedin.replace(/^https?:\/\//, "")}` });
+  if (personal.website)
+    line2.push({ label: personal.website, url: `https://${personal.website.replace(/^https?:\/\//, "")}` });
+  if (drawContactSegments(line2, cursorY)) cursorY += 5;
+
+  cursorY += 7 * style.spacing;
 
   // === SUMMARY ===
-  checkPageBreak(20);
-  cursorY += addSectionHeader("Profile", cursorY);
-  const summaryHeight = addText(personalInfo.bio, marginX, cursorY, {
-    size: style.bodySize,
-    color: colors.text,
-    maxWidth: contentWidth,
-  });
-  cursorY += summaryHeight + 8;
+  if (personal.bio) {
+    checkPageBreak(20);
+    cursorY += addSectionHeader("Profile", cursorY);
+    const summaryHeight = addText(personal.bio, marginX, cursorY, {
+      size: style.bodySize,
+      color: colors.text,
+      maxWidth: contentWidth,
+    });
+    cursorY += summaryHeight + 8;
+  }
 
   // === EXPERIENCE ===
-  checkPageBreak(30);
-  cursorY += addSectionHeader("Experience", cursorY);
+  if (resume.experience.length > 0) {
+    checkPageBreak(30);
+    cursorY += addSectionHeader("Experience", cursorY);
 
-  experience.forEach((job) => {
-    const start = formatDate(job.startDate);
-    const end = formatDate(job.endDate);
-    const dateRange = `${start} – ${end}`;
+    resume.experience.forEach((job) => {
+      const dateRange = `${formatDate(job.startDate)} - ${formatDate(job.endDate)}`;
+      const bullets = (job.bullets ?? []).filter((b) => b.trim().length > 0);
+      const estimatedEntryHeight = 5 + 5.5 + bullets.length * 12 + 6;
+      checkPageBreak(estimatedEntryHeight);
 
-    // Estimate entry height to avoid splitting an entry across pages.
-    const bulletCount = job.bullets?.length ?? 0;
-    const estimatedEntryHeight = 5 + 5.5 + bulletCount * 12 + 6;
-    checkPageBreak(estimatedEntryHeight);
+      addText(job.role, marginX, cursorY, { size: 11, bold: true, color: colors.text });
+      addText(dateRange, pageWidth - marginX, cursorY, {
+        size: 9,
+        color: colors.muted,
+        align: "right",
+      });
+      cursorY += 5;
 
-    addText(job.role, marginX, cursorY, { size: 11, bold: true, color: colors.text });
-    addText(dateRange, pageWidth - marginX, cursorY, {
-      size: 9,
-      color: colors.muted,
-      align: "right",
-    });
-    cursorY += 5;
+      const sub = [job.company, job.location].filter(Boolean).join(" - ");
+      if (sub) {
+        addText(sub, marginX, cursorY, { size: 10, color: colors.muted });
+        cursorY += 5.5;
+      }
 
-    addText(`${job.company} — ${job.location}`, marginX, cursorY, {
-      size: 10,
-      color: colors.muted,
-    });
-    cursorY += 5.5;
-
-    if (job.bullets && job.bullets.length > 0) {
-      job.bullets.forEach((bullet) => {
-        const bulletText = `• ${bullet}`;
-        const bulletHeight = addText(bulletText, marginX + 3, cursorY, {
+      bullets.forEach((bullet) => {
+        const bulletHeight = addText(`• ${bullet}`, marginX + 3, cursorY, {
           size: style.bodySize,
           color: colors.text,
           maxWidth: contentWidth - 6,
         });
         cursorY += bulletHeight + 1.5;
       });
-    }
 
-    cursorY += 6 * style.spacing;
-  });
+      cursorY += 6 * style.spacing;
+    });
+  }
 
   // === SKILLS ===
-  checkPageBreak(30);
-  cursorY += addSectionHeader("Skills", cursorY);
+  const skills = resume.skills.filter((s) => s.category || s.skills);
+  if (skills.length > 0) {
+    checkPageBreak(30);
+    cursorY += addSectionHeader("Skills", cursorY);
 
-  skillCategories.forEach((category) => {
-    checkPageBreak(12);
-    addText(`${category.category}:`, marginX, cursorY, {
-      size: 10,
-      bold: true,
-      color: colors.text,
+    skills.forEach((category) => {
+      checkPageBreak(12);
+      if (category.category) {
+        addText(`${category.category}:`, marginX, cursorY, {
+          size: 10,
+          bold: true,
+          color: colors.text,
+        });
+        cursorY += 4.5;
+      }
+
+      const skillsHeight = addText(category.skills, marginX, cursorY, {
+        size: style.bodySize,
+        color: colors.text,
+        maxWidth: contentWidth,
+      });
+      cursorY += skillsHeight + 5;
     });
-    cursorY += 4.5;
+    cursorY += 3;
+  }
 
-    const skillsHeight = addText(category.skills, marginX, cursorY, {
+  // === EDUCATION ===
+  if (resume.education.length > 0) {
+    checkPageBreak(25);
+    cursorY += addSectionHeader("Education", cursorY);
+
+    resume.education.forEach((edu) => {
+      checkPageBreak(18);
+
+      const degreeText = edu.field ? `${edu.degree}, ${edu.field}` : edu.degree;
+
+      addText(degreeText, marginX, cursorY, {
+        size: 11,
+        bold: true,
+        color: colors.text,
+      });
+      const years = [edu.startYear, edu.endYear].filter(Boolean).join(" - ");
+      if (years) {
+        addText(years, pageWidth - marginX, cursorY, {
+          size: 9,
+          color: colors.muted,
+          align: "right",
+        });
+      }
+      cursorY += 5;
+
+      const sub = [edu.institution, edu.location].filter(Boolean).join(" - ");
+      if (sub) {
+        addText(sub, marginX, cursorY, { size: 10, color: colors.muted });
+        cursorY += 5;
+      }
+
+      if (edu.details) {
+        const detailsHeight = addText(edu.details, marginX, cursorY, {
+          size: 10,
+          color: colors.text,
+          maxWidth: contentWidth,
+        });
+        cursorY += detailsHeight + 2;
+      }
+
+      cursorY += 4;
+    });
+  }
+
+  // === LANGUAGES ===
+  const langs = resume.languages.filter((l) => l.language);
+  if (langs.length > 0) {
+    checkPageBreak(20);
+    cursorY += addSectionHeader("Languages", cursorY);
+
+    const languageText = langs
+      .map((lang) => [lang.language, lang.proficiency].filter(Boolean).join(" - "))
+      .join("    ");
+    const langHeight = addText(languageText, marginX, cursorY, {
       size: style.bodySize,
       color: colors.text,
       maxWidth: contentWidth,
     });
-    cursorY += skillsHeight + 5;
-  });
-  cursorY += 3;
-
-  // === EDUCATION ===
-  checkPageBreak(25);
-  cursorY += addSectionHeader("Education", cursorY);
-
-  education.forEach((edu) => {
-    checkPageBreak(18);
-
-    const degreeText = edu.field
-      ? `${edu.degree}, ${edu.field}`
-      : edu.degree;
-
-    addText(degreeText, marginX, cursorY, {
-      size: 11,
-      bold: true,
-      color: colors.text,
-    });
-    addText(`${edu.startYear} – ${edu.endYear}`, pageWidth - marginX, cursorY, {
-      size: 9,
-      color: colors.muted,
-      align: "right",
-    });
-    cursorY += 5;
-
-    addText(`${edu.institution} — ${edu.location}`, marginX, cursorY, {
-      size: 10,
-      color: colors.muted,
-    });
-    cursorY += 5;
-
-    if (edu.details) {
-      const detailsHeight = addText(edu.details, marginX, cursorY, {
-        size: 10,
-        color: colors.text,
-        maxWidth: contentWidth,
-      });
-      cursorY += detailsHeight + 2;
-    }
-
-    cursorY += 4;
-  });
-
-  // === LANGUAGES ===
-  checkPageBreak(20);
-  cursorY += addSectionHeader("Languages", cursorY);
-
-  const languageText = languages
-    .map((lang) => `${lang.language} — ${lang.proficiency}`)
-    .join("    ");
-  const langHeight = addText(languageText, marginX, cursorY, {
-    size: style.bodySize,
-    color: colors.text,
-    maxWidth: contentWidth,
-  });
-  cursorY += langHeight + 6;
+    cursorY += langHeight + 6;
+  }
 
   // === PAGE FOOTERS ===
-  // Add "Name — Page X of N" on every page (skip if single-page CV).
   const totalPages = doc.getNumberOfPages();
   if (totalPages > 1) {
     for (let p = 1; p <= totalPages; p++) {
@@ -387,7 +383,7 @@ export async function generateCVBlob(
       doc.setFontSize(8);
       doc.setTextColor(colors.muted);
       doc.text(
-        toAscii(`${personalInfo.name} — Page ${p} of ${totalPages}`),
+        toAscii(`${personal.name} - Page ${p} of ${totalPages}`),
         pageWidth / 2,
         pageHeight - Math.max(6, marginY - 8),
         { align: "center" }
@@ -398,17 +394,29 @@ export async function generateCVBlob(
   return doc.output("blob");
 }
 
+function slugify(name: string) {
+  return (
+    name
+      .normalize("NFKD")
+      .replace(/[^\w\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-") || "resume"
+  );
+}
+
 /**
  * Trigger a browser download of the generated CV PDF.
  */
 export async function downloadCV(
+  resume: ResumeDocument,
   templateId: CvTemplateId = defaultTemplateId,
   options: ExportOptions = {}
 ): Promise<void> {
-  const blob = await generateCVBlob(templateId, options);
+  const blob = await generateCVBlob(resume, templateId, options);
   const url = URL.createObjectURL(blob);
-  const filename = `Sarunas-Jaraminas-CV-${templateId}-${options.format ?? "a4"}.pdf`;
-
+  const filename = `${slugify(resume.personal.name)}-CV-${templateId}-${
+    options.format ?? "a4"
+  }.pdf`;
 
   const link = document.createElement("a");
   link.href = url;
@@ -417,6 +425,5 @@ export async function downloadCV(
   link.click();
   document.body.removeChild(link);
 
-  // Clean up the object URL after the download starts
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
