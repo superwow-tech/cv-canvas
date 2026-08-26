@@ -1,4 +1,5 @@
 import { personalInfo } from "@/data/portfolio-data";
+import { sampleResume } from "@/data/sample-resume";
 import { motion } from "framer-motion";
 import { Download, Linkedin, Github, Mail, Phone, MapPin, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -19,7 +20,7 @@ export default function HeroSection() {
     const toastId = toast.loading("Generating your CV…");
     try {
       const { downloadCV } = await import("@/lib/generate-cv");
-      await downloadCV();
+      await downloadCV(sampleResume);
       toast.success("CV downloaded", {
         id: toastId,
         description: "Check your downloads folder.",
