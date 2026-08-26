@@ -143,18 +143,8 @@
     color: oklch(21% 0 0);
   }
 
-  /* Mint accent utilities */
-  .bg-mint {
-    background-color: oklch(75% 0.14 174);
-  }
-  
-  .border-mint {
-    border-color: oklch(75% 0.14 174);
-  }
-  
-  .bg-mint-light {
-    background-color: oklch(85% 0.10 174);
-  }
+  /* Mint accent utilities are generated from the --color-mint* theme tokens */
+
 
   /* Animated accent utilities */
   .text-orange {
