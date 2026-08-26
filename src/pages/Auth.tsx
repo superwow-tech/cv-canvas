@@ -86,7 +86,31 @@ export default function Auth() {
     }
   };
 
+  if (awaitingConfirmation) {
+    return (
+      <SiteLayout>
+        <section className="w-full max-w-md mx-auto px-5 py-20 font-['Rubik'] text-center">
+          <h1 className="text-2xl font-bold tracking-tight uppercase">Confirm your email</h1>
+          <p className="mt-4 text-sm text-foreground/70">
+            We sent a confirmation link to <span className="text-foreground">{email}</span>. Open it to activate your
+            account, then come back and sign in.
+          </p>
+          <button
+            onClick={() => {
+              setAwaitingConfirmation(false);
+              setMode("signin");
+            }}
+            className="mt-8 inline-flex rounded-full border border-foreground/20 px-5 py-2.5 text-sm hover:border-foreground/50 transition-colors"
+          >
+            Back to sign in
+          </button>
+        </section>
+      </SiteLayout>
+    );
+  }
+
   return (
+
     <SiteLayout>
       <section className="w-full max-w-md mx-auto px-5 py-16 md:py-24 font-['Rubik']">
         <h1 className="text-3xl font-bold tracking-tight uppercase">
