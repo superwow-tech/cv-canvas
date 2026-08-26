@@ -23,36 +23,33 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-foreground/10 bg-background/85 backdrop-blur">
       <div className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-['Rubik'] font-semibold tracking-tight text-lg">
-          <span className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-mint text-foreground text-sm font-bold">
-            A
-          </span>
+        <Link to="/" className="font-display text-2xl font-bold tracking-tight">
           {product.name}
         </Link>
 
-        <nav className="hidden md:flex items-center gap-7 text-sm font-['Rubik']">
+        <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
           {links.map((l) => (
-            <a key={l.to} href={l.to} className="text-foreground/70 hover:text-foreground transition-colors">
+            <a key={l.to} href={l.to} className="text-foreground/70 hover:text-mint transition-colors">
               {l.label}
             </a>
           ))}
           {user ? (
             <>
-              <NavLink to="/app" className="text-foreground/70 hover:text-foreground transition-colors">
+              <NavLink to="/app" className="text-foreground/70 hover:text-mint transition-colors">
                 My resumes
               </NavLink>
-              <button onClick={handleSignOut} className="text-foreground/60 hover:text-foreground transition-colors">
+              <button onClick={handleSignOut} className="text-foreground/60 hover:text-mint transition-colors">
                 Sign out
               </button>
             </>
           ) : (
             <>
-              <Link to="/auth" className="text-foreground/70 hover:text-foreground transition-colors">
+              <Link to="/auth" className="text-foreground/70 hover:text-mint transition-colors">
                 Sign in
               </Link>
               <Link
                 to="/auth?mode=signup"
-                className="rounded-full bg-foreground text-background px-4 py-2 font-medium hover:bg-foreground/90 transition-colors"
+                className="rounded-full bg-mint text-foreground px-6 py-2.5 text-sm font-bold hover:opacity-90 transition-opacity"
               >
                 Start free
               </Link>
@@ -70,7 +67,7 @@ export default function SiteHeader() {
       </div>
 
       {open && (
-        <div className="md:hidden border-t border-foreground/10 px-5 py-4 flex flex-col gap-4 text-sm font-['Rubik'] bg-background">
+        <div className="md:hidden border-t border-foreground/10 px-5 py-4 flex flex-col gap-4 text-sm bg-background">
           {links.map((l) => (
             <a key={l.to} href={l.to} onClick={() => setOpen(false)} className="text-foreground/75">
               {l.label}
@@ -96,7 +93,7 @@ export default function SiteHeader() {
               <Link
                 to="/auth?mode=signup"
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-foreground text-background px-4 py-2 text-center font-medium"
+                className="rounded-full bg-mint text-foreground px-4 py-2.5 text-center font-bold"
               >
                 Start free
               </Link>

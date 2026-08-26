@@ -3,12 +3,10 @@ import { product } from "@/lib/plans";
 
 export default function SiteFooter() {
   return (
-    <footer className="border-t border-foreground/10 mt-20">
-      <div className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6 text-sm font-['Rubik'] text-foreground/60">
-        <p>
-          <span className="font-medium text-foreground/80">{product.name}</span> — {product.tagline}
-        </p>
-        <nav className="flex flex-wrap items-center gap-5">
+    <footer className="border-t border-border">
+      <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 py-12 flex flex-col md:flex-row md:items-center md:justify-between gap-8 text-sm text-foreground/60">
+        <span className="font-display text-xl font-bold tracking-tight text-foreground">{product.name}</span>
+        <nav className="flex flex-wrap items-center gap-8 text-xs font-medium">
           <Link to="/pricing" className="hover:text-foreground transition-colors">
             Pricing
           </Link>
