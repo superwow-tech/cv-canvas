@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, FileDown, LayoutTemplate, ListChecks, Save } from "lucide-react";
+import { ArrowRight, FileDown, LayoutTemplate, ListChecks, Save } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
@@ -30,9 +30,9 @@ const features = [
 ];
 
 const steps = [
-  { n: "01", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
-  { n: "02", title: "Pick a design", body: "Preview the exact PDF for each template before you commit." },
-  { n: "03", title: "Export and apply", body: "Download a print-ready PDF, then reuse it for the next role." },
+  { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
+  { n: "2", title: "Pick a design", body: "Preview the exact PDF for each template before you commit." },
+  { n: "3", title: "Export and apply", body: "Download a print-ready PDF, then reuse it for the next role." },
 ];
 
 const faqs = [
@@ -53,6 +53,13 @@ const faqs = [
     a: "You do. Your resumes are private to your account and you can delete them at any time.",
   },
 ];
+
+const fadeUp = {
+  initial: { opacity: 0, y: 16 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: "-80px" },
+  transition: { duration: 0.5 },
+};
 
 export default function Landing() {
   const { user } = useAuth();
@@ -75,173 +82,215 @@ export default function Landing() {
     <SiteLayout>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      {/* HERO */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 pt-16 pb-12 md:pt-24 md:pb-20">
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="uppercase tracking-[0.3em] text-xs text-foreground/50 font-['Rubik']"
-        >
-          Resume builder
-        </motion.p>
+      {/* HERO — centred, precise, generous air */}
+      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-28">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.span
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="inline-block rounded-full bg-border/70 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em]"
+          >
+            Resume builder
+          </motion.span>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="mt-6 text-[clamp(2.6rem,8vw,5.5rem)] font-bold leading-[0.95] tracking-tighter uppercase font-['Rubik'] max-w-4xl"
-        >
-          Portfolio-quality
-          <br />
-          resumes in
-          <span className="relative whitespace-nowrap">
-            {" "}minutes
-            <span className="absolute left-0 -bottom-1 h-2 w-full bg-mint/70 -z-10" aria-hidden />
-          </span>
-        </motion.h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+            className="mt-6 font-display text-[clamp(2.6rem,7vw,4.5rem)] font-bold leading-[0.95] tracking-tighter text-balance"
+          >
+            Portfolio-quality resumes in minutes
+          </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-8 max-w-2xl text-base md:text-lg leading-relaxed text-foreground/70 font-['Rubik'] text-balance"
-        >
-          {product.name} turns your career story into a print-ready PDF. A guided wizard, a live preview, three
-          editorial-grade designs, and exports sized for real printers.
-        </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mt-8 mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-foreground/70 text-balance"
+          >
+            {product.name} turns your career story into a print-ready PDF. A guided wizard, a live preview, three
+            editorial-grade designs, and exports sized for real printers.
+          </motion.p>
 
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-center gap-3"
+          >
+            <Link
+              to={primaryTo}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02]"
+            >
+              Build my resume free <ArrowRight size={16} />
+            </Link>
+            <a
+              href="#templates"
+              className="inline-flex items-center justify-center rounded-full border border-border px-8 py-4 text-sm font-bold transition-colors hover:bg-border/30"
+            >
+              See the templates
+            </a>
+          </motion.div>
+
+          <p className="mt-6 text-xs font-medium text-foreground/50">No card required</p>
+        </div>
+      </section>
+
+      {/* FEATURES — hairline grid of four panels */}
+      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-10 flex flex-col sm:flex-row gap-3 sm:items-center"
+          {...fadeUp}
+          className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border"
         >
-          <Link
-            to={primaryTo}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
-          >
-            Build my resume free <ArrowRight size={16} />
-          </Link>
-          <a
-            href="#templates"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium hover:border-foreground/50 transition-colors font-['Rubik']"
-          >
-            See the templates
-          </a>
-          <span className="text-xs text-foreground/50 font-['Rubik'] sm:ml-2">No card required</span>
+          {features.map(({ icon: Icon, title, body }) => (
+            <div key={title} className="bg-background p-8 md:p-10">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-mint-light/50 text-foreground/80">
+                <Icon size={18} />
+              </span>
+              <h3 className="mt-6 font-display text-xl font-bold">{title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/70">{body}</p>
+            </div>
+          ))}
         </motion.div>
       </section>
 
-      {/* FEATURES */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16 border-t border-foreground/10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
-          {features.map(({ icon: Icon, title, body }) => (
-            <div key={title}>
-              <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-mint-light text-foreground/80">
-                <Icon size={18} />
-              </span>
-              <h3 className="mt-4 text-base font-medium font-['Rubik']">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/65 font-['Rubik']">{body}</p>
-            </div>
-          ))}
+      {/* HOW IT WORKS — ghost numerals */}
+      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 {...fadeUp} className="font-display text-4xl font-bold tracking-tight">
+            How it works
+          </motion.h2>
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-12">
+            {steps.map((s, i) => (
+              <motion.div
+                key={s.n}
+                {...fadeUp}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="relative isolate"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -top-16 -left-2 -z-10 font-display text-[6rem] leading-none font-bold text-border/80"
+                >
+                  {s.n}
+                </span>
+                <h3 className="font-display text-xl font-bold">{s.title}</h3>
+                <p className="mt-4 text-foreground/70 leading-relaxed">{s.body}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16 border-t border-foreground/10">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight uppercase font-['Rubik']">How it works</h2>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-          {steps.map((s) => (
-            <div key={s.n} className="border-t border-foreground/15 pt-5">
-              <span className="text-xs tracking-[0.3em] text-foreground/45 font-['Rubik']">{s.n}</span>
-              <h3 className="mt-3 text-lg font-medium font-['Rubik']">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/65 font-['Rubik']">{s.body}</p>
+      {/* TEMPLATES — tinted band */}
+      <section id="templates" className="border-b border-border bg-border/20 scroll-mt-20">
+        <div className="px-5 sm:px-8 pt-20 md:pt-24">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              <h2 className="font-display text-4xl font-bold tracking-tight">Resume templates</h2>
+              <p className="mt-4 text-foreground/70">Proven layouts optimised for readability.</p>
             </div>
-          ))}
+            <Link
+              to="/example"
+              className="text-sm font-bold underline decoration-mint decoration-2 underline-offset-4"
+            >
+              See the sample resume
+            </Link>
+          </div>
         </div>
-      </section>
-
-      {/* TEMPLATES (live PDF preview of the sample resume) */}
-      <section id="templates" className="border-t border-foreground/10 scroll-mt-20">
         <TemplatesSection />
-        <p className="text-center text-sm text-foreground/55 font-['Rubik'] pb-8">
-          Previews use our{" "}
-          <Link to="/example" className="underline hover:text-foreground">
-            sample resume
-          </Link>
-          .
-        </p>
       </section>
 
       {/* PRICING */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16 border-t border-foreground/10">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight uppercase font-['Rubik']">Pricing</h2>
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              className={`rounded-xl border p-6 md:p-8 ${
-                plan.id === "pro" ? "border-mint bg-mint-light/25" : "border-foreground/15"
-              }`}
-            >
-              <h3 className="text-lg font-medium font-['Rubik']">{plan.name}</h3>
-              <p className="mt-3 flex items-baseline gap-2">
-                <span className="text-3xl font-bold font-['Rubik']">{plan.price}</span>
-                <span className="text-sm text-foreground/55 font-['Rubik']">{plan.cadence}</span>
-              </p>
-              <p className="mt-3 text-sm text-foreground/65 font-['Rubik']">{plan.summary}</p>
-              <ul className="mt-5 space-y-2">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex gap-2 text-sm text-foreground/75 font-['Rubik']">
-                    <Check size={16} className="mt-0.5 shrink-0 text-foreground/50" /> {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to={plan.id === "pro" ? "/pricing" : primaryTo}
-                className={`mt-7 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-medium font-['Rubik'] transition-colors ${
-                  plan.id === "pro"
-                    ? "bg-foreground text-background hover:bg-foreground/90"
-                    : "border border-foreground/20 hover:border-foreground/50"
-                }`}
-              >
-                {plan.cta}
-              </Link>
-            </div>
-          ))}
+      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
+        <div className="max-w-4xl mx-auto">
+          <motion.div {...fadeUp} className="text-center">
+            <h2 className="font-display text-4xl font-bold tracking-tight">Simple pricing</h2>
+            <p className="mt-4 text-foreground/70">Everything you need, nothing you don't.</p>
+          </motion.div>
+
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {plans.map((plan) => {
+              const isPro = plan.id === "pro";
+              return (
+                <motion.div
+                  key={plan.id}
+                  {...fadeUp}
+                  className={`flex flex-col rounded-2xl p-8 md:p-10 ${
+                    isPro ? "bg-foreground text-background" : "border border-border"
+                  }`}
+                >
+                  <h3 className={`font-display text-lg font-bold ${isPro ? "text-mint" : ""}`}>{plan.name}</h3>
+                  <p className="mt-2 flex items-baseline gap-1">
+                    <span className="font-display text-4xl font-bold">{plan.price}</span>
+                    <span className={`text-sm ${isPro ? "text-background/50" : "text-foreground/50"}`}>
+                      {plan.cadence}
+                    </span>
+                  </p>
+                  <p className={`mt-4 text-sm ${isPro ? "text-background/70" : "text-foreground/70"}`}>
+                    {plan.summary}
+                  </p>
+                  <ul className="mt-8 flex-1 space-y-4">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-center gap-3 text-sm">
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-mint" /> {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    to={isPro ? "/pricing" : primaryTo}
+                    className={`mt-10 inline-flex w-full items-center justify-center rounded-full py-3.5 text-sm font-bold transition-all ${
+                      isPro
+                        ? "bg-mint text-foreground hover:scale-[1.02]"
+                        : "border border-foreground hover:bg-foreground hover:text-background"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-12 md:py-16 border-t border-foreground/10">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight uppercase font-['Rubik']">FAQ</h2>
-        <dl className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-          {faqs.map((f) => (
-            <div key={f.q}>
-              <dt className="text-base font-medium font-['Rubik']">{f.q}</dt>
-              <dd className="mt-2 text-sm leading-relaxed text-foreground/65 font-['Rubik']">{f.a}</dd>
-            </div>
-          ))}
-        </dl>
+      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2 {...fadeUp} className="font-display text-4xl font-bold tracking-tight">
+            Questions
+          </motion.h2>
+          <dl className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+            {faqs.map((f) => (
+              <motion.div key={f.q} {...fadeUp}>
+                <dt className="font-display text-lg font-bold">{f.q}</dt>
+                <dd className="mt-3 leading-relaxed text-foreground/70">{f.a}</dd>
+              </motion.div>
+            ))}
+          </dl>
+        </div>
       </section>
 
       {/* CTA */}
-      <section className="w-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 py-14 md:py-20 border-t border-foreground/10">
-        <div className="rounded-2xl bg-foreground text-background px-6 py-12 md:px-12 md:py-16 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold tracking-tight uppercase font-['Rubik']">
+      <section className="px-5 sm:px-8 py-20 md:py-24">
+        <motion.div
+          {...fadeUp}
+          className="max-w-7xl mx-auto rounded-2xl bg-foreground text-background px-6 py-16 md:px-12 md:py-20 text-center"
+        >
+          <h2 className="font-display text-3xl md:text-5xl font-bold tracking-tighter text-balance">
             Your next role starts with one page
           </h2>
-          <p className="mt-4 text-sm md:text-base text-background/75 font-['Rubik'] max-w-xl mx-auto">
+          <p className="mt-5 mx-auto max-w-xl text-background/70">
             Build it once, tailor it forever. Start free and export your first PDF in minutes.
           </p>
           <Link
             to={primaryTo}
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-3 text-sm font-medium hover:bg-background/90 transition-colors font-['Rubik']"
+            className="mt-10 inline-flex items-center gap-2 rounded-full bg-mint text-foreground px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02]"
           >
             Get started <ArrowRight size={16} />
           </Link>
-        </div>
+        </motion.div>
       </section>
     </SiteLayout>
   );
