@@ -10,9 +10,13 @@
   --color-line: oklch(91.5% 0.008 85); /* #E8E4DD rules */
   --color-paper: oklch(99.4% 0.004 80);
   --color-ink: oklch(27% 0.02 250);
-  --color-accent-mint: oklch(75% 0.14 174); /* #6BCABA mint green */
+  --color-mint: oklch(75% 0.14 174); /* #6BCABA mint green */
+  --color-mint-light: oklch(85% 0.10 174);
+  --color-mint-dark: oklch(65% 0.18 174);
+  --color-accent-mint: oklch(75% 0.14 174);
   --color-accent-mint-light: oklch(85% 0.10 174);
   --color-accent-mint-dark: oklch(65% 0.18 174);
+
 
   /* Typefaces */
   --font-display: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
