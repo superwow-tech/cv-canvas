@@ -1,15 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* Color Palette with Mint Green Accent */
-  --color-background: oklch(100% 0 0);
-  --color-foreground: oklch(21% 0 0);
+  /* Color Palette — warm paper, ink text, mint accent */
+  --color-background: oklch(99.4% 0.004 80); /* #FFFDFB paper */
+  --color-foreground: oklch(27% 0.02 250); /* #1B2430 ink */
   --color-muted: oklch(56% 0 0);
   --color-muted-foreground: oklch(50% 0 0);
-  --color-border: oklch(90% 0 0);
+  --color-border: oklch(91.5% 0.008 85); /* #E8E4DD */
+  --color-line: oklch(91.5% 0.008 85); /* #E8E4DD rules */
+  --color-paper: oklch(99.4% 0.004 80);
+  --color-ink: oklch(27% 0.02 250);
   --color-accent-mint: oklch(75% 0.14 174); /* #6BCABA mint green */
   --color-accent-mint-light: oklch(85% 0.10 174);
   --color-accent-mint-dark: oklch(65% 0.18 174);
+
+  /* Typefaces */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+
   
   /* Semantic colors */
   --color-primary: oklch(21% 0 0);
