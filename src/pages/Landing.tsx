@@ -215,8 +215,8 @@ export default function Landing() {
               const isPro = plan.id === "pro";
               return (
                 <motion.div
-                  {...fadeUp}
                   key={plan.id}
+                  {...fadeUp}
                   className={`flex flex-col rounded-2xl p-8 md:p-10 ${
                     isPro ? "bg-foreground text-background" : "border border-border"
                   }`}
@@ -263,7 +263,7 @@ export default function Landing() {
           </motion.h2>
           <dl className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
             {faqs.map((f) => (
-              <motion.div {...fadeUp} key={f.q}>
+              <motion.div key={f.q} {...fadeUp}>
                 <dt className="font-display text-lg font-bold">{f.q}</dt>
                 <dd className="mt-3 leading-relaxed text-foreground/70">{f.a}</dd>
               </motion.div>
