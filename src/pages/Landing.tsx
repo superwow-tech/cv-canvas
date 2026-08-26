@@ -171,7 +171,7 @@ export default function Landing() {
               >
                 <span
                   aria-hidden
-                  className="absolute -top-12 -left-4 -z-10 font-display text-8xl font-bold text-border"
+                  className="absolute -top-16 -left-2 -z-10 font-display text-[6rem] leading-none font-bold text-border/80"
                 >
                   {s.n}
                 </span>
