@@ -1,92 +1,76 @@
 /**
  * Portfolio Data
- * Single source of truth for all portfolio content
+ * Single source of truth for all sample/demo content.
+ * NOTE: All data below is fictional placeholder content used for demos.
  */
 
 import type { PersonalInfo, Experience, Education, Language, SkillCategory } from "@/types/portfolio";
 
-// ===== Portfolio Data =====
+// ===== Sample Data (fictional persona) =====
 
 export const personalInfo: PersonalInfo = {
   name: "Mantas Petrauskas",
-  title: "a Senior Software Engineer | AI-Curious",
+  title: "Sales Manager | B2B & Client Relations",
   location: { city: "Vilnius", country: "Lithuania" },
-  website: "github.com/MPetrauskas",
+  website: "",
   email: "mantas.petrauskas@example.com",
   phone: "+370 612 34567",
   avatar: "",
-  bio: "Front-End Engineer experienced in building scalable, production-ready web applications, reusable UI components, micro-frontends, and design-system driven interfaces. Strong background in modern JavaScript and TypeScript development, with experience across web architecture, backend integration, CI/CD pipelines, and AI-powered application development.",
+  bio: "Sales Manager with 8+ years of experience in B2B sales, account management, and business development. Skilled at building long-term client relationships, negotiating contracts, and consistently exceeding revenue targets. Experienced in leading small sales teams, developing go-to-market strategies, and working with CRM-driven sales processes.",
   skills:
-    "JavaScript, TypeScript, Angular, React, Next.js, NestJS, Node.js, RxJS, NgRx, Micro-frontends, Design Systems, CI/CD, Azure, Docker, Figma, Storybook, LLMs, RAG, Prompt Engineering, AI SDK, LangChain, OpenAI API",
+    "B2B Sales, Account Management, Business Development, Negotiation, CRM (Salesforce, HubSpot), Sales Forecasting, Lead Generation, Contract Management, Team Leadership, Customer Success, Market Analysis, Presentation Skills",
 };
 
 export const experience: Experience[] = [
   {
     id: "exp-1",
-    company: "Softeta",
-    role: "Senior Software Engineer",
+    company: "Baltic Trade House",
+    role: "Sales Manager",
     location: "Vilnius, Lithuania",
-    startDate: "2024-01",
+    startDate: "2021-03",
     endDate: null,
     description:
-      "Develop and maintain payment-related web applications in the banking domain. Build new features, improve application flows, and support production releases. Contribute to micro-frontend architecture, maintainability, and frontend quality. Stack: Angular, Next.js, Git, Figma.",
+      "Manage a portfolio of 40+ B2B clients across the Baltic region. Own the full sales cycle from prospecting to contract signing and renewals. Lead a team of 3 sales representatives.",
     bullets: [
-      "Develop and maintain payment-related web applications in the banking domain.",
-      "Build new features, improve application flows, and support production releases.",
-      "Contribute to micro-frontend architecture, maintainability, and frontend quality.",
+      "Grew annual revenue in assigned territory by 32% year over year.",
+      "Manage a portfolio of 40+ B2B clients across the Baltic region.",
+      "Lead and coach a team of 3 sales representatives.",
     ],
-    tech: ["Angular", "NextJs", "Git", "Figma"],
+    tech: ["Salesforce", "HubSpot", "MS Office"],
     current: true,
   },
   {
     id: "exp-2",
-    company: "Companial",
-    role: "Front-End Developer / Team Lead",
+    company: "Nordika Retail",
+    role: "Key Account Manager",
     location: "Vilnius, Lithuania",
-    startDate: "2021-01",
-    endDate: "2024-01",
+    startDate: "2018-06",
+    endDate: "2021-02",
     description:
-      "Developed a business platform used by Microsoft Dynamics partners. Built reusable UI components and contributed to frontend architecture. Supported CI/CD pipelines, environment configuration, and delivery planning. Stack: Angular, Next.js, Azure, Git.",
+      "Managed key retail accounts and negotiated annual supply agreements. Coordinated with logistics and marketing teams to ensure on-time delivery and promotional support.",
     bullets: [
-      "Developed a business platform used by Microsoft Dynamics partners.",
-      "Built reusable UI components and contributed to frontend architecture.",
-      "Supported CI/CD pipelines, environment configuration, and delivery planning.",
+      "Managed 15 key accounts generating over €2M in annual revenue.",
+      "Negotiated annual supply agreements and promotional campaigns.",
+      "Achieved 110% of sales target for three consecutive years.",
     ],
-    tech: ["Angular", "NestJS", "Azure", "Git"],
+    tech: ["CRM", "Excel", "ERP"],
     current: false,
   },
   {
     id: "exp-3",
-    company: "Visma Lietuva",
-    role: "Front-End Developer",
-    location: "Vilnius, Lithuania",
-    startDate: "2019-01",
-    endDate: "2021-01",
+    company: "Amber Distribution",
+    role: "Sales Representative",
+    location: "Kaunas, Lithuania",
+    startDate: "2016-01",
+    endDate: "2018-05",
     description:
-      "Delivered features for healthcare and logistics applications. Worked on forms, UI implementation, and data-driven workflows. Participated in migration from AngularJS to Angular. Stack: Angular, React, Git, Firebase.",
+      "Responsible for outbound sales and new client acquisition in the FMCG sector. Built a client base from scratch in the Kaunas region.",
     bullets: [
-      "Delivered features for healthcare and logistics applications.",
-      "Worked on forms, UI implementation, and data-driven workflows.",
-      "Participated in migration from AngularJS to Angular.",
+      "Acquired 60+ new clients in the Kaunas region.",
+      "Consistently exceeded monthly sales quotas by 15-20%.",
+      "Prepared offers, contracts, and sales reports.",
     ],
-    tech: ["Angular", "React", "Git", "Firebase"],
-    current: false,
-  },
-  {
-    id: "exp-4",
-    company: "EIS Group Lietuva",
-    role: "QA Automation Engineer / DevOps Engineer",
-    location: "Vilnius, Lithuania",
-    startDate: "2015-01",
-    endDate: "2018-12",
-    description:
-      "Worked across QA automation, CI/CD, and release delivery on an insurance platform. Improved test automation, pipeline stability, and software delivery processes. Stack: Java, Selenium, Jenkins, Git.",
-    bullets: [
-      "Worked across QA automation, CI/CD, and release delivery on an insurance platform.",
-      "Improved test automation and pipeline stability.",
-      "Contributed to software delivery process improvements.",
-    ],
-    tech: ["Java", "Selenium", "Jenkins", "Git"],
+    tech: ["CRM", "MS Office"],
     current: false,
   },
 ];
@@ -94,50 +78,48 @@ export const experience: Experience[] = [
 export const education: Education[] = [
   {
     id: "edu-1",
-    institution: "Turing College",
-    degree: "AI Engineering",
-    field: "",
-    startYear: "2025",
-    endYear: "2025",
-    location: "Online",
-    details: "AI software development program focused on modern AI engineering practices.",
-  },
-  {
-    id: "edu-2",
-    institution: "Mykolas Romeris University",
+    institution: "Vilnius University",
     degree: "Bachelor's Degree",
-    field: "Informatics",
+    field: "Business Administration",
     startYear: "2012",
     endYear: "2016",
     location: "Vilnius, Lithuania",
+  },
+  {
+    id: "edu-2",
+    institution: "Kaunas University of Technology",
+    degree: "Professional Certificate",
+    field: "Sales & Negotiation",
+    startYear: "2018",
+    endYear: "2018",
+    location: "Kaunas, Lithuania",
+    details: "Intensive professional program on negotiation strategy and B2B sales processes.",
   },
 ];
 
 export const languages: Language[] = [
   { language: "Lithuanian", proficiency: "Native" },
   { language: "English", proficiency: "Professional" },
+  { language: "Russian", proficiency: "Conversational" },
 ];
 
 export const skillCategories: SkillCategory[] = [
   {
     category: "Core Expertise",
     skills:
-      "Frontend Architecture, Micro-frontends, Full-Stack Web Development, UI/UX & Design Systems, DevOps & CI/CD, Testing & QA, Agile Delivery",
+      "B2B Sales, Account Management, Business Development, Negotiation, Sales Strategy, Team Leadership",
   },
   {
-    category: "Languages & Frameworks",
-    skills: "JavaScript, TypeScript, Angular, React, React Native, Next.js, NestJS, Node.js, Expo",
+    category: "Sales Tools",
+    skills: "Salesforce, HubSpot, Pipedrive, LinkedIn Sales Navigator, MS Office, Excel",
   },
   {
-    category: "AI & LLMs",
-    skills: "Generative AI & LLMs, RAG, AI Agents & Agent Solutions, AI SDK, Prompt Engineering, LangChain, OpenAI API, Business Automation",
+    category: "Business Skills",
+    skills:
+      "Sales Forecasting, Lead Generation, Contract Management, Market Analysis, Customer Success, Presentation Skills",
   },
   {
-    category: "Design & Dev Tools",
-    skills: "HTML, CSS/SCSS, Tailwind CSS, Bootstrap, Storybook, Figma, Adobe XD",
-  },
-  {
-    category: "Deployment & Cloud",
-    skills: "Azure, Docker, Kubernetes, Git, Jenkins, Vercel",
+    category: "Personal Strengths",
+    skills: "Communication, Relationship Building, Goal Orientation, Problem Solving, Time Management",
   },
 ];
