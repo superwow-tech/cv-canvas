@@ -1,6 +1,6 @@
-# Šarūnas Jaraminas — Portfolio
+# Applyo — Resume & CV Builder
 
-A personal portfolio and downloadable CV built with **Vite**, **React**, **TypeScript**, and **Tailwind CSS**.
+Build a portfolio-quality resume in minutes. Guided wizard, live preview, three designs, and print-ready A4 or Letter PDF export. Built with **Vite**, **React**, **TypeScript**, and **Tailwind CSS**.
 
 ## Tech stack
 
@@ -10,7 +10,8 @@ A personal portfolio and downloadable CV built with **Vite**, **React**, **TypeS
 - **Tailwind CSS v4** — utility-first styling
 - **shadcn/ui** — accessible UI components
 - **Framer Motion + GSAP** — animations
-- **jspdf + jspdf-autotable** — client-side PDF CV generation
+- **jspdf + jspdf-autotable** — client-side PDF resume generation
+- **Lovable Cloud (Supabase)** — auth, database, and subscriptions
 
 ## Prerequisites
 
@@ -46,7 +47,7 @@ Start the local development server:
 npm run dev
 ```
 
-The Vite dev server will start and print a local URL (usually `http://localhost:5173`). Open it in your browser to view the portfolio. The page reloads automatically when you edit files.
+The Vite dev server will start and print a local URL (usually `http://localhost:5173`). Open it in your browser. The page reloads automatically when you edit files.
 
 ## Build for production
 
@@ -76,17 +77,18 @@ Runs ESLint across the project.
 
 ```
 .
-├── public/               # Static assets (favicon, images, etc.)
+├── public/               # Static assets (favicon, 404 fallback, etc.)
 ├── src/
 │   ├── components/       # Reusable UI components and section components
-│   ├── data/             # Portfolio content and CV data
+│   ├── data/             # Sample resume and template content
 │   ├── hooks/            # Custom React hooks
-│   ├── lib/              # Utilities, helpers, and PDF generation
-│   ├── pages/            # Top-level page components
+│   ├── lib/              # Utilities, resume schema, and PDF generation
+│   ├── pages/            # Top-level page components (landing, auth, dashboard, editor)
 │   ├── types/            # TypeScript type definitions
 │   ├── App.tsx           # Main app component with routing
 │   ├── index.css         # Global styles and Tailwind imports
 │   └── main.tsx          # App entry point
+├── supabase/             # Database migrations
 ├── index.html            # HTML template
 ├── package.json          # Scripts and dependencies
 ├── tailwind.config.ts    # Tailwind configuration
@@ -102,20 +104,19 @@ Build the project for production and deploy the contents of the `dist/` folder o
 
 This repository includes a GitHub Actions workflow that builds and deploys the site to GitHub Pages automatically.
 
-1. Create a GitHub repository named `sarunas` and push this code to the `main` branch.
+1. Create a GitHub repository named `applyo` and push this code to the `main` branch.
 2. In the repository settings, go to **Pages → Build and deployment** and set **Source** to **GitHub Actions**.
 3. Push any commit to `main`. The workflow in `.github/workflows/deploy.yml` will build the site and deploy it.
 4. Once the deployment finishes, the site will be live at:
 
    ```
-   https://<your-github-username>.github.io/sarunas/
+   https://<your-github-username>.github.io/applyo/
    ```
 
 > **Note:** GitHub Pages is free for public repositories. Private repositories require a GitHub Pro plan to use Pages.
-> If you rename the repository, update the `build:gh-pages` script in `package.json` and the redirect path in `public/404.html` to match the new repo name.
-
+> If you use a different repository name, update the `build:gh-pages` script in `package.json` and the redirect path in `public/404.html` to match.
 
 ## Notes
 
-- The CV PDF is generated entirely in the browser using `jspdf` and `jspdf-autotable` — no backend is required.
-- Source data for the portfolio and CV lives in `src/data/portfolio-data.ts`.
+- The resume PDF is generated entirely in the browser using `jspdf` and `jspdf-autotable`.
+- All sample resume and portfolio content is fictional placeholder data and lives in `src/data/`.
