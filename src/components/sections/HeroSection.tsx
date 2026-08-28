@@ -37,7 +37,7 @@ export default function HeroSection() {
   };
 
   const socials = [
-    { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/sjaraminas" },
+    { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/in/MPetrauskas" },
     { icon: Github, label: "GitHub", href: `https://${personalInfo.website}` },
     { icon: Mail, label: "Email", href: `mailto:${personalInfo.email}` },
   ];
