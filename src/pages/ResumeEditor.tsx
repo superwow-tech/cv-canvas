@@ -398,7 +398,7 @@ export default function ResumeEditor() {
                     </div>
                     <div className="mt-3 space-y-4">
                       <Field label="Category" value={group.category} placeholder="Frontend" onChange={(v) => patch((d) => ({ ...d, skills: d.skills.map((x) => (x.id === group.id ? { ...x, category: v } : x)) }))} />
-                      <Field label="Skills" value={group.skills} placeholder="TypeScript, React, Angular" onChange={(v) => patch((d) => ({ ...d, skills: d.skills.map((x) => (x.id === group.id ? { ...x, skills: v } : x)) }))} />
+                      <Field label="Skills" value={group.skills} placeholder="Communication, Negotiation, Teamwork" onChange={(v) => patch((d) => ({ ...d, skills: d.skills.map((x) => (x.id === group.id ? { ...x, skills: v } : x)) }))} />
                     </div>
                   </div>
                 ))}
