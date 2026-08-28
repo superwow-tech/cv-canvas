@@ -20,7 +20,7 @@ export const sampleResume: ResumeDocument = {
     city: personalInfo.location.city,
     country: personalInfo.location.country,
     website: personalInfo.website,
-    linkedin: "linkedin.com/in/MPetrauskas",
+    linkedin: "linkedin.com/in/mantaspetrauskas",
     bio: personalInfo.bio,
   },
   experience: experience.map((job) => ({
