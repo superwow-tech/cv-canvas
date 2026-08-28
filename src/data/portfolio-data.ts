@@ -100,7 +100,7 @@ export const education: Education[] = [
 export const languages: Language[] = [
   { language: "Lithuanian", proficiency: "Native" },
   { language: "English", proficiency: "Professional" },
-  { language: "Russian", proficiency: "Conversational" },
+  { language: "German", proficiency: "Intermediate" },
 ];
 
 export const skillCategories: SkillCategory[] = [
