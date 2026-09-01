@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { cvTemplates, defaultTemplateId, type CvTemplateId } from "@/lib/cv-templates";
 import { sampleResume } from "@/data/sample-resume";
 import type { ResumeDocument } from "@/lib/resume-schema";
+import PdfPreviewFrame from "@/components/PdfPreviewFrame";
 
 type PageFormat = "a4" | "letter";
 
@@ -320,7 +321,7 @@ export default function TemplatesSection({ resume = sampleResume }: { resume?: R
                 </button>
               </div>
             </div>
-            <iframe src={previewUrl} title="Resume PDF preview" className="flex-1 w-full bg-foreground/5" />
+            <PdfPreviewFrame url={previewUrl} className="flex-1 w-full bg-foreground/5" />
           </div>
         </div>
       )}
