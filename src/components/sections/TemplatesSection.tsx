@@ -155,23 +155,25 @@ export default function TemplatesSection({ resume = sampleResume }: { resume?: R
                   type="button"
                   onClick={() => setSelected(t.id)}
                   aria-pressed={isSelected}
-                  className={`relative rounded-lg p-2 transition-all text-left ${
+                  className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
                     isSelected
                       ? "ring-2 ring-foreground/70 bg-foreground/[0.03]"
                       : "ring-1 ring-foreground/10 hover:ring-foreground/30"
                   }`}
                 >
                   <Thumbnail id={t.id} />
-                  {isSelected && (
-                    <span className="absolute top-3 right-3 inline-flex items-center justify-center w-6 h-6 rounded-full bg-foreground text-background">
-                      <Check size={14} />
-                    </span>
-                  )}
                 </button>
 
-                <h3 className="mt-4 text-base md:text-lg font-semibold text-foreground font-['Rubik']">
-                  {t.name}
-                </h3>
+                <div className="mt-0 sm:mt-4 flex items-start justify-between gap-3">
+                  <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
+                    {t.name}
+                  </h3>
+                  {isSelected && (
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
+                      <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
+                    </span>
+                  )}
+                </div>
                 <div className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] mt-0.5">
                   {t.tagline}
                 </div>
