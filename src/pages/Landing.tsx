@@ -1,33 +1,10 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, FileDown, LayoutTemplate, ListChecks, Save } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
 import { useAuth } from "@/hooks/useAuth";
-
-const features = [
-  {
-    icon: ListChecks,
-    title: "Guided wizard",
-    body: "Six short steps — details, profile, experience, education, skills, languages. No blank-page paralysis.",
-  },
-  {
-    icon: LayoutTemplate,
-    title: "Three designs",
-    body: "Timeline, Classic and Minimal. Same content, three very different first impressions.",
-  },
-  {
-    icon: FileDown,
-    title: "Print-ready PDF",
-    body: "A4 or Letter, adjustable margins, clickable contact links, automatic page numbering.",
-  },
-  {
-    icon: Save,
-    title: "Saved and reusable",
-    body: "Your resumes live in your account. Duplicate one and tailor it per application.",
-  },
-];
 
 const steps = [
   { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
@@ -135,24 +112,6 @@ export default function Landing() {
 
           <p className="mt-6 text-xs font-medium text-foreground/50">No card required</p>
         </div>
-      </section>
-
-      {/* FEATURES — hairline grid of four panels */}
-      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
-        <motion.div
-          {...fadeUp}
-          className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border"
-        >
-          {features.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="bg-background p-8 md:p-10">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-mint-light/50 text-foreground/80">
-                <Icon size={18} />
-              </span>
-              <h3 className="mt-6 font-display text-xl font-bold">{title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/70">{body}</p>
-            </div>
-          ))}
-        </motion.div>
       </section>
 
       {/* HOW IT WORKS — ghost numerals */}
