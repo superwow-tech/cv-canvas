@@ -320,7 +320,7 @@ export default function TemplatesSection({ resume = sampleResume }: { resume?: R
                 </button>
               </div>
             </div>
-            <iframe src={previewUrl} title="Resume PDF preview" className="flex-1 w-full bg-foreground/5" />
+            <PdfPreviewFrame url={previewUrl} className="flex-1 w-full bg-foreground/5" />
           </div>
         </div>
       )}
