@@ -164,16 +164,21 @@ export default function TemplatesSection({ resume = sampleResume }: { resume?: R
                   <Thumbnail id={t.id} />
                 </button>
 
-                <div className="mt-0 sm:mt-4 flex items-start justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSelected(t.id)}
+                  aria-pressed={isSelected}
+                  className="w-full mt-0 sm:mt-4 flex items-start justify-between gap-3 text-left"
+                >
                   <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
                     {t.name}
                   </h3>
                   {isSelected && (
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
+                    <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
                       <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
                     </span>
                   )}
-                </div>
+                </button>
                 <div className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] mt-0.5">
                   {t.tagline}
                 </div>
