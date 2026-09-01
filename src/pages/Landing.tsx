@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight, FileDown, LayoutTemplate, ListChecks, Save } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
