@@ -6,29 +6,6 @@ import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
 import { useAuth } from "@/hooks/useAuth";
 
-const features = [
-  {
-    icon: ListChecks,
-    title: "Guided wizard",
-    body: "Six short steps — details, profile, experience, education, skills, languages. No blank-page paralysis.",
-  },
-  {
-    icon: LayoutTemplate,
-    title: "Three designs",
-    body: "Timeline, Classic and Minimal. Same content, three very different first impressions.",
-  },
-  {
-    icon: FileDown,
-    title: "Print-ready PDF",
-    body: "A4 or Letter, adjustable margins, clickable contact links, automatic page numbering.",
-  },
-  {
-    icon: Save,
-    title: "Saved and reusable",
-    body: "Your resumes live in your account. Duplicate one and tailor it per application.",
-  },
-];
-
 const steps = [
   { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
   { n: "2", title: "Pick a design", body: "Preview the exact PDF for each template before you commit." },
