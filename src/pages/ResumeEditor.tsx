@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import SiteLayout from "@/components/SiteLayout";
+import PdfPreviewFrame from "@/components/PdfPreviewFrame";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { canUseTemplate } from "@/lib/plans";
