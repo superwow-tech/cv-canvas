@@ -114,24 +114,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* FEATURES — hairline grid of four panels */}
-      <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
-        <motion.div
-          {...fadeUp}
-          className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border border border-border"
-        >
-          {features.map(({ icon: Icon, title, body }) => (
-            <div key={title} className="bg-background p-8 md:p-10">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-mint-light/50 text-foreground/80">
-                <Icon size={18} />
-              </span>
-              <h3 className="mt-6 font-display text-xl font-bold">{title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/70">{body}</p>
-            </div>
-          ))}
-        </motion.div>
-      </section>
-
       {/* HOW IT WORKS — ghost numerals */}
       <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
         <div className="max-w-7xl mx-auto">
