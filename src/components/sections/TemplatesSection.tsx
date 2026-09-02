@@ -6,6 +6,9 @@ import { cvTemplates, defaultTemplateId, type CvTemplateId } from "@/lib/cv-temp
 import { sampleResume } from "@/data/sample-resume";
 import type { ResumeDocument } from "@/lib/resume-schema";
 import PdfPreviewFrame from "@/components/PdfPreviewFrame";
+import { Link } from "react-router-dom";
+import { cvLocales, type CvLocale } from "@/lib/cv-locale";
+import { sampleResumeLt } from "@/data/sample-resume-lt";
 
 type PageFormat = "a4" | "letter";
 
@@ -33,6 +36,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 /** Miniature paper preview approximating each PDF template. */
 function Thumbnail({ id }: { id: CvTemplateId }) {
   const centered = id === "classic";
+  const ruled = id === "timeline" || id === "lithuanian";
   const airy = id === "minimal";
   const bar = (w: string, tone = "bg-foreground/15") => (
     <span className={`block h-[3px] rounded-full ${tone}`} style={{ width: w }} />
@@ -46,8 +50,8 @@ function Thumbnail({ id }: { id: CvTemplateId }) {
     >
       <div className={`flex flex-col ${airy ? "gap-3" : "gap-2"} ${centered ? "items-center" : "items-start"}`}>
         <span
-          className={`block rounded-sm bg-foreground/80 ${id === "timeline" ? "h-3" : "h-2.5"}`}
-          style={{ width: centered ? "62%" : id === "timeline" ? "78%" : "58%" }}
+          className={`block rounded-sm bg-foreground/80 ${ruled ? "h-3" : "h-2.5"}`}
+          style={{ width: centered ? "62%" : ruled ? "78%" : "58%" }}
         />
         {bar(centered ? "40%" : "46%", "bg-foreground/30")}
         {bar(centered ? "70%" : "60%", "bg-foreground/15")}
@@ -57,7 +61,7 @@ function Thumbnail({ id }: { id: CvTemplateId }) {
         <div key={s} className={airy ? "mt-5" : "mt-4"}>
           <div className="flex items-center gap-2">
             {bar("26%", "bg-foreground/50")}
-            {id === "timeline" && <span className="h-px flex-1 bg-foreground/15" />}
+            {ruled && <span className="h-px flex-1 bg-foreground/15" />}
             {id === "classic" && <span className="h-px w-6 bg-foreground/25" />}
           </div>
           <div className={`mt-2 flex flex-col ${airy ? "gap-2" : "gap-1.5"}`}>
@@ -72,12 +76,13 @@ function Thumbnail({ id }: { id: CvTemplateId }) {
 }
 
 export default function TemplatesSection({
-  resume = sampleResume,
+  resume,
   minimal = false,
 }: {
   resume?: ResumeDocument;
   minimal?: boolean;
 }) {
+  const [locale, setLocale] = useState<CvLocale>("en");
   const [selected, setSelected] = useState<CvTemplateId>(defaultTemplateId);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
@@ -86,18 +91,28 @@ export default function TemplatesSection({
   const [marginX, setMarginX] = useState(18);
   const [marginY, setMarginY] = useState(18);
 
-  const exportOptions = { format, marginX, marginY };
+  /** Without an explicit resume we demo the sample in the chosen language. */
+  const activeResume: ResumeDocument =
+    resume ?? (locale === "lt" ? sampleResumeLt : sampleResume);
+
+  const exportOptions = { format, marginX, marginY, locale };
+
+  const selectTemplate = (id: CvTemplateId) => {
+    setSelected(id);
+    const templateLocale = cvTemplates.find((t) => t.id === id)?.locale;
+    if (templateLocale) setLocale(templateLocale);
+  };
 
   const openPreview = async (id: CvTemplateId) => {
     if (busy) return;
     setBusy("preview");
     try {
       const { generateCVBlob } = await import("@/lib/generate-cv");
-      const blob = await generateCVBlob(resume, id, exportOptions);
+      const blob = await generateCVBlob(activeResume, id, exportOptions);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setPreviewUrl(URL.createObjectURL(blob));
       setPreviewFor(id);
-      setSelected(id);
+      selectTemplate(id);
     } catch (error) {
       console.error("Preview failed:", error);
       toast.error("Could not build the preview", { description: "Please try again." });
@@ -118,7 +133,7 @@ export default function TemplatesSection({
     const toastId = toast.loading("Generating your CV…");
     try {
       const { downloadCV } = await import("@/lib/generate-cv");
-      await downloadCV(resume, id, exportOptions);
+      await downloadCV(activeResume, id, exportOptions);
       toast.success("CV downloaded", {
         id: toastId,
         description: `${format === "a4" ? "A4" : "Letter"} · ${marginX} mm side / ${marginY} mm top margins.`,
@@ -159,14 +174,44 @@ export default function TemplatesSection({
           </p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
+        <div className="mb-8 md:mb-10 flex flex-col items-center gap-2">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/45 font-['Rubik']">
+            Resume language
+          </span>
+          <div
+            className="inline-flex rounded-full border border-foreground/15 p-1"
+            role="group"
+            aria-label="Resume language"
+          >
+            {cvLocales.map((l) => {
+              const active = locale === l.id;
+              return (
+                <button
+                  key={l.id}
+                  type="button"
+                  onClick={() => setLocale(l.id)}
+                  aria-pressed={active}
+                  className={`rounded-full px-4 py-1.5 text-sm font-medium font-['Rubik'] transition-colors ${
+                    active
+                      ? "bg-foreground text-background"
+                      : "text-foreground/60 hover:text-foreground"
+                  }`}
+                >
+                  {l.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {cvTemplates.map((t) => {
             const isSelected = selected === t.id;
             return (
               <div key={t.id} className="flex flex-col">
                 <button
                   type="button"
-                  onClick={() => setSelected(t.id)}
+                  onClick={() => selectTemplate(t.id)}
                   aria-pressed={isSelected}
                   className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
                     isSelected
@@ -179,7 +224,7 @@ export default function TemplatesSection({
 
                 <button
                   type="button"
-                  onClick={() => setSelected(t.id)}
+                  onClick={() => selectTemplate(t.id)}
                   aria-pressed={isSelected}
                   className="w-full mt-0 sm:mt-4 flex items-start justify-between gap-3 text-left"
                 >
@@ -310,6 +355,19 @@ export default function TemplatesSection({
             </button>
           </div>
         )}
+        <div className="mt-10 md:mt-12 flex flex-col items-center gap-3">
+          <Link
+            to="/app"
+            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-bold font-['Rubik'] transition-transform hover:scale-[1.02]"
+          >
+            Build your own {locale === "lt" ? "Lithuanian CV" : "resume"}
+          </Link>
+          <p className="text-xs text-foreground/50 font-['Rubik']">
+            {locale === "lt"
+              ? "Pildykite lietuviškai - antraštės, mėnesiai ir datos verčiamos automatiškai."
+              : "Fill in your details once - switch language or template any time."}
+          </p>
+        </div>
       </motion.section>
 
       {previewUrl && (
@@ -326,7 +384,7 @@ export default function TemplatesSection({
           >
             <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-foreground/10">
               <div className="font-['Rubik'] text-sm md:text-base font-medium text-foreground">
-                {cvTemplates.find((t) => t.id === previewFor)?.name} - {resume.personal.name}
+                {cvTemplates.find((t) => t.id === previewFor)?.name} - {activeResume.personal.name}
               </div>
               <div className="flex items-center gap-2">
                 <button

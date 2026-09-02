@@ -26,6 +26,7 @@ import {
   type ResumeDocument,
 } from "@/lib/resume-schema";
 import { downloadCV, generateCVBlob, marginLimits, pageFormats, type PageFormat } from "@/lib/generate-cv";
+import { cvLocales, type CvLocale } from "@/lib/cv-locale";
 
 const steps = ["Details", "Profile", "Experience", "Education", "Skills", "Languages", "Review"] as const;
 
@@ -71,6 +72,7 @@ export default function ResumeEditor() {
   const [format, setFormat] = useState<PageFormat>("a4");
   const [marginX, setMarginX] = useState(18);
   const [marginY, setMarginY] = useState(18);
+  const [locale, setLocale] = useState<CvLocale>("en");
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -128,7 +130,7 @@ export default function ResumeEditor() {
         if (!silent) toast.success("Saved");
       }
     },
-    [id, resume, title, template, format, marginX, marginY]
+    [id, resume, title, template, format, marginX, marginY, locale]
   );
 
   // Autosave two seconds after the last change.
@@ -138,9 +140,12 @@ export default function ResumeEditor() {
       if (dirty.current) void save(true);
     }, 2000);
     return () => clearTimeout(t);
-  }, [resume, title, template, format, marginX, marginY, loading, save]);
+  }, [resume, title, template, format, marginX, marginY, locale, loading, save]);
 
-  const exportOptions = useMemo(() => ({ format, marginX, marginY }), [format, marginX, marginY]);
+  const exportOptions = useMemo(
+    () => ({ format, marginX, marginY, locale }),
+    [format, marginX, marginY, locale]
+  );
 
   // Live PDF preview, debounced.
   useEffect(() => {
@@ -447,7 +452,11 @@ export default function ResumeEditor() {
                       return (
                         <button
                           key={t.id}
-                          onClick={() => (allowed ? setTemplate(t.id) : navigate("/pricing"))}
+                          onClick={() => {
+                            if (!allowed) return navigate("/pricing");
+                            setTemplate(t.id);
+                            if (t.locale) setLocale(t.locale);
+                          }}
                           className={`text-left rounded-xl border p-4 transition-colors ${
                             active ? "border-mint bg-mint-light/25" : "border-foreground/15 hover:border-foreground/40"
                           }`}
@@ -462,6 +471,29 @@ export default function ResumeEditor() {
                     })}
                   </div>
                   {!isPro && <p className="mt-3 text-xs text-foreground/50">Classic and Minimal are part of Pro.</p>}
+                </div>
+
+                <div>
+                  <h2 className="text-sm uppercase tracking-widest text-foreground/55">Resume language</h2>
+                  <p className="mt-2 text-xs text-foreground/50">
+                    Section headings, month names and dates follow this language.
+                  </p>
+                  <div className="mt-4 flex gap-2" role="group" aria-label="Resume language">
+                    {cvLocales.map((l) => (
+                      <button
+                        key={l.id}
+                        onClick={() => setLocale(l.id)}
+                        aria-pressed={locale === l.id}
+                        className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                          locale === l.id
+                            ? "bg-foreground text-background"
+                            : "border border-foreground/20 hover:border-foreground/50"
+                        }`}
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
