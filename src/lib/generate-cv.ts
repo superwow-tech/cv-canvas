@@ -20,9 +20,16 @@ const DIACRITIC_MAP: Record<string, string> = {
   Ü: "U", ü: "u", ß: "ss", Ñ: "N", ñ: "n",
   "–": "-", "—": "-", "‑": "-",
 };
-function toAscii(text: string): string {
+function toAsciiStrict(text: string): string {
   return text.replace(/[^\x00-\x7F]/g, (ch) => DIACRITIC_MAP[ch] ?? ch);
 }
+
+const hasNonAscii = (v: unknown): boolean => {
+  if (typeof v === "string") return /[^\x00-\x7F]/.test(v);
+  if (Array.isArray(v)) return v.some(hasNonAscii);
+  if (v && typeof v === "object") return Object.values(v).some(hasNonAscii);
+  return false;
+};
 
 export type PageFormat = "a4" | "letter";
 
@@ -76,6 +83,23 @@ export async function generateCVBlob(
 
   const personal = resume.personal;
 
+  // Register a Unicode subset font when the document (or its labels) contains
+  // diacritics - otherwise fall back to Helvetica + transliteration.
+  let unicodeFont = false;
+  if (hasNonAscii(resume) || hasNonAscii(labels.months) || hasNonAscii(labels)) {
+    try {
+      const { CV_FONT_NAME, cvFontRegular, cvFontBold } = await import("@/lib/cv-font");
+      doc.addFileToVFS(`${CV_FONT_NAME}-Regular.ttf`, cvFontRegular);
+      doc.addFont(`${CV_FONT_NAME}-Regular.ttf`, CV_FONT_NAME, "normal");
+      doc.addFileToVFS(`${CV_FONT_NAME}-Bold.ttf`, cvFontBold);
+      doc.addFont(`${CV_FONT_NAME}-Bold.ttf`, CV_FONT_NAME, "bold");
+      unicodeFont = CV_FONT_NAME;
+    } catch (error) {
+      console.warn("Unicode CV font unavailable, transliterating:", error);
+    }
+  }
+  const toAscii = (text: string) => (unicodeFont ? text : toAsciiStrict(text));
+
   const colors = {
     text: "#1f2937",
     muted: "#6b7280",
@@ -85,7 +109,7 @@ export async function generateCVBlob(
 
   // Use jsPDF's built-in Helvetica (reliable, universal). Non-ASCII characters
   // are transliterated at the call site via toAscii().
-  const fontName = "helvetica";
+  const fontName = typeof unicodeFont === "string" ? unicodeFont : "helvetica";
   doc.setFont(fontName);
 
   // Helpers
