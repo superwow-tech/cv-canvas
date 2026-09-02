@@ -5,6 +5,7 @@ import {
   getTemplate,
 } from "@/lib/cv-templates";
 import type { ResumeDocument } from "@/lib/resume-schema";
+import { getCvLabels, type CvLocale } from "@/lib/cv-locale";
 
 /**
  * Transliterate Lithuanian (and general Latin-extended) diacritics to
@@ -32,6 +33,8 @@ export interface ExportOptions {
   marginX?: number;
   /** Vertical (top/bottom) page margin in mm. */
   marginY?: number;
+  /** Resume language. Falls back to the template's own locale, then English. */
+  locale?: CvLocale;
 }
 
 export const pageFormats: Array<{ id: PageFormat; label: string; hint: string }> = [
@@ -52,6 +55,8 @@ export async function generateCVBlob(
 ): Promise<Blob> {
   const template = getTemplate(templateId);
   const style = template.style;
+  const locale: CvLocale = options.locale ?? template.locale ?? "en";
+  const labels = getCvLabels(locale);
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -142,14 +147,10 @@ export async function generateCVBlob(
   };
 
   const formatDate = (date: string) => {
-    if (!date) return "Present";
+    if (!date) return labels.present;
     const [year, month] = date.split("-");
     if (!month) return year;
-    const monthNames = [
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ];
-    const monthName = monthNames[parseInt(month, 10) - 1] ?? month;
+    const monthName = labels.months[parseInt(month, 10) - 1] ?? month;
     return `${monthName} ${year}`;
   };
 
@@ -165,6 +166,14 @@ export async function generateCVBlob(
   };
 
   // === HEADER ===
+  if (labels.documentTitle) {
+    addText(labels.documentTitle, marginX, cursorY, {
+      size: 9,
+      color: colors.muted,
+      align: style.headerAlign,
+    });
+    cursorY += 6;
+  }
   addText(personal.name || "Your Name", marginX, cursorY, {
     size: style.nameSize,
     bold: true,
@@ -239,7 +248,7 @@ export async function generateCVBlob(
   // === SUMMARY ===
   if (personal.bio) {
     checkPageBreak(20);
-    cursorY += addSectionHeader("Profile", cursorY);
+    cursorY += addSectionHeader(labels.profile, cursorY);
     const summaryHeight = addText(personal.bio, marginX, cursorY, {
       size: style.bodySize,
       color: colors.text,
@@ -251,7 +260,7 @@ export async function generateCVBlob(
   // === EXPERIENCE ===
   if (resume.experience.length > 0) {
     checkPageBreak(30);
-    cursorY += addSectionHeader("Experience", cursorY);
+    cursorY += addSectionHeader(labels.experience, cursorY);
 
     resume.experience.forEach((job) => {
       const dateRange = `${formatDate(job.startDate)} - ${formatDate(job.endDate)}`;
@@ -290,7 +299,7 @@ export async function generateCVBlob(
   const skills = resume.skills.filter((s) => s.category || s.skills);
   if (skills.length > 0) {
     checkPageBreak(30);
-    cursorY += addSectionHeader("Skills", cursorY);
+    cursorY += addSectionHeader(labels.skills, cursorY);
 
     skills.forEach((category) => {
       checkPageBreak(12);
@@ -316,7 +325,7 @@ export async function generateCVBlob(
   // === EDUCATION ===
   if (resume.education.length > 0) {
     checkPageBreak(25);
-    cursorY += addSectionHeader("Education", cursorY);
+    cursorY += addSectionHeader(labels.education, cursorY);
 
     resume.education.forEach((edu) => {
       checkPageBreak(18);
@@ -361,7 +370,7 @@ export async function generateCVBlob(
   const langs = resume.languages.filter((l) => l.language);
   if (langs.length > 0) {
     checkPageBreak(20);
-    cursorY += addSectionHeader("Languages", cursorY);
+    cursorY += addSectionHeader(labels.languages, cursorY);
 
     const languageText = langs
       .map((lang) => [lang.language, lang.proficiency].filter(Boolean).join(" - "))
@@ -383,7 +392,7 @@ export async function generateCVBlob(
       doc.setFontSize(8);
       doc.setTextColor(colors.muted);
       doc.text(
-        toAscii(`${personal.name} - Page ${p} of ${totalPages}`),
+        toAscii(`${personal.name} - ${labels.page(p, totalPages)}`),
         pageWidth / 2,
         pageHeight - Math.max(6, marginY - 8),
         { align: "center" }
