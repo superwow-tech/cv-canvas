@@ -85,7 +85,7 @@ export async function generateCVBlob(
 
   // Register a Unicode subset font when the document (or its labels) contains
   // diacritics - otherwise fall back to Helvetica + transliteration.
-  let unicodeFont = false;
+  let unicodeFont: string | null = null;
   if (hasNonAscii(resume) || hasNonAscii(labels.months) || hasNonAscii(labels)) {
     try {
       const { CV_FONT_NAME, cvFontRegular, cvFontBold } = await import("@/lib/cv-font");
@@ -109,7 +109,7 @@ export async function generateCVBlob(
 
   // Use jsPDF's built-in Helvetica (reliable, universal). Non-ASCII characters
   // are transliterated at the call site via toAscii().
-  const fontName = typeof unicodeFont === "string" ? unicodeFont : "helvetica";
+  const fontName = unicodeFont ?? "helvetica";
   doc.setFont(fontName);
 
   // Helpers
