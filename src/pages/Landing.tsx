@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
@@ -8,8 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 
 const steps = [
   { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
-  { n: "2", title: "Pick a design", body: "Preview the exact PDF for each template before you commit." },
-  { n: "3", title: "Export and apply", body: "Download a print-ready PDF, then reuse it for the next role." },
+  { n: "2", title: "Pick a design", body: "Three editorial layouts that look great on every screen." },
+  { n: "3", title: "Share your page", body: "Get a link you can send to recruiters, then download a print-ready PDF whenever you need it." },
 ];
 
 const faqs = [

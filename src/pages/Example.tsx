@@ -3,7 +3,6 @@ import SiteLayout from "@/components/SiteLayout";
 import HeroSection from "@/components/sections/HeroSection";
 import BioSection from "@/components/sections/BioSection";
 import ContentSection from "@/components/sections/ContentSection";
-import TemplatesSection from "@/components/sections/TemplatesSection";
 
 export default function Example() {
   return (
@@ -20,7 +19,6 @@ export default function Example() {
       <HeroSection />
       <BioSection />
       <ContentSection />
-      <TemplatesSection />
     </SiteLayout>
   );
 }

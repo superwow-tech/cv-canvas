@@ -7,7 +7,7 @@ import { product } from "@/lib/plans";
 const links = [
   { to: "/#templates", label: "Templates" },
   { to: "/pricing", label: "Pricing" },
-  { to: "/example", label: "Example" },
+  { to: "/example", label: "Sample resume" },
 ];
 
 export default function SiteHeader() {

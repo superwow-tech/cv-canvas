@@ -71,7 +71,13 @@ function Thumbnail({ id }: { id: CvTemplateId }) {
   );
 }
 
-export default function TemplatesSection({ resume = sampleResume }: { resume?: ResumeDocument }) {
+export default function TemplatesSection({
+  resume = sampleResume,
+  minimal = false,
+}: {
+  resume?: ResumeDocument;
+  minimal?: boolean;
+}) {
   const [selected, setSelected] = useState<CvTemplateId>(defaultTemplateId);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
