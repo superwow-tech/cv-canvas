@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
 import { plans, product } from "@/lib/plans";
@@ -8,8 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 
 const steps = [
   { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
-  { n: "2", title: "Pick a design", body: "Preview the exact PDF for each template before you commit." },
-  { n: "3", title: "Export and apply", body: "Download a print-ready PDF, then reuse it for the next role." },
+  { n: "2", title: "Pick a design", body: "Three editorial layouts that look great on every screen." },
+  { n: "3", title: "Share your page", body: "Get a link you can send to recruiters, then download a print-ready PDF whenever you need it." },
 ];
 
 const faqs = [
@@ -48,7 +48,8 @@ export default function Landing() {
     name: product.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    description: product.description,
+    description:
+      "Applyo builds beautiful shareable online resume pages and print-ready PDFs from a guided wizard.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Free" },
       { "@type": "Offer", price: "6", priceCurrency: "EUR", name: "Pro" },
@@ -86,8 +87,8 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-8 mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-foreground/70 text-balance"
           >
-            {product.name} turns your career story into a print-ready PDF. A guided wizard, a live preview, three
-            editorial-grade designs, and exports sized for real printers.
+            {product.name} turns your career story into a shareable online resume page. A guided wizard, a live
+            preview, and three editorial-grade designs — with a print-ready PDF whenever you need it.
           </motion.p>
 
           <motion.div
@@ -97,17 +98,17 @@ export default function Landing() {
             className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center sm:justify-center gap-3"
           >
             <Link
-              to={primaryTo}
+              to="/example"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02]"
             >
-              Build my resume free <ArrowRight size={16} />
+              See a sample resume <ExternalLink size={16} />
             </Link>
-            <a
-              href="#templates"
+            <Link
+              to={primaryTo}
               className="inline-flex items-center justify-center rounded-full border border-border px-8 py-4 text-sm font-bold transition-colors hover:bg-border/30"
             >
-              See the templates
-            </a>
+              Build my resume free
+            </Link>
           </motion.div>
 
           <p className="mt-6 text-xs font-medium text-foreground/50">No card required</p>
@@ -152,13 +153,13 @@ export default function Landing() {
             </div>
             <Link
               to="/example"
-              className="text-sm font-bold underline decoration-mint decoration-2 underline-offset-4"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-bold transition-transform hover:scale-[1.02]"
             >
-              See the sample resume
+              See the sample resume <ExternalLink size={16} />
             </Link>
           </div>
         </div>
-        <TemplatesSection />
+        <TemplatesSection minimal />
       </section>
 
       {/* PRICING */}
