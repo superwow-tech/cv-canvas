@@ -148,9 +148,16 @@ export default function TemplatesSection({
       >
         <SectionHeading>Resume Templates</SectionHeading>
 
-        <p className="mb-8 md:mb-10 text-center text-sm md:text-base text-foreground/65 font-['Rubik'] text-balance max-w-2xl mx-auto">
-          Pick a design, preview the exact PDF, then export it.
-        </p>
+        {!minimal && (
+          <p className="mb-8 md:mb-10 text-center text-sm md:text-base text-foreground/65 font-['Rubik'] text-balance max-w-2xl mx-auto">
+            Pick a design, preview the exact PDF, then export it.
+          </p>
+        )}
+        {minimal && (
+          <p className="mb-8 md:mb-10 text-center text-sm md:text-base text-foreground/65 font-['Rubik'] text-balance max-w-2xl mx-auto">
+            Every layout exports to a clean, print-ready PDF.
+          </p>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8">
           {cvTemplates.map((t) => {
@@ -210,95 +217,99 @@ export default function TemplatesSection({
           })}
         </div>
 
-        <div className="mt-10 md:mt-12 rounded-lg border border-foreground/10 p-5 md:p-6">
-          <h3 className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-foreground/50 font-['Rubik']">
-            Export options
-          </h3>
+        {!minimal && (
+          <div className="mt-10 md:mt-12 rounded-lg border border-foreground/10 p-5 md:p-6">
+            <h3 className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-foreground/50 font-['Rubik']">
+              Export options
+            </h3>
 
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            <div>
-              <span className="block text-sm font-medium text-foreground/80 font-['Rubik']">
-                Paper size
-              </span>
-              <div className="mt-3 flex gap-2" role="group" aria-label="Paper size">
-                {PAGE_FORMATS.map((f) => {
-                  const active = format === f.id;
-                  return (
-                    <button
-                      key={f.id}
-                      type="button"
-                      onClick={() => setFormat(f.id)}
-                      aria-pressed={active}
-                      className={`flex-1 rounded-md px-3 py-2 text-sm font-['Rubik'] transition-colors ${
-                        active
-                          ? "bg-foreground text-background"
-                          : "border border-foreground/15 text-foreground/70 hover:border-foreground/40"
-                      }`}
+            <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              <div>
+                <span className="block text-sm font-medium text-foreground/80 font-['Rubik']">
+                  Paper size
+                </span>
+                <div className="mt-3 flex gap-2" role="group" aria-label="Paper size">
+                  {PAGE_FORMATS.map((f) => {
+                    const active = format === f.id;
+                    return (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setFormat(f.id)}
+                        aria-pressed={active}
+                        className={`flex-1 rounded-md px-3 py-2 text-sm font-['Rubik'] transition-colors ${
+                          active
+                            ? "bg-foreground text-background"
+                            : "border border-foreground/15 text-foreground/70 hover:border-foreground/40"
+                        }`}
+                      >
+                        {f.label}
+                        <span className={`block text-[10px] mt-0.5 ${active ? "text-background/70" : "text-foreground/45"}`}>
+                          {f.hint}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {[
+                  { id: "side", label: "Side margins", value: marginX, set: setMarginX },
+                  { id: "top", label: "Top / bottom margins", value: marginY, set: setMarginY },
+                ].map((m) => (
+                  <div key={m.id}>
+                    <label
+                      htmlFor={`margin-${m.id}`}
+                      className="flex items-center justify-between text-sm font-medium text-foreground/80 font-['Rubik']"
                     >
-                      {f.label}
-                      <span className={`block text-[10px] mt-0.5 ${active ? "text-background/70" : "text-foreground/45"}`}>
-                        {f.hint}
-                      </span>
-                    </button>
-                  );
-                })}
+                      {m.label}
+                      <span className="tabular-nums text-foreground/55">{m.value} mm</span>
+                    </label>
+                    <input
+                      id={`margin-${m.id}`}
+                      type="range"
+                      min={MARGIN_MIN}
+                      max={MARGIN_MAX}
+                      step={1}
+                      value={m.value}
+                      onChange={(e) => m.set(Number(e.target.value))}
+                      className="mt-2 w-full accent-foreground"
+                    />
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={resetMargins}
+                  className="text-xs text-foreground/50 hover:text-foreground transition-colors font-['Rubik'] underline underline-offset-4"
+                >
+                  Reset to 18 mm
+                </button>
               </div>
             </div>
-
-            <div className="space-y-4">
-              {[
-                { id: "side", label: "Side margins", value: marginX, set: setMarginX },
-                { id: "top", label: "Top / bottom margins", value: marginY, set: setMarginY },
-              ].map((m) => (
-                <div key={m.id}>
-                  <label
-                    htmlFor={`margin-${m.id}`}
-                    className="flex items-center justify-between text-sm font-medium text-foreground/80 font-['Rubik']"
-                  >
-                    {m.label}
-                    <span className="tabular-nums text-foreground/55">{m.value} mm</span>
-                  </label>
-                  <input
-                    id={`margin-${m.id}`}
-                    type="range"
-                    min={MARGIN_MIN}
-                    max={MARGIN_MAX}
-                    step={1}
-                    value={m.value}
-                    onChange={(e) => m.set(Number(e.target.value))}
-                    className="mt-2 w-full accent-foreground"
-                  />
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={resetMargins}
-                className="text-xs text-foreground/50 hover:text-foreground transition-colors font-['Rubik'] underline underline-offset-4"
-              >
-                Reset to 18 mm
-              </button>
-            </div>
           </div>
-        </div>
+        )}
 
-        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={() => download(selected)}
-            disabled={busy !== null}
-            aria-busy={busy === "download"}
-            className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik'] disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {busy === "download" ? (
-              <>
-                <Loader2 size={16} className="animate-spin" /> Generating…
-              </>
-            ) : (
-              <>
-                <Download size={16} /> Export {cvTemplates.find((t) => t.id === selected)?.name} PDF ({format === "a4" ? "A4" : "Letter"})
-              </>
-            )}
-          </button>
-        </div>
+        {!minimal && (
+          <div className="mt-10 md:mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => download(selected)}
+              disabled={busy !== null}
+              aria-busy={busy === "download"}
+              className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik'] disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {busy === "download" ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" /> Generating…
+                </>
+              ) : (
+                <>
+                  <Download size={16} /> Export {cvTemplates.find((t) => t.id === selected)?.name} PDF ({format === "a4" ? "A4" : "Letter"})
+                </>
+              )}
+            </button>
+          </div>
+        )}
       </motion.section>
 
       {previewUrl && (
