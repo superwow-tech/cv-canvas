@@ -3,15 +3,48 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { product } from "@/lib/plans";
+import { languages, useI18n } from "@/lib/i18n";
 
 const links = [
-  { to: "/#templates", label: "Templates" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/example", label: "Sample resume" },
+  { to: "/#templates", key: "nav.templates" },
+  { to: "/pricing", key: "nav.pricing" },
+  { to: "/example", key: "nav.sample" },
 ];
+
+/** Compact EN / LT switcher used in the main menu. */
+function LanguageSwitcher({ className = "" }: { className?: string }) {
+  const { lang, setLang } = useI18n();
+  const { t } = useI18n();
+  return (
+    <div
+      className={`inline-flex rounded-full border border-foreground/15 p-0.5 ${className}`}
+      role="group"
+      aria-label={t("nav.language")}
+    >
+      {languages.map((l) => {
+        const active = lang === l.id;
+        return (
+          <button
+            key={l.id}
+            type="button"
+            onClick={() => setLang(l.id)}
+            aria-pressed={active}
+            title={l.label}
+            className={`rounded-full px-2.5 py-1 text-xs font-bold transition-colors ${
+              active ? "bg-foreground text-background" : "text-foreground/60 hover:text-foreground"
+            }`}
+          >
+            {l.short}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function SiteHeader() {
   const { user, signOut } = useAuth();
+  const { t } = useI18n();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -30,28 +63,30 @@ export default function SiteHeader() {
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium">
           {links.map((l) => (
             <a key={l.to} href={l.to} className="text-foreground/70 hover:text-mint transition-colors">
-              {l.label}
+              {t(l.key)}
             </a>
           ))}
           {user ? (
             <>
               <NavLink to="/app" className="text-foreground/70 hover:text-mint transition-colors">
-                My resumes
+                {t("nav.myResumes")}
               </NavLink>
               <button onClick={handleSignOut} className="text-foreground/60 hover:text-mint transition-colors">
-                Sign out
+                {t("nav.signOut")}
               </button>
+              <LanguageSwitcher />
             </>
           ) : (
             <>
               <Link to="/auth" className="text-foreground/70 hover:text-mint transition-colors">
-                Sign in
+                {t("nav.signIn")}
               </Link>
+              <LanguageSwitcher />
               <Link
                 to="/auth?mode=signup"
                 className="rounded-full bg-mint text-foreground px-6 py-2.5 text-sm font-bold hover:opacity-90 transition-opacity"
               >
-                Start free
+                {t("nav.startFree")}
               </Link>
             </>
           )}
@@ -70,35 +105,39 @@ export default function SiteHeader() {
         <div className="md:hidden border-t border-foreground/10 px-5 py-4 flex flex-col gap-4 text-sm bg-background">
           {links.map((l) => (
             <a key={l.to} href={l.to} onClick={() => setOpen(false)} className="text-foreground/75">
-              {l.label}
+              {t(l.key)}
             </a>
           ))}
           {user ? (
             <>
               <Link to="/app" onClick={() => setOpen(false)} className="text-foreground/75">
-                My resumes
+                {t("nav.myResumes")}
               </Link>
               <Link to="/account" onClick={() => setOpen(false)} className="text-foreground/75">
-                Account
+                {t("nav.account")}
               </Link>
               <button onClick={handleSignOut} className="text-left text-foreground/60">
-                Sign out
+                {t("nav.signOut")}
               </button>
             </>
           ) : (
             <>
               <Link to="/auth" onClick={() => setOpen(false)} className="text-foreground/75">
-                Sign in
+                {t("nav.signIn")}
               </Link>
               <Link
                 to="/auth?mode=signup"
                 onClick={() => setOpen(false)}
                 className="rounded-full bg-mint text-foreground px-4 py-2.5 text-center font-bold"
               >
-                Start free
+                {t("nav.startFree")}
               </Link>
             </>
           )}
+          <div className="pt-2 flex items-center justify-between border-t border-foreground/10">
+            <span className="text-xs uppercase tracking-[0.2em] text-foreground/45">{t("nav.language")}</span>
+            <LanguageSwitcher />
+          </div>
         </div>
       )}
     </header>
