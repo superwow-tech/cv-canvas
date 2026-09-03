@@ -7,7 +7,8 @@ import { sampleResume } from "@/data/sample-resume";
 import type { ResumeDocument } from "@/lib/resume-schema";
 import PdfPreviewFrame from "@/components/PdfPreviewFrame";
 import { Link } from "react-router-dom";
-import { cvLocales, type CvLocale } from "@/lib/cv-locale";
+import type { CvLocale } from "@/lib/cv-locale";
+import { useI18n } from "@/lib/i18n";
 import { sampleResumeLt } from "@/data/sample-resume-lt";
 
 type PageFormat = "a4" | "letter";
@@ -82,7 +83,9 @@ export default function TemplatesSection({
   resume?: ResumeDocument;
   minimal?: boolean;
 }) {
-  const [locale, setLocale] = useState<CvLocale>("en");
+  const { t, lang, setLang } = useI18n();
+  const locale: CvLocale = lang;
+  const setLocale = setLang;
   const [selected, setSelected] = useState<CvTemplateId>(defaultTemplateId);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
@@ -99,7 +102,7 @@ export default function TemplatesSection({
 
   const selectTemplate = (id: CvTemplateId) => {
     setSelected(id);
-    const templateLocale = cvTemplates.find((t) => t.id === id)?.locale;
+    const templateLocale = cvTemplates.find((x) => x.id === id)?.locale;
     if (templateLocale) setLocale(templateLocale);
   };
 
@@ -115,7 +118,7 @@ export default function TemplatesSection({
       selectTemplate(id);
     } catch (error) {
       console.error("Preview failed:", error);
-      toast.error("Could not build the preview", { description: "Please try again." });
+      toast.error(t("tpl.previewFail"), { description: t("tpl.tryAgain") });
     } finally {
       setBusy(null);
     }
@@ -130,17 +133,17 @@ export default function TemplatesSection({
   const download = async (id: CvTemplateId) => {
     if (busy) return;
     setBusy("download");
-    const toastId = toast.loading("Generating your CV…");
+    const toastId = toast.loading(t("tpl.downloading"));
     try {
       const { downloadCV } = await import("@/lib/generate-cv");
       await downloadCV(activeResume, id, exportOptions);
-      toast.success("CV downloaded", {
+      toast.success(t("tpl.downloaded"), {
         id: toastId,
         description: `${format === "a4" ? "A4" : "Letter"} · ${marginX} mm side / ${marginY} mm top margins.`,
       });
     } catch (error) {
       console.error("CV generation failed:", error);
-      toast.error("Could not generate CV", { id: toastId, description: "Please try again in a moment." });
+      toast.error(t("tpl.downloadFail"), { id: toastId, description: t("tpl.tryAgain") });
     } finally {
       setBusy(null);
     }
@@ -161,57 +164,27 @@ export default function TemplatesSection({
         transition={{ duration: 0.6 }}
         className="py-12 md:py-16"
       >
-        <SectionHeading>Resume Templates</SectionHeading>
+        <SectionHeading>{t("tpl.heading")}</SectionHeading>
 
         {!minimal && (
           <p className="mb-8 md:mb-10 text-center text-sm md:text-base text-foreground/65 font-['Rubik'] text-balance max-w-2xl mx-auto">
-            Pick a design, preview the exact PDF, then export it.
+            {t("tpl.subFull")}
           </p>
         )}
         {minimal && (
           <p className="mb-8 md:mb-10 text-center text-sm md:text-base text-foreground/65 font-['Rubik'] text-balance max-w-2xl mx-auto">
-            Every layout exports to a clean, print-ready PDF.
+            {t("tpl.subMinimal")}
           </p>
         )}
 
-        <div className="mb-8 md:mb-10 flex flex-col items-center gap-2">
-          <span className="text-[11px] uppercase tracking-[0.2em] text-foreground/45 font-['Rubik']">
-            Resume language
-          </span>
-          <div
-            className="inline-flex rounded-full border border-foreground/15 p-1"
-            role="group"
-            aria-label="Resume language"
-          >
-            {cvLocales.map((l) => {
-              const active = locale === l.id;
-              return (
-                <button
-                  key={l.id}
-                  type="button"
-                  onClick={() => setLocale(l.id)}
-                  aria-pressed={active}
-                  className={`rounded-full px-4 py-1.5 text-sm font-medium font-['Rubik'] transition-colors ${
-                    active
-                      ? "bg-foreground text-background"
-                      : "text-foreground/60 hover:text-foreground"
-                  }`}
-                >
-                  {l.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {cvTemplates.map((t) => {
-            const isSelected = selected === t.id;
+          {cvTemplates.map((tpl) => {
+            const isSelected = selected === tpl.id;
             return (
-              <div key={t.id} className="flex flex-col">
+              <div key={tpl.id} className="flex flex-col">
                 <button
                   type="button"
-                  onClick={() => selectTemplate(t.id)}
+                  onClick={() => selectTemplate(tpl.id)}
                   aria-pressed={isSelected}
                   className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
                     isSelected
@@ -219,17 +192,17 @@ export default function TemplatesSection({
                       : "ring-1 ring-foreground/10 hover:ring-foreground/30"
                   }`}
                 >
-                  <Thumbnail id={t.id} />
+                  <Thumbnail id={tpl.id} />
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => selectTemplate(t.id)}
+                  onClick={() => selectTemplate(tpl.id)}
                   aria-pressed={isSelected}
                   className="w-full mt-0 sm:mt-4 flex items-start justify-between gap-3 text-left"
                 >
                   <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
-                    {t.name}
+                    {tpl.name}
                   </h3>
                   {isSelected && (
                     <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
@@ -238,24 +211,24 @@ export default function TemplatesSection({
                   )}
                 </button>
                 <div className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] mt-0.5">
-                  {t.tagline}
+                  {tpl.tagline}
                 </div>
                 <p className="mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed">
-                  {t.description}
+                  {tpl.description}
                 </p>
 
                 <button
                   type="button"
-                  onClick={() => openPreview(t.id)}
+                  onClick={() => openPreview(tpl.id)}
                   disabled={busy !== null}
                   className="mt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
                 >
-                  {busy === "preview" && previewFor !== t.id ? (
+                  {busy === "preview" && previewFor !== tpl.id ? (
                     <Loader2 size={15} className="animate-spin" />
                   ) : (
                     <Eye size={15} />
                   )}
-                  Preview
+                  {t("tpl.preview")}
                 </button>
               </div>
             );
@@ -265,13 +238,13 @@ export default function TemplatesSection({
         {!minimal && (
           <div className="mt-10 md:mt-12 rounded-lg border border-foreground/10 p-5 md:p-6">
             <h3 className="text-[11px] md:text-xs uppercase tracking-[0.2em] text-foreground/50 font-['Rubik']">
-              Export options
+              {t("tpl.exportOptions")}
             </h3>
 
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
               <div>
                 <span className="block text-sm font-medium text-foreground/80 font-['Rubik']">
-                  Paper size
+                  {t("tpl.paperSize")}
                 </span>
                 <div className="mt-3 flex gap-2" role="group" aria-label="Paper size">
                   {PAGE_FORMATS.map((f) => {
@@ -300,8 +273,8 @@ export default function TemplatesSection({
 
               <div className="space-y-4">
                 {[
-                  { id: "side", label: "Side margins", value: marginX, set: setMarginX },
-                  { id: "top", label: "Top / bottom margins", value: marginY, set: setMarginY },
+                  { id: "side", label: t("tpl.marginsSide"), value: marginX, set: setMarginX },
+                  { id: "top", label: t("tpl.marginsTop"), value: marginY, set: setMarginY },
                 ].map((m) => (
                   <div key={m.id}>
                     <label
@@ -328,7 +301,7 @@ export default function TemplatesSection({
                   onClick={resetMargins}
                   className="text-xs text-foreground/50 hover:text-foreground transition-colors font-['Rubik'] underline underline-offset-4"
                 >
-                  Reset to 18 mm
+                  {t("tpl.reset")}
                 </button>
               </div>
             </div>
@@ -345,11 +318,11 @@ export default function TemplatesSection({
             >
               {busy === "download" ? (
                 <>
-                  <Loader2 size={16} className="animate-spin" /> Generating…
+                  <Loader2 size={16} className="animate-spin" /> {t("tpl.generating")}
                 </>
               ) : (
                 <>
-                  <Download size={16} /> Export {cvTemplates.find((t) => t.id === selected)?.name} PDF ({format === "a4" ? "A4" : "Letter"})
+                  <Download size={16} /> {t("tpl.exportPdf")} · {cvTemplates.find((tpl) => tpl.id === selected)?.name} ({format === "a4" ? "A4" : "Letter"})
                 </>
               )}
             </button>
@@ -360,12 +333,10 @@ export default function TemplatesSection({
             to="/app"
             className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-bold font-['Rubik'] transition-transform hover:scale-[1.02]"
           >
-            Build your own {locale === "lt" ? "Lithuanian CV" : "resume"}
+            {t("tpl.build")}
           </Link>
           <p className="text-xs text-foreground/50 font-['Rubik']">
-            {locale === "lt"
-              ? "Pildykite lietuviškai - antraštės, mėnesiai ir datos verčiamos automatiškai."
-              : "Fill in your details once - switch language or template any time."}
+            {t("tpl.buildNote")}
           </p>
         </div>
       </motion.section>
@@ -384,7 +355,7 @@ export default function TemplatesSection({
           >
             <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-foreground/10">
               <div className="font-['Rubik'] text-sm md:text-base font-medium text-foreground">
-                {cvTemplates.find((t) => t.id === previewFor)?.name} - {activeResume.personal.name}
+                {cvTemplates.find((x) => x.id === previewFor)?.name} - {activeResume.personal.name}
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -392,7 +363,7 @@ export default function TemplatesSection({
                   disabled={busy !== null}
                   className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-4 py-2 text-xs md:text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik'] disabled:opacity-70"
                 >
-                  <Download size={14} /> Export
+                  <Download size={14} /> {t("tpl.export")}
                 </button>
                 <button
                   onClick={closePreview}

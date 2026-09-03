@@ -3,11 +3,14 @@ import { Check, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import SiteLayout from "@/components/SiteLayout";
-import { plans } from "@/lib/plans";
+import { localizePlans } from "@/lib/plans";
+import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Pricing() {
   const { user, isPro, subscription } = useAuth();
+  const { t } = useI18n();
+  const plans = localizePlans(t);
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
 
@@ -29,10 +32,9 @@ export default function Pricing() {
   return (
     <SiteLayout>
       <section className="w-full max-w-5xl mx-auto px-5 sm:px-8 md:px-12 py-16 md:py-20 font-['Rubik']">
-        <h1 className="text-3xl md:text-5xl font-bold tracking-tight uppercase">Simple pricing</h1>
+        <h1 className="text-3xl md:text-5xl font-bold tracking-tight uppercase">{t("pricing.h1")}</h1>
         <p className="mt-4 max-w-xl text-sm md:text-base text-foreground/65">
-          Start free with one resume. Upgrade when you are applying to several roles and want every template, paper size
-          and margin control.
+          {t("pricing.lede")}
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -49,7 +51,7 @@ export default function Pricing() {
                   <h2 className="text-lg font-medium">{plan.name}</h2>
                   {current && (
                     <span className="rounded-full border border-foreground/20 px-3 py-1 text-xs text-foreground/60">
-                      Current plan
+                      {t("pricing.current")}
                     </span>
                   )}
                 </div>
@@ -73,14 +75,14 @@ export default function Pricing() {
                     className="mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground text-background px-5 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors disabled:opacity-60"
                   >
                     {busy && <Loader2 size={16} className="animate-spin" />}
-                    {isPro ? "You're on Pro" : plan.cta}
+                    {isPro ? t("pricing.onPro") : plan.cta}
                   </button>
                 ) : (
                   <Link
                     to={user ? "/app" : "/auth?mode=signup"}
                     className="mt-8 inline-flex w-full items-center justify-center rounded-full border border-foreground/20 px-5 py-3 text-sm font-medium hover:border-foreground/50 transition-colors"
                   >
-                    {user ? "Go to my resumes" : plan.cta}
+                    {user ? t("pricing.goToResumes") : plan.cta}
                   </Link>
                 )}
               </div>
@@ -90,7 +92,7 @@ export default function Pricing() {
 
         {subscription.currentPeriodEnd && (
           <p className="mt-8 text-sm text-foreground/55">
-            Your Pro access runs until {new Date(subscription.currentPeriodEnd).toLocaleDateString()}.
+            {t("pricing.until")} {new Date(subscription.currentPeriodEnd).toLocaleDateString()}.
           </p>
         )}
       </section>
