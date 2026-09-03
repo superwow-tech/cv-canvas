@@ -102,7 +102,7 @@ export default function TemplatesSection({
 
   const selectTemplate = (id: CvTemplateId) => {
     setSelected(id);
-    const templateLocale = cvTemplates.find((t) => t.id === id)?.locale;
+    const templateLocale = cvTemplates.find((x) => x.id === id)?.locale;
     if (templateLocale) setLocale(templateLocale);
   };
 
@@ -178,13 +178,13 @@ export default function TemplatesSection({
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {cvTemplates.map((t) => {
-            const isSelected = selected === t.id;
+          {cvTemplates.map((tpl) => {
+            const isSelected = selected === tpl.id;
             return (
-              <div key={t.id} className="flex flex-col">
+              <div key={tpl.id} className="flex flex-col">
                 <button
                   type="button"
-                  onClick={() => selectTemplate(t.id)}
+                  onClick={() => selectTemplate(tpl.id)}
                   aria-pressed={isSelected}
                   className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
                     isSelected
@@ -192,17 +192,17 @@ export default function TemplatesSection({
                       : "ring-1 ring-foreground/10 hover:ring-foreground/30"
                   }`}
                 >
-                  <Thumbnail id={t.id} />
+                  <Thumbnail id={tpl.id} />
                 </button>
 
                 <button
                   type="button"
-                  onClick={() => selectTemplate(t.id)}
+                  onClick={() => selectTemplate(tpl.id)}
                   aria-pressed={isSelected}
                   className="w-full mt-0 sm:mt-4 flex items-start justify-between gap-3 text-left"
                 >
                   <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
-                    {t.name}
+                    {tpl.name}
                   </h3>
                   {isSelected && (
                     <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
@@ -211,19 +211,19 @@ export default function TemplatesSection({
                   )}
                 </button>
                 <div className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] mt-0.5">
-                  {t.tagline}
+                  {tpl.tagline}
                 </div>
                 <p className="mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed">
-                  {t.description}
+                  {tpl.description}
                 </p>
 
                 <button
                   type="button"
-                  onClick={() => openPreview(t.id)}
+                  onClick={() => openPreview(tpl.id)}
                   disabled={busy !== null}
                   className="mt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
                 >
-                  {busy === "preview" && previewFor !== t.id ? (
+                  {busy === "preview" && previewFor !== tpl.id ? (
                     <Loader2 size={15} className="animate-spin" />
                   ) : (
                     <Eye size={15} />
@@ -355,7 +355,7 @@ export default function TemplatesSection({
           >
             <div className="flex items-center justify-between gap-4 px-4 py-3 border-b border-foreground/10">
               <div className="font-['Rubik'] text-sm md:text-base font-medium text-foreground">
-                {cvTemplates.find((t) => t.id === previewFor)?.name} - {activeResume.personal.name}
+                {cvTemplates.find((x) => x.id === previewFor)?.name} - {activeResume.personal.name}
               </div>
               <div className="flex items-center gap-2">
                 <button
