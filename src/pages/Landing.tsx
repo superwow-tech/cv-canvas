@@ -3,32 +3,21 @@ import { motion } from "framer-motion";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import SiteLayout from "@/components/SiteLayout";
 import TemplatesSection from "@/components/sections/TemplatesSection";
-import { plans, product } from "@/lib/plans";
+import { localizePlans, product } from "@/lib/plans";
+import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/hooks/useAuth";
 
-const steps = [
-  { n: "1", title: "Fill in the wizard", body: "Answer plain questions. The live preview updates as you type." },
-  { n: "2", title: "Pick a design", body: "Three editorial layouts that look great on every screen." },
-  { n: "3", title: "Share your page", body: "Get a link you can send to recruiters, then download a print-ready PDF whenever you need it." },
+const stepKeys = [
+  { n: "1", title: "landing.step1.title", body: "landing.step1.body" },
+  { n: "2", title: "landing.step2.title", body: "landing.step2.body" },
+  { n: "3", title: "landing.step3.title", body: "landing.step3.body" },
 ];
 
-const faqs = [
-  {
-    q: "Is the free plan really free?",
-    a: "Yes. One saved resume, the Timeline template and unlimited A4 exports, with no card required.",
-  },
-  {
-    q: "Are the PDFs ATS-friendly?",
-    a: "They use real text (not images), standard fonts and a single-column structure, so parsers read them cleanly.",
-  },
-  {
-    q: "Can I keep several versions?",
-    a: "On Pro you can save unlimited resumes and duplicate any of them to tailor per application.",
-  },
-  {
-    q: "Who owns my data?",
-    a: "You do. Your resumes are private to your account and you can delete them at any time.",
-  },
+const faqKeys = [
+  { q: "landing.faq1.q", a: "landing.faq1.a" },
+  { q: "landing.faq2.q", a: "landing.faq2.a" },
+  { q: "landing.faq3.q", a: "landing.faq3.a" },
+  { q: "landing.faq4.q", a: "landing.faq4.a" },
 ];
 
 const fadeUp = {
@@ -40,6 +29,10 @@ const fadeUp = {
 
 export default function Landing() {
   const { user } = useAuth();
+  const { t } = useI18n();
+  const plans = localizePlans(t);
+  const steps = stepKeys.map((s) => ({ n: s.n, title: t(s.title), body: t(s.body) }));
+  const faqs = faqKeys.map((f) => ({ q: t(f.q), a: t(f.a) }));
   const primaryTo = user ? "/app" : "/auth?mode=signup";
 
   const jsonLd = {
@@ -69,7 +62,7 @@ export default function Landing() {
             transition={{ duration: 0.4 }}
             className="inline-block rounded-full bg-border/70 px-3 py-1 font-display text-[10px] font-bold uppercase tracking-[0.2em]"
           >
-            Resume builder
+            {t("landing.badge")}
           </motion.span>
 
           <motion.h1
@@ -78,7 +71,7 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.05 }}
             className="mt-6 font-display text-[clamp(2.6rem,7vw,4.5rem)] font-bold leading-[0.95] tracking-tighter text-balance"
           >
-            Portfolio-quality resumes in minutes
+            {t("landing.h1")}
           </motion.h1>
 
           <motion.p
@@ -87,8 +80,7 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-8 mx-auto max-w-2xl text-lg md:text-xl leading-relaxed text-foreground/70 text-balance"
           >
-            {product.name} turns your career story into a shareable online resume page. A guided wizard, a live
-            preview, and three editorial-grade designs — with a print-ready PDF whenever you need it.
+            {t("landing.lede")}
           </motion.p>
 
           <motion.div
@@ -101,17 +93,17 @@ export default function Landing() {
               to="/example"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02]"
             >
-              See a sample resume <ExternalLink size={16} />
+              {t("landing.ctaSample")} <ExternalLink size={16} />
             </Link>
             <Link
               to={primaryTo}
               className="inline-flex items-center justify-center rounded-full border border-border px-8 py-4 text-sm font-bold transition-colors hover:bg-border/30"
             >
-              Build my resume free
+              {t("landing.ctaBuild")}
             </Link>
           </motion.div>
 
-          <p className="mt-6 text-xs font-medium text-foreground/50">No card required</p>
+          <p className="mt-6 text-xs font-medium text-foreground/50">{t("landing.noCard")}</p>
         </div>
       </section>
 
@@ -119,7 +111,7 @@ export default function Landing() {
       <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...fadeUp} className="font-display text-4xl font-bold tracking-tight">
-            How it works
+            {t("landing.how")}
           </motion.h2>
           <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-12">
             {steps.map((s, i) => (
@@ -148,14 +140,14 @@ export default function Landing() {
         <div className="px-5 sm:px-8 pt-20 md:pt-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <h2 className="font-display text-4xl font-bold tracking-tight">Resume templates</h2>
-              <p className="mt-4 text-foreground/70">Proven layouts optimised for readability.</p>
+              <h2 className="font-display text-4xl font-bold tracking-tight">{t("landing.templates")}</h2>
+              <p className="mt-4 text-foreground/70">{t("landing.templatesBody")}</p>
             </div>
             <Link
               to="/example"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-bold transition-transform hover:scale-[1.02]"
             >
-              See the sample resume <ExternalLink size={16} />
+              {t("landing.ctaSample2")} <ExternalLink size={16} />
             </Link>
           </div>
         </div>
@@ -166,8 +158,8 @@ export default function Landing() {
       <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
         <div className="max-w-4xl mx-auto">
           <motion.div {...fadeUp} className="text-center">
-            <h2 className="font-display text-4xl font-bold tracking-tight">Simple pricing</h2>
-            <p className="mt-4 text-foreground/70">Everything you need, nothing you don't.</p>
+            <h2 className="font-display text-4xl font-bold tracking-tight">{t("landing.pricing")}</h2>
+            <p className="mt-4 text-foreground/70">{t("landing.pricingBody")}</p>
           </motion.div>
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -219,7 +211,7 @@ export default function Landing() {
       <section className="border-b border-border px-5 sm:px-8 py-20 md:py-24">
         <div className="max-w-7xl mx-auto">
           <motion.h2 {...fadeUp} className="font-display text-4xl font-bold tracking-tight">
-            Questions
+            {t("landing.faq")}
           </motion.h2>
           <dl className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
             {faqs.map((f) => (
@@ -248,7 +240,7 @@ export default function Landing() {
             to={primaryTo}
             className="mt-10 inline-flex items-center gap-2 rounded-full bg-mint text-foreground px-8 py-4 text-sm font-bold transition-transform hover:scale-[1.02]"
           >
-            Get started <ArrowRight size={16} />
+            {t("landing.getStarted")} <ArrowRight size={16} />
           </Link>
         </motion.div>
       </section>
