@@ -345,6 +345,25 @@ export default function TemplatesSection({
                   ) : (
                     <Download size={14} />
                   )}
+                  {t("tpl.downloadCv")}
+                </button>
+                <button
+                  onClick={closePreview}
+                  aria-label="Close preview"
+                  className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-foreground/20 text-foreground/70 hover:text-foreground hover:border-foreground/60 transition-colors"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto bg-foreground/[0.03]">
+              <div className="mx-auto max-w-2xl my-4 md:my-6 rounded-md border border-foreground/10 bg-background shadow-sm overflow-hidden">
+                <ResumeWebPreview resume={activeResume} template={previewFor} locale={locale} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
