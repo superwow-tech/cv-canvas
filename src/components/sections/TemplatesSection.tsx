@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { cvTemplates, defaultTemplateId, type CvTemplateId } from "@/lib/cv-templates";
 import { sampleResume } from "@/data/sample-resume";
 import type { ResumeDocument } from "@/lib/resume-schema";
-import PdfPreviewFrame from "@/components/PdfPreviewFrame";
+import ResumeWebPreview from "@/components/ResumeWebPreview";
 import { Link } from "react-router-dom";
 import type { CvLocale } from "@/lib/cv-locale";
 import { useI18n } from "@/lib/i18n";
@@ -37,7 +37,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 /** Miniature paper preview approximating each PDF template. */
 function Thumbnail({ id }: { id: CvTemplateId }) {
   const centered = id === "classic";
-  const ruled = id === "timeline" || id === "lithuanian";
+  const ruled = id === "timeline";
   const airy = id === "minimal";
   const bar = (w: string, tone = "bg-foreground/15") => (
     <span className={`block h-[3px] rounded-full ${tone}`} style={{ width: w }} />
@@ -87,9 +87,8 @@ export default function TemplatesSection({
   const locale: CvLocale = lang;
   const setLocale = setLang;
   const [selected, setSelected] = useState<CvTemplateId>(defaultTemplateId);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [previewFor, setPreviewFor] = useState<CvTemplateId | null>(null);
-  const [busy, setBusy] = useState<"preview" | "download" | null>(null);
+  const [busy, setBusy] = useState<"download" | null>(null);
   const [format, setFormat] = useState<PageFormat>("a4");
   const [marginX, setMarginX] = useState(18);
   const [marginY, setMarginY] = useState(18);
@@ -106,29 +105,12 @@ export default function TemplatesSection({
     if (templateLocale) setLocale(templateLocale);
   };
 
-  const openPreview = async (id: CvTemplateId) => {
-    if (busy) return;
-    setBusy("preview");
-    try {
-      const { generateCVBlob } = await import("@/lib/generate-cv");
-      const blob = await generateCVBlob(activeResume, id, exportOptions);
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setPreviewUrl(URL.createObjectURL(blob));
-      setPreviewFor(id);
-      selectTemplate(id);
-    } catch (error) {
-      console.error("Preview failed:", error);
-      toast.error(t("tpl.previewFail"), { description: t("tpl.tryAgain") });
-    } finally {
-      setBusy(null);
-    }
+  const openPreview = (id: CvTemplateId) => {
+    selectTemplate(id);
+    setPreviewFor(id);
   };
 
-  const closePreview = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setPreviewUrl(null);
-    setPreviewFor(null);
-  };
+  const closePreview = () => setPreviewFor(null);
 
   const download = async (id: CvTemplateId) => {
     if (busy) return;
@@ -220,14 +202,9 @@ export default function TemplatesSection({
                 <button
                   type="button"
                   onClick={() => openPreview(tpl.id)}
-                  disabled={busy !== null}
                   className="mt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
                 >
-                  {busy === "preview" && previewFor !== tpl.id ? (
-                    <Loader2 size={15} className="animate-spin" />
-                  ) : (
-                    <Eye size={15} />
-                  )}
+                  <Eye size={15} />
                   {t("tpl.preview")}
                 </button>
               </div>
@@ -341,12 +318,12 @@ export default function TemplatesSection({
         </div>
       </motion.section>
 
-      {previewUrl && (
+      {previewFor && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60 p-4 md:p-8"
           role="dialog"
           aria-modal="true"
-          aria-label="Resume preview"
+          aria-label={t("tpl.onlinePreview")}
           onClick={closePreview}
         >
           <div
@@ -363,7 +340,12 @@ export default function TemplatesSection({
                   disabled={busy !== null}
                   className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-4 py-2 text-xs md:text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik'] disabled:opacity-70"
                 >
-                  <Download size={14} /> {t("tpl.export")}
+                  {busy === "download" ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Download size={14} />
+                  )}
+                  {t("tpl.downloadCv")}
                 </button>
                 <button
                   onClick={closePreview}
@@ -374,7 +356,11 @@ export default function TemplatesSection({
                 </button>
               </div>
             </div>
-            <PdfPreviewFrame url={previewUrl} className="flex-1 w-full bg-foreground/5" />
+            <div className="flex-1 overflow-y-auto bg-foreground/[0.03]">
+              <div className="mx-auto max-w-2xl my-4 md:my-6 rounded-md border border-foreground/10 bg-background shadow-sm overflow-hidden">
+                <ResumeWebPreview resume={activeResume} template={previewFor} locale={locale} />
+              </div>
+            </div>
           </div>
         </div>
       )}
