@@ -41,8 +41,7 @@ export default function Landing() {
     name: product.name,
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
-    description:
-      "Applyo builds beautiful shareable online resume pages and print-ready PDFs from a guided wizard.",
+    description: "Applyo builds beautiful shareable online resume pages and print-ready PDFs from a guided wizard.",
     offers: [
       { "@type": "Offer", price: "0", priceCurrency: "EUR", name: "Free" },
       { "@type": "Offer", price: "6", priceCurrency: "EUR", name: "Pro" },
@@ -133,25 +132,6 @@ export default function Landing() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* TEMPLATES — tinted band */}
-      <section id="templates" className="border-b border-border bg-border/20 scroll-mt-20">
-        <div className="px-5 sm:px-8 pt-20 md:pt-24">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <div>
-              <h2 className="font-display text-4xl font-bold tracking-tight">{t("landing.templates")}</h2>
-              <p className="mt-4 text-foreground/70">{t("landing.templatesBody")}</p>
-            </div>
-            <Link
-              to="/example"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-sm font-bold transition-transform hover:scale-[1.02]"
-            >
-              {t("landing.ctaSample2")} <ExternalLink size={16} />
-            </Link>
-          </div>
-        </div>
-        <TemplatesSection minimal />
       </section>
 
       {/* PRICING */}
