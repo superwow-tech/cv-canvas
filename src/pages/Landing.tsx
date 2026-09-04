@@ -136,7 +136,7 @@ export default function Landing() {
 
       {/* TEMPLATES — tinted band */}
       <section id="templates" className="border-b border-border bg-border/20 scroll-mt-20">
-        <div className="px-5 sm:px-8 pt-20 md:pt-24">
+        {/* <div className="px-5 sm:px-8 pt-20 md:pt-24">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
               <h2 className="font-display text-4xl font-bold tracking-tight">{t("landing.templates")}</h2>
@@ -149,7 +149,7 @@ export default function Landing() {
               {t("landing.ctaSample2")} <ExternalLink size={16} />
             </Link>
           </div>
-        </div>
+        </div> */}
         <TemplatesSection minimal />
       </section>
 
