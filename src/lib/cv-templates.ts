@@ -5,7 +5,7 @@ import type { CvLocale } from "@/lib/cv-locale";
  * Each template shares the same data model but renders its own PDF styling.
  */
 
-export type CvTemplateId = "timeline" | "classic" | "minimal" | "lithuanian";
+export type CvTemplateId = "timeline" | "classic" | "minimal";
 
 export interface CvTemplateStyle {
   /** Header block alignment */
@@ -37,24 +37,6 @@ export interface CvTemplate {
 }
 
 export const cvTemplates: CvTemplate[] = [
-  {
-    id: "lithuanian",
-    name: "Lietuviškas",
-    tagline: "Gyvenimo aprašymas",
-    description:
-      "Lithuanian-language CV with local section headings, month names and formal header - ready for the Baltic job market.",
-    locale: "lt",
-    style: {
-      headerAlign: "left",
-      nameSize: 26,
-      bodySize: 10,
-      sectionHeader: "rule",
-      sectionUppercase: true,
-      accent: "#c7cdd4",
-      margin: 20,
-      spacing: 1.05,
-    },
-  },
   {
     id: "timeline",
     name: "Timeline",

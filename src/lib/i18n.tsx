@@ -93,8 +93,10 @@ const en: Dict = {
 
   // Templates section
   "tpl.heading": "Resume Templates",
-  "tpl.subFull": "Pick a design, preview the exact PDF, then export it.",
-  "tpl.subMinimal": "Every layout exports to a clean, print-ready PDF.",
+  "tpl.subFull": "Pick a design, preview the online resume, then download the PDF.",
+  "tpl.subMinimal": "Preview each design as a live online resume - download the PDF any time.",
+  "tpl.downloadCv": "Download CV",
+  "tpl.onlinePreview": "Online resume preview",
   "tpl.preview": "Preview",
   "tpl.exportOptions": "Export options",
   "tpl.paperSize": "Paper size",
@@ -193,8 +195,10 @@ const lt: Dict = {
   "plan.pro.cta": "Rinktis Pro",
 
   "tpl.heading": "CV šablonai",
-  "tpl.subFull": "Pasirinkite dizainą, peržiūrėkite tikrą PDF ir atsisiųskite.",
-  "tpl.subMinimal": "Kiekvienas maketas eksportuojamas į tvarkingą, spausdinimui paruoštą PDF.",
+  "tpl.subFull": "Pasirinkite dizainą, peržiūrėkite internetinį CV ir atsisiųskite PDF.",
+  "tpl.subMinimal": "Peržiūrėkite kiekvieną dizainą kaip internetinį CV - PDF atsisiųskite bet kada.",
+  "tpl.downloadCv": "Atsisiųsti CV",
+  "tpl.onlinePreview": "Internetinio CV peržiūra",
   "tpl.preview": "Peržiūra",
   "tpl.exportOptions": "Eksporto nustatymai",
   "tpl.paperSize": "Lapo formatas",

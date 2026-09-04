@@ -51,7 +51,7 @@ export const localizePlans = (t: (key: string) => string): Plan[] =>
   }));
 
 export const FREE_RESUME_LIMIT = 1;
-export const FREE_TEMPLATES: CvTemplateId[] = ["timeline", "lithuanian"];
+export const FREE_TEMPLATES: CvTemplateId[] = ["timeline"];
 
 export const canUseTemplate = (isPro: boolean, id: CvTemplateId) =>
   isPro || FREE_TEMPLATES.includes(id);
