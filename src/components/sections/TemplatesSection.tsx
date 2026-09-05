@@ -164,38 +164,46 @@ export default function TemplatesSection({
             const isSelected = selected === tpl.id;
             return (
               <div key={tpl.id} className="flex flex-col h-full">
-                <button
-                  type="button"
-                  onClick={() => selectTemplate(tpl.id)}
-                  aria-pressed={isSelected}
-                  className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
-                    isSelected
-                      ? "ring-2 ring-foreground/70 bg-foreground/[0.03]"
-                      : "ring-1 ring-foreground/10 hover:ring-foreground/30"
-                  }`}
-                >
-                  <Thumbnail id={tpl.id} />
-                </button>
-
-                <div className="flex-1 flex flex-col mt-4">
+                {!minimal && (
                   <button
                     type="button"
                     onClick={() => selectTemplate(tpl.id)}
                     aria-pressed={isSelected}
-                    className="w-full flex items-center justify-between gap-3 text-left min-h-[28px] md:min-h-[32px]"
+                    className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
+                      isSelected
+                        ? "ring-2 ring-foreground/70 bg-foreground/[0.03]"
+                        : "ring-1 ring-foreground/10 hover:ring-foreground/30"
+                    }`}
                   >
-                    <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
+                    <Thumbnail id={tpl.id} />
+                  </button>
+                )}
+
+                <div className={`flex-1 flex flex-col ${minimal ? "" : "mt-4"}`}>
+                  {!minimal ? (
+                    <button
+                      type="button"
+                      onClick={() => selectTemplate(tpl.id)}
+                      aria-pressed={isSelected}
+                      className="w-full flex items-center justify-between gap-3 text-left min-h-[28px] md:min-h-[32px]"
+                    >
+                      <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
+                        {tpl.name}
+                      </h3>
+                      {isSelected ? (
+                        <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
+                          <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
+                        </span>
+                      ) : (
+                        <span className="inline-flex shrink-0 w-5 h-5 sm:w-6 sm:h-6" aria-hidden />
+                      )}
+                    </button>
+                  ) : (
+                    <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik'] min-h-[28px] md:min-h-[32px] flex items-center">
                       {tpl.name}
                     </h3>
-                    {isSelected ? (
-                      <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
-                        <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
-                      </span>
-                    ) : (
-                      <span className="inline-flex shrink-0 w-5 h-5 sm:w-6 sm:h-6" aria-hidden />
-                    )}
-                  </button>
-                  <div className="text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] mt-1 min-h-[2.5em] leading-[1.25em]">
+                  )}
+                  <div className={`text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] min-h-[2.5em] leading-[1.25em] ${minimal ? "" : "mt-1"}`}>
                     {tpl.tagline}
                   </div>
                   <p className="flex-1 mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed">
@@ -203,14 +211,25 @@ export default function TemplatesSection({
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => openPreview(tpl.id)}
-                  className="mt-auto pt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
-                >
-                  <Eye size={15} />
-                  {t("tpl.preview")}
-                </button>
+                {minimal ? (
+                  <button
+                    type="button"
+                    onClick={() => openPreview(tpl.id)}
+                    className="mt-auto pt-4 self-start inline-flex items-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/[0.03] transition-colors font-['Rubik']"
+                  >
+                    <Eye size={15} />
+                    {t("tpl.preview")}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => openPreview(tpl.id)}
+                    className="mt-auto pt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
+                  >
+                    <Eye size={15} />
+                    {t("tpl.preview")}
+                  </button>
+                )}
               </div>
             );
           })}
