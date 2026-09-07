@@ -159,11 +159,18 @@ export default function TemplatesSection({
           </p>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-stretch">
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch ${minimal ? "gap-4 md:gap-6" : "gap-6 md:gap-8"}`}>
           {cvTemplates.map((tpl) => {
             const isSelected = selected === tpl.id;
             return (
-              <div key={tpl.id} className="flex flex-col h-full">
+              <div
+                key={tpl.id}
+                className={
+                  minimal
+                    ? "flex flex-col h-full rounded-xl border border-foreground/10 bg-background/60 p-5 md:p-6 transition-colors hover:border-foreground/25"
+                    : "flex flex-col h-full"
+                }
+              >
                 {!minimal && (
                   <button
                     type="button"
@@ -199,14 +206,26 @@ export default function TemplatesSection({
                       )}
                     </button>
                   ) : (
-                    <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik'] min-h-[28px] md:min-h-[32px] flex items-center">
+                    <h3 className="text-lg font-semibold text-foreground font-['Rubik'] leading-tight">
                       {tpl.name}
                     </h3>
                   )}
-                  <div className={`text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] min-h-[2.5em] leading-[1.25em] ${minimal ? "" : "mt-1"}`}>
+                  <div
+                    className={
+                      minimal
+                        ? "mt-1.5 text-[11px] uppercase tracking-[0.18em] text-foreground/45 font-['Rubik']"
+                        : "mt-1 text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] min-h-[2.5em] leading-[1.25em]"
+                    }
+                  >
                     {tpl.tagline}
                   </div>
-                  <p className="flex-1 mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed">
+                  <p
+                    className={
+                      minimal
+                        ? "flex-1 mt-3 text-sm text-foreground/65 font-['Rubik'] leading-relaxed"
+                        : "flex-1 mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed"
+                    }
+                  >
                     {tpl.description}
                   </p>
                 </div>
@@ -215,9 +234,9 @@ export default function TemplatesSection({
                   <button
                     type="button"
                     onClick={() => openPreview(tpl.id)}
-                    className="mt-auto pt-4 self-start inline-flex items-center gap-2 rounded-full border border-foreground/20 px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground hover:border-foreground/40 hover:bg-foreground/[0.03] transition-colors font-['Rubik']"
+                    className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-4 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
                   >
-                    <Eye size={15} />
+                    <Eye size={16} />
                     {t("tpl.preview")}
                   </button>
                 ) : (
