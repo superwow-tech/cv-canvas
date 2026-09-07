@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import SiteLayout from "@/components/SiteLayout";
-import PdfPreviewFrame from "@/components/PdfPreviewFrame";
+import ResumeWebPreview from "@/components/ResumeWebPreview";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { canUseTemplate } from "@/lib/plans";
@@ -76,7 +76,7 @@ export default function ResumeEditor() {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  
   const dirty = useRef(false);
 
   // Load
@@ -147,29 +147,6 @@ export default function ResumeEditor() {
     [format, marginX, marginY, locale]
   );
 
-  // Live PDF preview, debounced.
-  useEffect(() => {
-    if (!resume) return;
-    let cancelled = false;
-    let url: string | null = null;
-    const t = setTimeout(async () => {
-      try {
-        const blob = await generateCVBlob(resume, template, exportOptions);
-        if (cancelled) return;
-        url = URL.createObjectURL(blob);
-        setPreviewUrl((prev) => {
-          if (prev) URL.revokeObjectURL(prev);
-          return url;
-        });
-      } catch (error) {
-        console.error("Preview failed", error);
-      }
-    }, 600);
-    return () => {
-      cancelled = true;
-      clearTimeout(t);
-    };
-  }, [resume, template, exportOptions]);
 
   const handleDownload = async () => {
     if (!resume) return;
@@ -583,11 +560,10 @@ export default function ResumeEditor() {
           <aside className="lg:sticky lg:top-24 h-fit">
             <p className="text-xs uppercase tracking-widest text-foreground/55">Live preview</p>
             <div className="mt-3 rounded-xl border border-foreground/15 overflow-hidden bg-foreground/[0.03]">
-              {previewUrl ? (
-                <PdfPreviewFrame
-                  url={previewUrl}
-                  className="w-full h-[520px] lg:h-[720px] bg-white"
-                />
+              {resume ? (
+                <div className="w-full h-[520px] lg:h-[720px] overflow-y-auto bg-background">
+                  <ResumeWebPreview resume={resume} template={template} locale={locale} />
+                </div>
               ) : (
                 <div className="h-[520px] grid place-items-center">
                   <Loader2 className="animate-spin text-foreground/35" />
