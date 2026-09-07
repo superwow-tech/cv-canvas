@@ -159,100 +159,98 @@ export default function TemplatesSection({
           </p>
         )}
 
-        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch ${minimal ? "gap-4 md:gap-6" : "gap-6 md:gap-8"}`}>
+        <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch ${minimal ? "gap-4 md:gap-5" : "gap-6 md:gap-8"}`}>
           {cvTemplates.map((tpl) => {
             const isSelected = selected === tpl.id;
+
+            if (minimal) {
+              return (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => openPreview(tpl.id)}
+                  aria-label={`${t("tpl.preview")} - ${tpl.name}`}
+                  className="group flex h-full flex-col rounded-xl border border-foreground/10 bg-background/70 p-4 md:p-5 text-left transition-all hover:border-foreground/30 hover:shadow-[0_8px_24px_-16px_hsl(var(--foreground)/0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+                >
+                  <div className="pointer-events-none mb-4 w-full overflow-hidden rounded-md">
+                    <Thumbnail id={tpl.id} />
+                  </div>
+
+                  <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik'] leading-tight">
+                    {tpl.name}
+                  </h3>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-foreground/45 font-['Rubik']">
+                    {tpl.tagline}
+                  </div>
+                  <p className="mt-2.5 flex-1 text-[13px] md:text-sm text-foreground/60 font-['Rubik'] leading-relaxed">
+                    {tpl.description}
+                  </p>
+
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-foreground font-['Rubik']">
+                    <Eye size={15} className="text-foreground/60 transition-colors group-hover:text-foreground" />
+                    <span className="border-b border-foreground/20 pb-0.5 transition-colors group-hover:border-foreground">
+                      {t("tpl.preview")}
+                    </span>
+                  </span>
+                </button>
+              );
+            }
+
             return (
-              <div
-                key={tpl.id}
-                className={
-                  minimal
-                    ? "flex flex-col h-full rounded-xl border border-foreground/10 bg-background/60 p-5 md:p-6 transition-colors hover:border-foreground/25"
-                    : "flex flex-col h-full"
-                }
-              >
-                {!minimal && (
+              <div key={tpl.id} className="flex flex-col h-full">
+                <button
+                  type="button"
+                  onClick={() => selectTemplate(tpl.id)}
+                  aria-pressed={isSelected}
+                  className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
+                    isSelected
+                      ? "ring-2 ring-foreground/70 bg-foreground/[0.03]"
+                      : "ring-1 ring-foreground/10 hover:ring-foreground/30"
+                  }`}
+                >
+                  <Thumbnail id={tpl.id} />
+                </button>
+
+                <div className="flex-1 flex flex-col mt-4">
                   <button
                     type="button"
                     onClick={() => selectTemplate(tpl.id)}
                     aria-pressed={isSelected}
-                    className={`hidden sm:block relative rounded-lg p-2 transition-all text-left ${
-                      isSelected
-                        ? "ring-2 ring-foreground/70 bg-foreground/[0.03]"
-                        : "ring-1 ring-foreground/10 hover:ring-foreground/30"
-                    }`}
+                    className="w-full flex items-center justify-between gap-3 text-left min-h-[28px] md:min-h-[32px]"
                   >
-                    <Thumbnail id={tpl.id} />
-                  </button>
-                )}
-
-                <div className={`flex-1 flex flex-col ${minimal ? "" : "mt-4"}`}>
-                  {!minimal ? (
-                    <button
-                      type="button"
-                      onClick={() => selectTemplate(tpl.id)}
-                      aria-pressed={isSelected}
-                      className="w-full flex items-center justify-between gap-3 text-left min-h-[28px] md:min-h-[32px]"
-                    >
-                      <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
-                        {tpl.name}
-                      </h3>
-                      {isSelected ? (
-                        <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
-                          <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
-                        </span>
-                      ) : (
-                        <span className="inline-flex shrink-0 w-5 h-5 sm:w-6 sm:h-6" aria-hidden />
-                      )}
-                    </button>
-                  ) : (
-                    <h3 className="text-lg font-semibold text-foreground font-['Rubik'] leading-tight">
+                    <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik']">
                       {tpl.name}
                     </h3>
-                  )}
-                  <div
-                    className={
-                      minimal
-                        ? "mt-1.5 text-[11px] uppercase tracking-[0.18em] text-foreground/45 font-['Rubik']"
-                        : "mt-1 text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] min-h-[2.5em] leading-[1.25em]"
-                    }
-                  >
+                    {isSelected ? (
+                      <span className="inline-flex shrink-0 items-center justify-center w-5 h-5 rounded-full bg-foreground text-background sm:w-6 sm:h-6">
+                        <Check size={12} className="sm:w-[14px] sm:h-[14px]" />
+                      </span>
+                    ) : (
+                      <span className="inline-flex shrink-0 w-5 h-5 sm:w-6 sm:h-6" aria-hidden />
+                    )}
+                  </button>
+                  <div className="mt-1 text-[11px] md:text-xs uppercase tracking-[0.15em] text-foreground/50 font-['Rubik'] min-h-[2.5em] leading-[1.25em]">
                     {tpl.tagline}
                   </div>
-                  <p
-                    className={
-                      minimal
-                        ? "flex-1 mt-3 text-sm text-foreground/65 font-['Rubik'] leading-relaxed"
-                        : "flex-1 mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed"
-                    }
-                  >
+                  <p className="flex-1 mt-2 text-sm text-foreground/65 font-['Rubik'] leading-relaxed">
                     {tpl.description}
                   </p>
                 </div>
 
-                {minimal ? (
-                  <button
-                    type="button"
-                    onClick={() => openPreview(tpl.id)}
-                    className="mt-5 w-full inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-4 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors font-['Rubik']"
-                  >
-                    <Eye size={16} />
-                    {t("tpl.preview")}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => openPreview(tpl.id)}
-                    className="mt-auto pt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
-                  >
-                    <Eye size={15} />
-                    {t("tpl.preview")}
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => openPreview(tpl.id)}
+                  className="mt-auto pt-3 self-start inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors font-['Rubik'] disabled:opacity-60"
+                >
+                  <Eye size={15} />
+                  {t("tpl.preview")}
+                </button>
               </div>
             );
           })}
         </div>
+
+
 
         {!minimal && (
           <div className="mt-10 md:mt-12 rounded-lg border border-foreground/10 p-5 md:p-6">
