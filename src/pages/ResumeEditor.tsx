@@ -560,11 +560,10 @@ export default function ResumeEditor() {
           <aside className="lg:sticky lg:top-24 h-fit">
             <p className="text-xs uppercase tracking-widest text-foreground/55">Live preview</p>
             <div className="mt-3 rounded-xl border border-foreground/15 overflow-hidden bg-foreground/[0.03]">
-              {previewUrl ? (
-                <PdfPreviewFrame
-                  url={previewUrl}
-                  className="w-full h-[520px] lg:h-[720px] bg-white"
-                />
+              {resume ? (
+                <div className="w-full h-[520px] lg:h-[720px] overflow-y-auto bg-background">
+                  <ResumeWebPreview resume={resume} template={template} locale={locale} />
+                </div>
               ) : (
                 <div className="h-[520px] grid place-items-center">
                   <Loader2 className="animate-spin text-foreground/35" />
