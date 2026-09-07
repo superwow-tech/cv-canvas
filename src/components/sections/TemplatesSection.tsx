@@ -35,13 +35,42 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 }
 
 /** Miniature paper preview approximating each PDF template. */
-function Thumbnail({ id }: { id: CvTemplateId }) {
+function Thumbnail({ id, compact = false }: { id: CvTemplateId; compact?: boolean }) {
   const centered = id === "classic";
   const ruled = id === "timeline";
   const airy = id === "minimal";
   const bar = (w: string, tone = "bg-foreground/15") => (
     <span className={`block h-[3px] rounded-full ${tone}`} style={{ width: w }} />
   );
+
+  if (compact) {
+    return (
+      <div className="h-full w-full overflow-hidden rounded-md border border-foreground/10 bg-background p-4 shadow-sm">
+        <div className={`flex flex-col ${centered ? "items-center" : "items-start"} gap-2`}>
+          <span
+            className={`block rounded-sm bg-foreground/75 ${ruled ? "h-2.5" : "h-2"}`}
+            style={{ width: centered ? "58%" : ruled ? "72%" : "52%" }}
+          />
+          {bar(centered ? "36%" : "42%", "bg-foreground/30")}
+          {bar(centered ? "64%" : "58%", "bg-foreground/12")}
+        </div>
+
+        {[0, 1].map((s) => (
+          <div key={s} className="mt-4">
+            <div className="flex items-center gap-2">
+              {bar("24%", "bg-foreground/45")}
+              {ruled && <span className="h-px flex-1 bg-foreground/15" />}
+              {id === "classic" && <span className="h-px w-6 bg-foreground/25" />}
+            </div>
+            <div className="mt-2 flex flex-col gap-1.5">
+              {bar("92%", "bg-foreground/10")}
+              {bar("82%", "bg-foreground/10")}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div
@@ -172,8 +201,8 @@ export default function TemplatesSection({
                   aria-label={`${t("tpl.preview")} - ${tpl.name}`}
                   className="group flex h-full flex-col rounded-xl border border-foreground/10 bg-background/70 p-4 md:p-5 text-left transition-all hover:border-foreground/30 hover:shadow-[0_8px_24px_-16px_hsl(var(--foreground)/0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
                 >
-                  <div className="pointer-events-none mb-4 w-full overflow-hidden rounded-md">
-                    <Thumbnail id={tpl.id} />
+                  <div className="pointer-events-none mb-4 h-32 w-full overflow-hidden rounded-md sm:h-36 md:h-40">
+                    <Thumbnail id={tpl.id} compact />
                   </div>
 
                   <h3 className="text-base md:text-lg font-semibold text-foreground font-['Rubik'] leading-tight">
